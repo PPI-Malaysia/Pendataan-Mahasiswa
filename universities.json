@@ -1,0 +1,438 @@
+[
+    {
+        "university_id": "1",
+        "university_name": "Albukhary International University"
+    },
+    {
+        "university_id": "2",
+        "university_name": "Asia Pacific University"
+    },
+    {
+        "university_id": "3",
+        "university_name": "Curtin University Malaysia"
+    },
+    {
+        "university_id": "4",
+        "university_name": "DRB-HICOM University of Automotive Malaysia"
+    },
+    {
+        "university_id": "105",
+        "university_name": "Dungun School of Business"
+    },
+    {
+        "university_id": "5",
+        "university_name": "First City University College"
+    },
+    {
+        "university_id": "77",
+        "university_name": "GlobalNxt University"
+    },
+    {
+        "university_id": "7",
+        "university_name": "HELP University"
+    },
+    {
+        "university_id": "6",
+        "university_name": "Han Chiang University College of Communication"
+    },
+    {
+        "university_id": "8",
+        "university_name": "Heriot-Watt University Malaysia"
+    },
+    {
+        "university_id": "9",
+        "university_name": "INCEIF University"
+    },
+    {
+        "university_id": "14",
+        "university_name": "INTI International University"
+    },
+    {
+        "university_id": "10",
+        "university_name": "Infrastructure University Kuala Lumpur"
+    },
+    {
+        "university_id": "93",
+        "university_name": "Institut Jerman-Malaysia"
+    },
+    {
+        "university_id": "96",
+        "university_name": "Institut Nasional Sains Oftalmik"
+    },
+    {
+        "university_id": "11",
+        "university_name": "International Islamic University Malaysia"
+    },
+    {
+        "university_id": "12",
+        "university_name": "International Medical University"
+    },
+    {
+        "university_id": "13",
+        "university_name": "International University of Malaya-Wales"
+    },
+    {
+        "university_id": "16",
+        "university_name": "KPJ Healthcare University"
+    },
+    {
+        "university_id": "89",
+        "university_name": "Kolej ALFA"
+    },
+    {
+        "university_id": "97",
+        "university_name": "Kolej Olympia Penang"
+    },
+    {
+        "university_id": "104",
+        "university_name": "Kolej Perkembangan Awal Kanak-kanak"
+    },
+    {
+        "university_id": "94",
+        "university_name": "Kolej Universiti Antarabangsa seni dan sains"
+    },
+    {
+        "university_id": "76",
+        "university_name": "Kolej Universiti Hospitaliti BERJAYA"
+    },
+    {
+        "university_id": "73",
+        "university_name": "Kolej Universiti Insaniah"
+    },
+    {
+        "university_id": "100",
+        "university_name": "Kolej Universiti Islam Antarabangsa Selangor"
+    },
+    {
+        "university_id": "15",
+        "university_name": "Kolej Universiti Islam Perlis"
+    },
+    {
+        "university_id": "95",
+        "university_name": "Kolej Universiti KDU"
+    },
+    {
+        "university_id": "84",
+        "university_name": "Kolej Universiti Linton"
+    },
+    {
+        "university_id": "86",
+        "university_name": "Kolej Universiti Medikal Sains Allianze"
+    },
+    {
+        "university_id": "80",
+        "university_name": "Kolej Universiti Metropolitan Kuala Lumpur"
+    },
+    {
+        "university_id": "99",
+        "university_name": "Kolej Universiti New Era"
+    },
+    {
+        "university_id": "92",
+        "university_name": "Kolej Universiti Sains Perubatan Cyberjaya"
+    },
+    {
+        "university_id": "71",
+        "university_name": "Kolej Universiti Shah Putra"
+    },
+    {
+        "university_id": "79",
+        "university_name": "Kolej Universiti Teknologi Antarabangsa Twintech"
+    },
+    {
+        "university_id": "88",
+        "university_name": "Kolej Universiti Teknologi Sarawak"
+    },
+    {
+        "university_id": "17",
+        "university_name": "Limkokwing University of Creative Technology"
+    },
+    {
+        "university_id": "18",
+        "university_name": "Lincoln University College"
+    },
+    {
+        "university_id": "19",
+        "university_name": "MAHSA University"
+    },
+    {
+        "university_id": "20",
+        "university_name": "Malaysia University of Science and Technology"
+    },
+    {
+        "university_id": "21",
+        "university_name": "Management & Science University"
+    },
+    {
+        "university_id": "23",
+        "university_name": "Monash University"
+    },
+    {
+        "university_id": "24",
+        "university_name": "Monash University Malaysia"
+    },
+    {
+        "university_id": "25",
+        "university_name": "Multimedia University"
+    },
+    {
+        "university_id": "26",
+        "university_name": "Newcastle University Medicine Malaysia"
+    },
+    {
+        "university_id": "27",
+        "university_name": "Open University Malaysia"
+    },
+    {
+        "university_id": "108",
+        "university_name": "Other University"
+    },
+    {
+        "university_id": "87",
+        "university_name": "Quest International University Perak"
+    },
+    {
+        "university_id": "29",
+        "university_name": "SEGi University"
+    },
+    {
+        "university_id": "28",
+        "university_name": "Sabah"
+    },
+    {
+        "university_id": "85",
+        "university_name": "Seminari Theoloji Malaysia"
+    },
+    {
+        "university_id": "30",
+        "university_name": "Southern University College"
+    },
+    {
+        "university_id": "31",
+        "university_name": "Sunway University"
+    },
+    {
+        "university_id": "32",
+        "university_name": "Swinburne University of Technology Sarawak"
+    },
+    {
+        "university_id": "33",
+        "university_name": "Taylor's University"
+    },
+    {
+        "university_id": "34",
+        "university_name": "The One Academy"
+    },
+    {
+        "university_id": "35",
+        "university_name": "Tunku Abdul Rahman University of Management and Technology"
+    },
+    {
+        "university_id": "36",
+        "university_name": "UCSI University"
+    },
+    {
+        "university_id": "66",
+        "university_name": "UT Kuala Lumpur"
+    },
+    {
+        "university_id": "67",
+        "university_name": "UT Pokjar Johor"
+    },
+    {
+        "university_id": "68",
+        "university_name": "UT Pokjar Penang"
+    },
+    {
+        "university_id": "69",
+        "university_name": "UT Wawasan"
+    },
+    {
+        "university_id": "103",
+        "university_name": "Unitar International University"
+    },
+    {
+        "university_id": "37",
+        "university_name": "Universitas Terbuka"
+    },
+    {
+        "university_id": "90",
+        "university_name": "Universiti Antarabangsa Al-Madinah"
+    },
+    {
+        "university_id": "82",
+        "university_name": "Universiti Antarabangsa Manipal"
+    },
+    {
+        "university_id": "74",
+        "university_name": "Universiti Asia e"
+    },
+    {
+        "university_id": "75",
+        "university_name": "Universiti Asian Metropolitan"
+    },
+    {
+        "university_id": "98",
+        "university_name": "Universiti Infrastruktur Kuala Lumpur"
+    },
+    {
+        "university_id": "22",
+        "university_name": "Universiti Islam Antarabangsa Tuanku Syed Sirajuddin"
+    },
+    {
+        "university_id": "38",
+        "university_name": "Universiti Kebangsaan Malaysia"
+    },
+    {
+        "university_id": "81",
+        "university_name": "Universiti Kuala Lumpur"
+    },
+    {
+        "university_id": "39",
+        "university_name": "Universiti Malaya"
+    },
+    {
+        "university_id": "40",
+        "university_name": "Universiti Malaysia Kelantan"
+    },
+    {
+        "university_id": "41",
+        "university_name": "Universiti Malaysia Pahang Al-Sultan Abdullah"
+    },
+    {
+        "university_id": "42",
+        "university_name": "Universiti Malaysia Perlis"
+    },
+    {
+        "university_id": "43",
+        "university_name": "Universiti Malaysia Sabah"
+    },
+    {
+        "university_id": "44",
+        "university_name": "Universiti Malaysia Sarawak"
+    },
+    {
+        "university_id": "45",
+        "university_name": "Universiti Malaysia Terengganu"
+    },
+    {
+        "university_id": "46",
+        "university_name": "Universiti Muhammadiyah Malaysia"
+    },
+    {
+        "university_id": "83",
+        "university_name": "Universiti Nilai"
+    },
+    {
+        "university_id": "47",
+        "university_name": "Universiti Pendidikan Sultan Idris"
+    },
+    {
+        "university_id": "91",
+        "university_name": "Universiti Pengurusan dan Keusahawanan"
+    },
+    {
+        "university_id": "101",
+        "university_name": "Universiti Perdana"
+    },
+    {
+        "university_id": "48",
+        "university_name": "Universiti Pertahanan Nasional Malaysia"
+    },
+    {
+        "university_id": "78",
+        "university_name": "Universiti Perubatan Antarabangsa"
+    },
+    {
+        "university_id": "49",
+        "university_name": "Universiti Putra Malaysia"
+    },
+    {
+        "university_id": "106",
+        "university_name": "Universiti Raffles Iskandar"
+    },
+    {
+        "university_id": "50",
+        "university_name": "Universiti Sains Islam Malaysia"
+    },
+    {
+        "university_id": "51",
+        "university_name": "Universiti Sains Malaysia"
+    },
+    {
+        "university_id": "52",
+        "university_name": "Universiti Sultan Zainal Abidin"
+    },
+    {
+        "university_id": "53",
+        "university_name": "Universiti Technology Mara (UiTM)"
+    },
+    {
+        "university_id": "54",
+        "university_name": "Universiti Teknikal Malaysia Melaka"
+    },
+    {
+        "university_id": "55",
+        "university_name": "Universiti Teknologi Malaysia Johor Bahru"
+    },
+    {
+        "university_id": "56",
+        "university_name": "Universiti Teknologi Malaysia Kuala Lumpur"
+    },
+    {
+        "university_id": "57",
+        "university_name": "Universiti Teknologi Petronas"
+    },
+    {
+        "university_id": "58",
+        "university_name": "Universiti Tenaga Nasional"
+    },
+    {
+        "university_id": "102",
+        "university_name": "Universiti Tun Abdul Razak"
+    },
+    {
+        "university_id": "59",
+        "university_name": "Universiti Tun Hussein Onn Malaysia"
+    },
+    {
+        "university_id": "60",
+        "university_name": "Universiti Tunku Abdul Rahman"
+    },
+    {
+        "university_id": "61",
+        "university_name": "Universiti Utara Malaysia"
+    },
+    {
+        "university_id": "72",
+        "university_name": "University AIMST"
+    },
+    {
+        "university_id": "65",
+        "university_name": "University Sains Islam Malaysia"
+    },
+    {
+        "university_id": "62",
+        "university_name": "University of Nottingham Malaysia"
+    },
+    {
+        "university_id": "63",
+        "university_name": "University of Southampton Malaysia"
+    },
+    {
+        "university_id": "64",
+        "university_name": "University of Wollongong Malaysia"
+    },
+    {
+        "university_id": "107",
+        "university_name": "Westminster International College"
+    },
+    {
+        "university_id": "70",
+        "university_name": "Xiamen University Malaysia"
+    },
+    {
+        "university_id": "108",
+        "university_name": "Other University"
+    }
+]

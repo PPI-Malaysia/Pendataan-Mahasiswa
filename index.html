@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="id">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Pendataan Mahasiswa</title>
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+            crossorigin="anonymous"
+        />
+        <link href="main.css" rel="stylesheet" />
+    </head>
+    <body>
+        <div class="ambient-red"></div>
+        <div class="ambient-red-2"></div>
+        <div class="bg-content-filter noice"></div>
+        <div class="switch-section">
+            <button
+                class="liquid-switch"
+                id="langSwitch"
+                role="switch"
+                aria-checked="false"
+                data-lang="ID"
+            >
+                <span class="seg" data-v="ID">ID</span>
+                <span class="seg" data-v="EN">EN</span>
+                <span class="thumb"></span>
+            </button>
+        </div>
+        <div class="logo-container liquid">
+            <img src="image/ppim-logo.png" class="logo" />
+            <div class="logo-text">PPI Malaysia</div>
+        </div>
+        <div class="bg-container" id="bg-container">
+            <div class="bg-content">
+                <img
+                    src="image/2.jpg"
+                    alt="background"
+                    class="bg-image"
+                    id="bg-img"
+                />
+                <div class="bg-top-section"></div>
+            </div>
+        </div>
+        <div class="app-container" id="main-content">
+            <div class="app-row d-block d-lg-none">
+                <div class="row app-row">
+                    <div class="col-6 app-col">
+                        <div class="ambient-red-m"></div>
+                    </div>
+                    <div class="col-6 app-col">
+                        <div class="ambient-red-m-2"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="box-content">
+                <h1 data-i18n="header-title">
+                    Pendataan mahasiswa Indonesia di Malaysia
+                </h1>
+                <div class="subtext">
+                    <span data-i18n="subtext-1"
+                        >Formulir ini merupakan bagian dari</span
+                    >
+                    <span class="red" data-i18n="subtext-highlight"
+                        >pendataan resmi KBRI Malaysia.</span
+                    >
+                    <span data-i18n="subtext-2"
+                        >Data Anda akan digunakan untuk kepentingan
+                        administratif, pelayanan, dan kebutuhan darurat selama
+                        di Malaysia.</span
+                    >
+                </div>
+                <div class="button-container">
+                    <button
+                        type="button"
+                        class="btn liquid-btn btn-max liquid-light glass-btn"
+                    >
+                        <span data-i18n="btn-new" id="regist">Daftar Baru</span>
+                    </button>
+                </div>
+                <div class="button-container">
+                    <button
+                        type="button"
+                        class="btn glass-btn liquid-red-btn btn-max"
+                    >
+                        <span data-i18n="btn-update" id="update"
+                            >Perbarui Data</span
+                        >
+                    </button>
+                </div>
+            </div>
+            <div class="box-large-container" id="register">
+                <div class="relative-wrapper">
+                    <div class="bar-container">
+                        <div class="p-bar">
+                            <div class="liquid-progress" style="--p: 100"></div>
+                            <div
+                                class="liquid-progress"
+                                style="--p: 0"
+                                id="register2-progress"
+                            ></div>
+                            <div
+                                class="liquid-progress"
+                                style="--p: 0"
+                                id="register3-progress"
+                            ></div>
+                            <div
+                                class="liquid-progress"
+                                style="--p: 0"
+                                id="register4-progress"
+                            ></div>
+                            <div
+                                class="liquid-progress"
+                                style="--p: 0"
+                                id="register5-progress"
+                            ></div>
+                        </div>
+                        <div class="p-bar-span">
+                            <div id="barspan1">
+                                <span data-i18n="basic-info"
+                                    >1. Basic information</span
+                                >
+                                <span data-i18n="(mandatory)" class="red"
+                                    >(Mandatory)</span
+                                >
+                            </div>
+                            <div id="barspan2" style="display: none">
+                                <span data-i18n="add-info"
+                                    >2. Additional information</span
+                                >
+                                <span data-i18n="(optional)" class="red"
+                                    >(Optional)</span
+                                >
+                            </div>
+                            <div id="barspan3" style="display: none">
+                                <span data-i18n="uni-info"
+                                    >3. University information</span
+                                >
+                                <span data-i18n="(mandatory)" class="red"
+                                    >(Mandatory)</span
+                                >
+                            </div>
+                            <div id="barspan4" style="display: none">
+                                <span data-i18n="ppi"
+                                    >4. Indonesian Student Association</span
+                                >
+                                <span class="red">(PPI)</span>
+                                <span data-i18n="ulevel"
+                                    >- University Level</span
+                                >
+                            </div>
+                            <div id="barspan5" style="display: none">
+                                <span data-i18n="ppim"
+                                    >5. Indonesian Student Association in
+                                    Malaysia</span
+                                >
+                                <span class="red text-nowrap"
+                                    >(PPI Malaysia)</span
+                                >
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-large-content test">
+                        <form class="form-container test">
+                            <div id="register1">
+                                <div class="mb-3">
+                                    <label
+                                        class="form-label"
+                                        data-i18n="full-name"
+                                        >Full Name</label
+                                    >
+
+                                    <input
+                                        class="form-control form-control-lg liquid-input"
+                                        type="text"
+                                        placeholder="R*** D****"
+                                        aria-label=".form-control-lg example"
+                                    />
+                                </div>
+                                <div class="row">
+                                    <div class="col-6 mb-3">
+                                        <label
+                                            class="form-label"
+                                            data-i18n="dob"
+                                            >Date of Birth</label
+                                        >
+
+                                        <input
+                                            type="date"
+                                            class="form-control form-control-lg liquid-input liquid-date"
+                                            placeholder="dd-mm-yyyy"
+                                            lang="id-ID"
+                                        />
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <label
+                                            class="form-label"
+                                            data-i18n="passport"
+                                            >Passport Number</label
+                                        >
+
+                                        <input
+                                            class="form-control form-control-lg liquid-input"
+                                            type="text"
+                                            placeholder="X0000000"
+                                            aria-label=".form-control-lg example"
+                                        />
+                                    </div>
+                                    <div class="col-12 col-lg-6 mb-3">
+                                        <label
+                                            class="form-label"
+                                            data-i18n="phone"
+                                            >Phone Number</label
+                                        >
+
+                                        <div
+                                            class="input-group input-group-lg liquid-input-group js-phone-group"
+                                            style="z-index: 5"
+                                        >
+                                            <button
+                                                class="btn dropdown-toggle liquid-input-prefix js-phone-prefix"
+                                                type="button"
+                                                data-bs-toggle="dropdown"
+                                                aria-expanded="false"
+                                                data-prefix="+60"
+                                            >
+                                                +60
+                                            </button>
+                                            <ul
+                                                class="dropdown-menu js-phone-menu"
+                                            ></ul>
+                                            <input
+                                                class="form-control form-control-lg liquid-input js-phone-input"
+                                                type="tel"
+                                                placeholder="10********"
+                                                aria-label="Phone number without country code"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-lg-6 mb-3">
+                                        <label
+                                            class="form-label"
+                                            data-i18n="university"
+                                            >University</label
+                                        >
+
+                                        <div
+                                            class="liquid-typeahead js-university-group"
+                                        >
+                                            <div
+                                                class="liquid-typeahead-control liquid-input js-university-control"
+                                            >
+                                                <span
+                                                    class="typeahead-pill js-university-pill"
+                                                    hidden
+                                                >
+                                                    <span
+                                                        class="pill-label js-university-pill-label"
+                                                    ></span>
+                                                    <button
+                                                        type="button"
+                                                        class="pill-clear js-university-clear"
+                                                        aria-label="Remove selected university"
+                                                    >
+                                                        &times;
+                                                    </button>
+                                                </span>
+                                                <input
+                                                    class="typeahead-input js-university-input"
+                                                    type="text"
+                                                    placeholder="University ******"
+                                                    aria-label="University name"
+                                                    autocomplete="off"
+                                                    role="combobox"
+                                                    aria-autocomplete="list"
+                                                    aria-haspopup="listbox"
+                                                    aria-expanded="false"
+                                                />
+                                                <input
+                                                    type="hidden"
+                                                    class="js-university-value"
+                                                    name="university"
+                                                />
+                                            </div>
+                                            <ul
+                                                class="dropdown-menu js-university-menu"
+                                                role="listbox"
+                                            ></ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div
+                                    class="button-container login-btn d-flex justify-content-end"
+                                >
+                                    <button
+                                        type="button"
+                                        class="btn glass-btn liquid-red-btn"
+                                        id="gotoRegister2"
+                                    >
+                                        <span data-i18n="btn-next">Next</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="register2" style="display: none">
+                                <div class="mb-3">
+                                    <label class="form-label" data-i18n="email"
+                                        >Email</label
+                                    >
+
+                                    <input
+                                        class="form-control form-control-lg liquid-input"
+                                        type="email"
+                                        placeholder="R***@gmail.com"
+                                        aria-label=".form-control-lg example"
+                                    />
+                                </div>
+                                <div class="mb-3">
+                                    <label
+                                        class="form-label"
+                                        data-i18n="Address"
+                                        >Address</label
+                                    >
+
+                                    <textarea
+                                        class="form-control form-control-lg liquid-input"
+                                        type="text"
+                                        placeholder="Pa*** No. ***, J***"
+                                        aria-label=".form-control-lg example"
+                                        rows="3"
+                                        maxlength="255"
+                                    ></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label
+                                        class="form-label"
+                                        data-i18n="postkode"
+                                        >Postcode</label
+                                    >
+                                    <div
+                                        class="liquid-typeahead js-postcode-group"
+                                    >
+                                        <div
+                                            class="liquid-typeahead-control liquid-input js-postcode-control"
+                                        >
+                                            <span
+                                                class="typeahead-pill js-postcode-pill"
+                                                hidden
+                                            >
+                                                <span
+                                                    class="pill-label js-postcode-pill-label"
+                                                ></span>
+                                                <button
+                                                    type="button"
+                                                    class="pill-clear js-postcode-clear"
+                                                    aria-label="Remove selected postcode"
+                                                >
+                                                    &times;
+                                                </button>
+                                            </span>
+                                            <input
+                                                class="typeahead-input js-postcode-input"
+                                                type="text"
+                                                placeholder="46000 - Petaling Jaya, Selangor"
+                                                aria-label="Postcode"
+                                                autocomplete="off"
+                                                role="combobox"
+                                                aria-autocomplete="list"
+                                                aria-haspopup="listbox"
+                                                aria-expanded="false"
+                                            />
+                                            <input
+                                                type="hidden"
+                                                class="js-postcode-value"
+                                                name="postcode"
+                                            />
+                                        </div>
+                                        <ul
+                                            class="dropdown-menu js-postcode-menu"
+                                            role="listbox"
+                                        ></ul>
+                                    </div>
+                                </div>
+                                <div
+                                    class="button-container login-btn d-flex justify-content-end"
+                                >
+                                    <button
+                                        type="button"
+                                        class="btn liquid-btn liquid-light glass-btn me-2"
+                                        id="backtoRegister1"
+                                    >
+                                        <span data-i18n="btn-prev"
+                                            >Previous</span
+                                        >
+                                    </button>
+                                    <button
+                                        type="button"
+                                        class="btn glass-btn liquid-red-btn"
+                                        id="gotoRegister3"
+                                    >
+                                        <span data-i18n="btn-next">Next</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="register3" style="display: none">
+                                <div class="mb-3">
+                                    <h4>
+                                        <span data-i18n="hellouniname"
+                                            >Hello</span
+                                        >
+                                        <span class="red uni_name"
+                                            >$Uni_name</span
+                                        ><span data-i18n="hellouniname2"
+                                            >Student</span
+                                        >
+                                    </h4>
+                                </div>
+                                <div class="mb-3">
+                                    <label
+                                        class="form-label"
+                                        data-i18n="edu-level"
+                                        >What level of education are you
+                                        currently pursuing?</label
+                                    >
+
+                                    <select
+                                        class="form-select form-select-lg liquid-input"
+                                        aria-label="Current education level"
+                                    >
+                                        <option value="" disabled selected>
+                                            --
+                                        </option>
+                                        <option value="certificate">
+                                            Certificate
+                                        </option>
+                                        <option value="diploma">Diploma</option>
+                                        <option value="bachelor">
+                                            Undergraduate (Bachelor)
+                                        </option>
+                                        <option value="master">
+                                            Postgraduate (Master)
+                                        </option>
+                                        <option value="phd">
+                                            Postgraduate (Doctorate)
+                                        </option>
+                                        <option value="postdoc">
+                                            Postdoctoral
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label
+                                        class="form-label"
+                                        data-i18n="programme"
+                                        >What degree programme are you
+                                        studying?</label
+                                    >
+
+                                    <input
+                                        class="form-control form-control-lg liquid-input"
+                                        type="text"
+                                        placeholder="Bachelor of Artificial Intelligence"
+                                        aria-label=".form-control-lg example"
+                                    />
+                                </div>
+                                <div class="mb-3">
+                                    <label
+                                        class="form-label"
+                                        data-i18n="grad-time"
+                                        >When is your expected graduation
+                                        date?</label
+                                    >
+
+                                    <input
+                                        type="date"
+                                        class="form-control form-control-lg liquid-input liquid-date"
+                                        placeholder="dd-mm-yyyy"
+                                        lang="id-ID"
+                                    />
+                                </div>
+                                <div
+                                    class="button-container login-btn d-flex justify-content-end"
+                                >
+                                    <button
+                                        type="button"
+                                        class="btn liquid-btn liquid-light glass-btn me-2"
+                                        id="backtoRegister2"
+                                    >
+                                        <span data-i18n="btn-prev"
+                                            >Previous</span
+                                        >
+                                    </button>
+                                    <button
+                                        type="button"
+                                        class="btn glass-btn liquid-red-btn"
+                                        id="gotoRegister4"
+                                    >
+                                        <span data-i18n="btn-next">Next</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="register4" style="display: none">
+                                <div class="mb-3">
+                                    <h4 id="ppiCampusQuestion">
+                                        <span data-i18n="ppicampusask"
+                                            >Are you currently or have you ever
+                                            been a</span
+                                        >
+                                        <span
+                                            data-i18n="ppicampusask2"
+                                            class="red"
+                                            >member of PPI at your campus?</span
+                                        >
+                                    </h4>
+                                </div>
+                                <div class="mb-3">
+                                    <div
+                                        class="liquid-choice-group"
+                                        role="radiogroup"
+                                        aria-labelledby="ppiCampusQuestion"
+                                    >
+                                        <input
+                                            class="liquid-choice-input"
+                                            type="radio"
+                                            name="ppiCampusMember"
+                                            id="ppiCampusNo"
+                                            value="no"
+                                            checked
+                                        />
+                                        <label
+                                            class="liquid-choice"
+                                            for="ppiCampusNo"
+                                            data-i18n="ppi-no"
+                                        >
+                                            No
+                                        </label>
+                                        <input
+                                            class="liquid-choice-input"
+                                            type="radio"
+                                            name="ppiCampusMember"
+                                            id="ppiCampusYes"
+                                            value="yes"
+                                        />
+                                        <label
+                                            class="liquid-choice"
+                                            for="ppiCampusYes"
+                                            data-i18n="ppi-yes"
+                                        >
+                                            Yes
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="row" id="ppiCampusDetails">
+                                    <div class="col-6 mb-3">
+                                        <label
+                                            class="form-label"
+                                            data-i18n="start-year"
+                                            >Tahun Mulai</label
+                                        >
+
+                                        <input
+                                            class="form-control form-control-lg liquid-input"
+                                            type="email"
+                                            placeholder="20**"
+                                            aria-label=".form-control-lg example"
+                                        />
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <label
+                                            class="form-label"
+                                            data-i18n="end-year"
+                                            >Tahun Selesai</label
+                                        >
+
+                                        <input
+                                            class="form-control form-control-lg liquid-input"
+                                            type="email"
+                                            placeholder="20**"
+                                            aria-label=".form-control-lg example"
+                                        />
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <label
+                                            class="form-label"
+                                            data-i18n="department"
+                                            >Department</label
+                                        >
+
+                                        <input
+                                            class="form-control form-control-lg liquid-input"
+                                            type="email"
+                                            placeholder="Pusat data dan Informasi"
+                                            aria-label=".form-control-lg example"
+                                        />
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <label
+                                            class="form-label"
+                                            data-i18n="position"
+                                            >Position</label
+                                        >
+
+                                        <input
+                                            class="form-control form-control-lg liquid-input"
+                                            type="email"
+                                            placeholder="Ketua, Anggota, Sekretaris, dll"
+                                            aria-label=".form-control-lg example"
+                                        />
+                                    </div>
+                                    <div class="col-12 mb-3">
+                                        <label
+                                            class="form-label"
+                                            data-i18n="add-info2"
+                                            >Additional Information</label
+                                        >
+
+                                        <textarea
+                                            class="form-control form-control-lg liquid-input"
+                                            type="text"
+                                            placeholder="...."
+                                            aria-label=".form-control-lg example"
+                                            rows="3"
+                                            maxlength="255"
+                                        ></textarea>
+                                    </div>
+                                    <span
+                                        style="font-size: 12px; color: gray"
+                                        data-i18n="ppi-campus-note"
+                                    >
+                                        Note: If you choose “Yes,” a
+                                        representative from your campus will
+                                        verify whether you are a member of PPI
+                                        at your campus. If you are a
+                                        representative yourself and need access,
+                                        please contact the current PPI Malaysia
+                                        board.
+                                    </span>
+                                </div>
+                                <div
+                                    class="button-container login-btn d-flex justify-content-end"
+                                >
+                                    <button
+                                        type="button"
+                                        class="btn liquid-btn liquid-light glass-btn me-2"
+                                        id="backtoRegister3"
+                                    >
+                                        <span data-i18n="btn-prev"
+                                            >Previous</span
+                                        >
+                                    </button>
+                                    <button
+                                        type="button"
+                                        class="btn glass-btn liquid-red-btn"
+                                        id="gotoRegister5"
+                                    >
+                                        <span data-i18n="btn-next">Next</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="register5" style="display: none">
+                                <div class="mb-3">
+                                    <h4 id="ppiMalaysiaQuestion">
+                                        <span data-i18n="ppicampusask"
+                                            >Are you currently or have you ever
+                                            been a</span
+                                        >
+                                        <span data-i18n="ppimask" class="red"
+                                            >member of PPI Malaysia?</span
+                                        >
+                                    </h4>
+                                </div>
+                                <div class="mb-3">
+                                    <div
+                                        class="liquid-choice-group"
+                                        role="radiogroup"
+                                        aria-labelledby="ppiMalaysiaQuestion"
+                                    >
+                                        <input
+                                            class="liquid-choice-input"
+                                            type="radio"
+                                            name="ppiMalaysiaMember"
+                                            id="ppiMalaysiaNo"
+                                            value="no"
+                                            checked
+                                        />
+                                        <label
+                                            class="liquid-choice"
+                                            for="ppiMalaysiaNo"
+                                            data-i18n="ppi-no"
+                                        >
+                                            No
+                                        </label>
+                                        <input
+                                            class="liquid-choice-input"
+                                            type="radio"
+                                            name="ppiMalaysiaMember"
+                                            id="ppiMalaysiaYes"
+                                            value="yes"
+                                        />
+                                        <label
+                                            class="liquid-choice"
+                                            for="ppiMalaysiaYes"
+                                            data-i18n="ppi-yes"
+                                        >
+                                            Yes
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="row" id="ppiMalaysiaDetails">
+                                    <div class="col-6 mb-3">
+                                        <label
+                                            class="form-label"
+                                            data-i18n="start-year"
+                                            >Tahun Mulai</label
+                                        >
+
+                                        <input
+                                            class="form-control form-control-lg liquid-input"
+                                            type="email"
+                                            placeholder="20**"
+                                            aria-label=".form-control-lg example"
+                                        />
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <label
+                                            class="form-label"
+                                            data-i18n="end-year"
+                                            >Tahun Selesai</label
+                                        >
+
+                                        <input
+                                            class="form-control form-control-lg liquid-input"
+                                            type="email"
+                                            placeholder="20**"
+                                            aria-label=".form-control-lg example"
+                                        />
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <label
+                                            class="form-label"
+                                            data-i18n="department"
+                                            >Department</label
+                                        >
+
+                                        <input
+                                            class="form-control form-control-lg liquid-input"
+                                            type="email"
+                                            placeholder="Pusat data dan Informasi"
+                                            aria-label=".form-control-lg example"
+                                        />
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <label
+                                            class="form-label"
+                                            data-i18n="position"
+                                            >Position</label
+                                        >
+
+                                        <input
+                                            class="form-control form-control-lg liquid-input"
+                                            type="email"
+                                            placeholder="Ketua, Anggota, Sekretaris, dll"
+                                            aria-label=".form-control-lg example"
+                                        />
+                                    </div>
+                                    <div class="col-12 mb-3">
+                                        <label
+                                            class="form-label"
+                                            data-i18n="add-info2"
+                                            >Additional Information</label
+                                        >
+
+                                        <textarea
+                                            class="form-control form-control-lg liquid-input"
+                                            type="text"
+                                            placeholder="...."
+                                            aria-label=".form-control-lg example"
+                                            rows="3"
+                                            maxlength="255"
+                                        ></textarea>
+                                    </div>
+                                    <span
+                                        style="font-size: 12px; color: gray"
+                                        data-i18n="ppi-malaysia-note"
+                                    >
+                                        Note: If you choose "Yes," the current
+                                        PPI Malaysia board will verify your
+                                        information.
+                                    </span>
+                                </div>
+                                <div
+                                    class="button-container login-btn d-flex justify-content-end"
+                                >
+                                    <button
+                                        type="button"
+                                        class="btn liquid-btn liquid-light glass-btn me-2"
+                                        id="backtoRegister4"
+                                    >
+                                        <span data-i18n="btn-prev"
+                                            >Previous</span
+                                        >
+                                    </button>
+                                    <button
+                                        type="button"
+                                        class="btn glass-btn liquid-red-btn"
+                                        id="completeRegister"
+                                    >
+                                        <span data-i18n="btn-save">Save</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="box-large-container" id="updateProfile">
+                <div class="box-large-content test">
+                    <form class="form-container2 test">
+                        <div class="mb-3">
+                            <label class="form-label" data-i18n="full-name"
+                                >Full Name</label
+                            >
+
+                            <input
+                                class="form-control form-control-lg liquid-input"
+                                type="text"
+                                placeholder="R*** D****"
+                                aria-label=".form-control-lg example"
+                            />
+                        </div>
+                        <div class="row">
+                            <div class="col-6 mb-3">
+                                <label class="form-label" data-i18n="dob"
+                                    >Date of Birth</label
+                                >
+
+                                <input
+                                    type="date"
+                                    class="form-control form-control-lg liquid-input liquid-date"
+                                    placeholder="dd-mm-yyyy"
+                                    lang="id-ID"
+                                />
+                            </div>
+                            <div class="col-6 mb-3">
+                                <label class="form-label" data-i18n="passport"
+                                    >Passport Number</label
+                                >
+
+                                <input
+                                    class="form-control form-control-lg liquid-input"
+                                    type="text"
+                                    placeholder="X0000000"
+                                    aria-label=".form-control-lg example"
+                                />
+                            </div>
+                            <div class="col-12 col-lg-6 mb-3">
+                                <label class="form-label" data-i18n="phone"
+                                    >Phone Number</label
+                                >
+
+                                <div
+                                    class="input-group input-group-lg liquid-input-group js-phone-group"
+                                    style="z-index: 5"
+                                >
+                                    <button
+                                        class="btn dropdown-toggle liquid-input-prefix js-phone-prefix"
+                                        type="button"
+                                        data-bs-toggle="dropdown"
+                                        aria-expanded="false"
+                                        data-prefix="+60"
+                                    >
+                                        +60
+                                    </button>
+                                    <ul
+                                        class="dropdown-menu js-phone-menu"
+                                    ></ul>
+                                    <input
+                                        class="form-control form-control-lg liquid-input js-phone-input"
+                                        type="tel"
+                                        placeholder="10********"
+                                        aria-label="Phone number without country code"
+                                    />
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-6 mb-3">
+                                <label class="form-label" data-i18n="university"
+                                    >University</label
+                                >
+
+                                <div
+                                    class="liquid-typeahead js-university-group"
+                                >
+                                    <div
+                                        class="liquid-typeahead-control liquid-input js-university-control"
+                                    >
+                                        <span
+                                            class="typeahead-pill js-university-pill"
+                                            hidden
+                                        >
+                                            <span
+                                                class="pill-label js-university-pill-label"
+                                            ></span>
+                                            <button
+                                                type="button"
+                                                class="pill-clear js-university-clear"
+                                                aria-label="Remove selected university"
+                                            >
+                                                &times;
+                                            </button>
+                                        </span>
+                                        <input
+                                            class="typeahead-input js-university-input"
+                                            type="text"
+                                            placeholder="University ******"
+                                            aria-label="University name"
+                                            autocomplete="off"
+                                            role="combobox"
+                                            aria-autocomplete="list"
+                                            aria-haspopup="listbox"
+                                            aria-expanded="false"
+                                        />
+                                        <input
+                                            type="hidden"
+                                            class="js-university-value"
+                                            name="university"
+                                        />
+                                    </div>
+                                    <ul
+                                        class="dropdown-menu js-university-menu"
+                                        role="listbox"
+                                    ></ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="button-container login-btn">
+                            <button
+                                type="button"
+                                class="btn glass-btn liquid-red-btn btn-max"
+                            >
+                                <span data-i18n="btn-login" id="login"
+                                    >Login</span
+                                >
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+            crossorigin="anonymous"
+        ></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"
+            integrity="sha512-NcZdtrT77bJr4STcmsGAESr06BYGE8woZdSdEgqnpyqac7sugNO+Tr4bGwGF3MsnEkGKhU2KL2xh6Ec+BqsaHA=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        ></script>
+        <svg width="0" height="0" aria-hidden="true" focusable="false">
+            <defs>
+                <!-- Circles from r=0.25 to r=2 on a 4x4 grid -->
+                <circle id="dot1" cx="2" cy="2" r="0.25" />
+                <circle id="dot2" cx="2" cy="2" r="0.5" />
+                <circle id="dot3" cx="2" cy="2" r="0.75" />
+                <circle id="dot4" cx="2" cy="2" r="1" />
+                <circle id="dot5" cx="2" cy="2" r="1.25" />
+                <circle id="dot6" cx="2" cy="2" r="1.5" />
+                <circle id="dot7" cx="2" cy="2" r="1.75" />
+                <circle id="dot8" cx="2" cy="2" r="2" />
+
+                <filter
+                    id="half-tone-hd"
+                    color-interpolation-filters="sRGB"
+                    primitiveUnits="userSpaceOnUse"
+                >
+                    <!-- tiled circles -->
+                    <feImage width="4" height="4" xlink:href="#dot1" />
+                    <feTile result="dot1-tile" />
+                    <feImage width="4" height="4" xlink:href="#dot2" />
+                    <feTile result="dot2-tile" />
+                    <feImage width="4" height="4" xlink:href="#dot3" />
+                    <feTile result="dot3-tile" />
+                    <feImage width="4" height="4" xlink:href="#dot4" />
+                    <feTile result="dot4-tile" />
+                    <feImage width="4" height="4" xlink:href="#dot5" />
+                    <feTile result="dot5-tile" />
+                    <feImage width="4" height="4" xlink:href="#dot6" />
+                    <feTile result="dot6-tile" />
+                    <feImage width="4" height="4" xlink:href="#dot7" />
+                    <feTile result="dot7-tile" />
+                    <feImage width="4" height="4" xlink:href="#dot8" />
+                    <feTile result="dot8-tile" />
+
+                    <!-- luminance to alpha -->
+                    <feColorMatrix
+                        in="SourceGraphic"
+                        type="luminanceToAlpha"
+                        result="lum"
+                    />
+                    <feComponentTransfer in="lum" result="lum-map">
+                        <feFuncA type="table" tableValues="1 0" />
+                    </feComponentTransfer>
+
+                    <!-- discrete thresholds -->
+                    <feComponentTransfer in="lum-map" result="thresh1">
+                        <feFuncA
+                            type="discrete"
+                            tableValues="1 0 0 0 0 0 0 0"
+                        />
+                    </feComponentTransfer>
+                    <feComponentTransfer in="lum-map" result="thresh2">
+                        <feFuncA
+                            type="discrete"
+                            tableValues="0 1 0 0 0 0 0 0"
+                        />
+                    </feComponentTransfer>
+                    <feComponentTransfer in="lum-map" result="thresh3">
+                        <feFuncA
+                            type="discrete"
+                            tableValues="0 0 1 0 0 0 0 0"
+                        />
+                    </feComponentTransfer>
+                    <feComponentTransfer in="lum-map" result="thresh4">
+                        <feFuncA
+                            type="discrete"
+                            tableValues="0 0 0 1 0 0 0 0"
+                        />
+                    </feComponentTransfer>
+                    <feComponentTransfer in="lum-map" result="thresh5">
+                        <feFuncA
+                            type="discrete"
+                            tableValues="0 0 0 0 1 0 0 0"
+                        />
+                    </feComponentTransfer>
+                    <feComponentTransfer in="lum-map" result="thresh6">
+                        <feFuncA
+                            type="discrete"
+                            tableValues="0 0 0 0 0 1 0 0"
+                        />
+                    </feComponentTransfer>
+                    <feComponentTransfer in="lum-map" result="thresh7">
+                        <feFuncA
+                            type="discrete"
+                            tableValues="0 0 0 0 0 0 1 0"
+                        />
+                    </feComponentTransfer>
+                    <feComponentTransfer in="lum-map" result="thresh8">
+                        <feFuncA
+                            type="discrete"
+                            tableValues="0 0 0 0 0 0 0 1"
+                        />
+                    </feComponentTransfer>
+
+                    <!-- combine -->
+                    <feComposite
+                        in="thresh1"
+                        in2="dot1-tile"
+                        operator="in"
+                        result="level1"
+                    />
+                    <feComposite
+                        in="thresh2"
+                        in2="dot2-tile"
+                        operator="in"
+                        result="level2"
+                    />
+                    <feComposite
+                        in="thresh3"
+                        in2="dot3-tile"
+                        operator="in"
+                        result="level3"
+                    />
+                    <feComposite
+                        in="thresh4"
+                        in2="dot4-tile"
+                        operator="in"
+                        result="level4"
+                    />
+                    <feComposite
+                        in="thresh5"
+                        in2="dot5-tile"
+                        operator="in"
+                        result="level5"
+                    />
+                    <feComposite
+                        in="thresh6"
+                        in2="dot6-tile"
+                        operator="in"
+                        result="level6"
+                    />
+                    <feComposite
+                        in="thresh7"
+                        in2="dot7-tile"
+                        operator="in"
+                        result="level7"
+                    />
+                    <feComposite
+                        in="thresh8"
+                        in2="dot8-tile"
+                        operator="in"
+                        result="level8"
+                    />
+
+                    <feMerge result="merged">
+                        <feMergeNode in="level8" />
+                        <feMergeNode in="level7" />
+                        <feMergeNode in="level6" />
+                        <feMergeNode in="level5" />
+                        <feMergeNode in="level4" />
+                        <feMergeNode in="level3" />
+                        <feMergeNode in="level2" />
+                        <feMergeNode in="level1" />
+                    </feMerge>
+
+                    <!-- mask -->
+                    <feComposite
+                        in="merged"
+                        in2="SourceGraphic"
+                        operator="in"
+                        result="masked"
+                    />
+                    <!-- flood color -->
+                    <feFlood
+                        id="floodHd"
+                        flood-color="#b0003a"
+                        result="color"
+                    />
+                    <feComposite in="color" in2="masked" operator="in" />
+                </filter>
+            </defs>
+        </svg>
+        <script src="main.js"></script>
+        <script src="gsap.js"></script>
+    </body>
+</html>

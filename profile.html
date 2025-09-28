@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="id">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Profile | Pendataan Mahasiswa</title>
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+            crossorigin="anonymous"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.13.1/font/bootstrap-icons.min.css"
+            integrity="sha512-t7Few9xlddEmgd3oKZQahkNI4dS6l80+eGEzFQiqtyVYdvcSG2D3Iub77R20BdotfRPA9caaRkg1tyaJiPmO0g=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        />
+        <link href="main.css" rel="stylesheet" />
+    </head>
+    <body class="profile-body">
+        <div class="ambient-red"></div>
+        <div class="ambient-red-2 p-ambient-red-2"></div>
+        <div class="bg-content-filter noice profile-bg-filter"></div>
+        <div class="switch-section p-switch-section z99">
+            <button
+                class="liquid-switch"
+                id="langSwitch"
+                role="switch"
+                aria-checked="false"
+                data-lang="ID"
+            >
+                <span class="seg" data-v="ID">ID</span>
+                <span class="seg" data-v="EN">EN</span>
+                <span class="thumb"></span>
+            </button>
+        </div>
+        <div class="logo-container p-logo-container liquid z99">
+            <img src="image/ppim-logo.png" class="logo" />
+        </div>
+        <div class="p-app-container test" id="main-content">
+            <div class="app-row br0 d-block d-lg-none">
+                <div class="row app-row br0 p-m-ambient">
+                    <div class="col-6 app-col">
+                        <div class="ambient-red-m"></div>
+                    </div>
+                    <div class="col-6 app-col">
+                        <div class="ambient-red-m-2"></div>
+                    </div>
+                </div>
+            </div>
+            <div
+                class="box-large-container p-box-large-container test"
+                id="profile"
+            >
+                <div class="container-content">
+                    <h1><span data-i18n="hello">Hello</span> Rafi!</h1>
+                    <span class="subtext" data-i18n="profile-instruction"
+                        >Here you can update your details anytime. We use your
+                        info for admin, services, and emergencies while you are
+                        in Malaysia. Some sensitive parts are redacted to keep
+                        your data safe.</span
+                    >
+                    <span
+                        class="subtext red text-nowrap"
+                        style="text-decoration: underline"
+                        data-i18n="data-protection"
+                        >[See how we protect your data]</span
+                    >
+                    <hr />
+                    <div class="form-container2">
+                        <div
+                            class="d-flex align-items-center justify-content-between mb-3"
+                        >
+                            <h3 class="h0" data-i18n="personal-details">
+                                Personal Details
+                            </h3>
+                            <button
+                                type="button"
+                                class="btn ms-3 liquid-btn liquid-light glass-btn btn-rounded edit-btn"
+                            >
+                                <i class="bi bi-pencil"></i>
+                            </button>
+                        </div>
+                        <div class="profile-info-text row">
+                            <div class="col-12 col-lg-4 mb-3 px-3">
+                                <span class="silent-text" data-i18n="full-name"
+                                    >Full Name</span
+                                >
+                                <br /><span>Rafi Daffa Ramadhani</span>
+                            </div>
+                            <div class="col-12 col-sm-6 col-lg-4 mb-3 px-3">
+                                <span class="silent-text" data-i18n="dob"
+                                    >Date of Birth</span
+                                >
+                                <br /><span>20 October 2004</span>
+                            </div>
+                            <div class="col-12 col-sm-6 col-lg-4 mb-3 px-3">
+                                <span class="silent-text" data-i18n="passport"
+                                    >Passport Number</span
+                                >
+                                <br /><span>X******7</span>
+                            </div>
+                            <div class="col-12 col-sm-6 col-lg-4 mb-3 px-3">
+                                <span class="silent-text" data-i18n="email"
+                                    >Email</span
+                                >
+                                <br /><span>ra*******2@gmail.com</span>
+                            </div>
+                            <div class="col-12 col-sm-6 col-lg-4 mb-3 px-3">
+                                <span class="silent-text" data-i18n="phone"
+                                    >Phone Number</span
+                                >
+                                <br /><span>+6010*****77</span>
+                            </div>
+                            <div class="col-12 col-lg-4 mb-3 px-3">
+                                <span class="silent-text" data-i18n="postkode"
+                                    >Postal Code</span
+                                >
+                                <br /><span
+                                    >46000 - Petaling Jaya, Selangor</span
+                                >
+                            </div>
+                            <div class="col-12 mb-3 px-3">
+                                <span class="silent-text" data-i18n="address"
+                                    >Address</span
+                                >
+                                <br /><span
+                                    >Pantai Hi***** **** **** *****, *******
+                                    ****, ******or</span
+                                >
+                            </div>
+                        </div>
+                        <hr />
+                        <div
+                            class="d-flex align-items-center justify-content-between mb-3"
+                        >
+                            <h3 class="h0" data-i18n="university-details">
+                                University Details
+                            </h3>
+                            <button
+                                type="button"
+                                class="btn ms-3 liquid-btn liquid-light glass-btn btn-rounded edit-btn"
+                            >
+                                <i class="bi bi-pencil"></i>
+                            </button>
+                        </div>
+                        <div class="profile-info-text row">
+                            <div class="col-12 col-lg-6 mb-3 px-3">
+                                <span class="silent-text" data-i18n="university"
+                                    >University</span
+                                >
+                                <br /><span>Universiti Malaya</span>
+                            </div>
+                            <div class="col-12 col-lg-6 mb-3 px-3">
+                                <span
+                                    class="silent-text"
+                                    data-i18n="degree-programme"
+                                    >Degree Programme</span
+                                >
+                                <br /><span
+                                    >Bachelor of Computer Science (Artificial
+                                    Intelligence)</span
+                                >
+                            </div>
+                            <div class="col-6 mb-3 px-3">
+                                <span
+                                    class="silent-text"
+                                    data-i18n="education-level"
+                                    >Current Education Level</span
+                                >
+                                <br /><span>Undergraduate</span>
+                            </div>
+                            <div class="col-6 mb-3 px-3">
+                                <span
+                                    class="silent-text"
+                                    data-i18n="expected-graduation"
+                                    >Expected Graduation Date</span
+                                >
+                                <br /><span>20 October 2026</span>
+                            </div>
+                        </div>
+                        <div
+                            class="d-flex align-items-center mb-3 member-history-header"
+                        >
+                            <h5
+                                class="h0 hsize mb-0"
+                                data-i18n="ppi-campus-record"
+                            >
+                                PPI Campus Record
+                            </h5>
+                            <button
+                                type="button"
+                                class="btn ms-auto liquid-btn liquid-light glass-btn btn-rounded edit-btn"
+                            >
+                                <i class="bi bi-pencil"></i>
+                            </button>
+                        </div>
+                        <div class="member-history-card">
+                            <div class="table-responsive liquid-table-wrap">
+                                <table
+                                    class="table align-middle mb-0 liquid-table"
+                                >
+                                    <thead>
+                                        <tr>
+                                            <th data-i18n="department">
+                                                Department
+                                            </th>
+                                            <th data-i18n="positioncol">
+                                                Position
+                                            </th>
+                                            <th data-i18n="year">Year</th>
+                                            <th>Status</th>
+                                            <th data-i18n="verification">
+                                                Verification
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="liquid-table-row">
+                                            <td class="">Intelektual</td>
+                                            <td class="">Member</td>
+                                            <td class="">2022/2023</td>
+                                            <td class="">Ended</td>
+                                            <td class="">Verified</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <br />
+                        <hr />
+                        <div
+                            class="d-flex align-items-center mb-3 member-history-header"
+                        >
+                            <h3 class="h0" data-i18n="ppi-malaysia-record">
+                                PPI Malaysia Record
+                            </h3>
+                            <button
+                                type="button"
+                                class="btn ms-auto liquid-btn liquid-light glass-btn btn-rounded"
+                            >
+                                <i class="bi bi-pencil"></i>
+                            </button>
+                        </div>
+                        <div class="member-history-card">
+                            <div class="table-responsive liquid-table-wrap">
+                                <table
+                                    class="table align-middle mb-0 liquid-table"
+                                >
+                                    <thead>
+                                        <tr>
+                                            <th data-i18n="department">
+                                                Department
+                                            </th>
+                                            <th data-i18n="positioncol">
+                                                Position
+                                            </th>
+                                            <th data-i18n="year">Year</th>
+                                            <th>Status</th>
+                                            <th data-i18n="verification">
+                                                Verification
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="liquid-table-row">
+                                            <td class="">
+                                                Pusat Data dan Informasi
+                                            </td>
+                                            <td class="">Ketua Biro</td>
+                                            <td class="">2024/2025</td>
+                                            <td class="red">Active</td>
+                                            <td class="">Verified</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+            crossorigin="anonymous"
+        ></script>
+        <script src="main.js"></script>
+    </body>
+</html>
