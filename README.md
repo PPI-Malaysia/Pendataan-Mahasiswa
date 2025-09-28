@@ -1,6 +1,6 @@
-# Pendataan Mahasiswa (Temporary README)
+# Pendataan Mahasiswa (Ongoing)
 
-> This README is a stopgap document. Replace or expand it once the project documentation is finalized.
+> This README is a temporary document. I will update it once the website done.
 
 ## Overview
 
@@ -24,12 +24,8 @@ Pendataan Mahasiswa is a single-page web application that supports the official 
 ## Getting Started (Local Preview)
 
 1. Clone or download this repository.
-2. Serve the folder with any static HTTP server, for example:
-    ```bash
-    npx serve .
-    ```
-    or use VS Code's Live Server extension / Python's `python -m http.server`.
-3. Open `http://localhost:3000` (or whatever port your server reports) to view the site.
+2. Serve the folder with any static HTTP server or use VS Code's Live Server extension / Python's `python -m http.server`.
+3. Open `http://localhost:5500` (or whatever port your server reports) to view the site.
 
 > Opening the HTML files directly from the filesystem will block `fetch()` calls for the JSON data. Always use a local web server during development.
 
