@@ -56,7 +56,11 @@
         "verification": "Verifikasi",
         "ppi-malaysia-record": "Rekam Jejak PPI Malaysia",
         "ppi-campus-note": "Catatan: Jika kamu memilih “Ya,” perwakilan dari kampusmu akan memverifikasi apakah kamu benar anggota PPI di kampusmu. Jika kamu adalah perwakilan kampus dan butuh akses, silakan hubungi pengurus PPI Malaysia saat ini.",
-        "ppi-malaysia-note": "Catatan: Jika kamu memilih “Ya,” pengurus PPI Malaysia saat ini akan memverifikasi informasi kamu."
+        "ppi-malaysia-note": "Catatan: Jika kamu memilih “Ya,” pengurus PPI Malaysia saat ini akan memverifikasi informasi kamu.",
+        "btn-me": "Ya, itu aku",
+        "btn-not-me": "Tidak, itu bukan aku",
+        "exist-student-desc": "Sepertinya data kamu sudah ada dalam sistem kami",
+        "exist-student": "Data kamu sudah terdaftar"
     },
     "EN": {
         "header-title": "Indonesian Student Registration in Malaysia",
@@ -115,6 +119,10 @@
         "verification": "Verification",
         "ppi-malaysia-record": "PPI Malaysia Record",
         "ppi-campus-note": "Note: If you choose “Yes,” a representative from your campus will verify whether you are a member of PPI at your campus. If you are a representative yourself and need access, please contact the current PPI Malaysia board.",
-        "ppi-malaysia-note": "Note: If you choose “Yes,” the current PPI Malaysia board will verify your information."
+        "ppi-malaysia-note": "Note: If you choose “Yes,” the current PPI Malaysia board will verify your information.",
+        "btn-not-me": "No, That's not me",
+        "btn-me": "Yes, That's me",
+        "exist-student": "Existing Registration Found!",
+        "exist-student-desc": "It looks like we had stored your data before."
     }
 }

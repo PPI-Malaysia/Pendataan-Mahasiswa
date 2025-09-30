@@ -174,6 +174,8 @@
 
                                     <input
                                         class="form-control form-control-lg liquid-input"
+                                        id="register-fullname"
+                                        name="register-fullname"
                                         type="text"
                                         placeholder="R*** D****"
                                         aria-label=".form-control-lg example"
@@ -190,6 +192,8 @@
                                         <input
                                             type="date"
                                             class="form-control form-control-lg liquid-input liquid-date"
+                                            id="register-dob"
+                                            name="register-dob"
                                             placeholder="dd-mm-yyyy"
                                             lang="id-ID"
                                         />
@@ -203,6 +207,8 @@
 
                                         <input
                                             class="form-control form-control-lg liquid-input"
+                                            id="register-passport"
+                                            name="register-passport"
                                             type="text"
                                             placeholder="X0000000"
                                             aria-label=".form-control-lg example"
@@ -233,6 +239,8 @@
                                             ></ul>
                                             <input
                                                 class="form-control form-control-lg liquid-input js-phone-input"
+                                                id="register-phone"
+                                                name="register-phone"
                                                 type="tel"
                                                 placeholder="10********"
                                                 aria-label="Phone number without country code"
@@ -816,7 +824,11 @@
             </div>
             <div class="box-large-container" id="updateProfile">
                 <div class="box-large-content test">
-                    <form class="form-container2 test">
+                    <form
+                        class="form-container2 test"
+                        action="/profile.html"
+                        id="loginform"
+                    >
                         <div class="mb-3">
                             <label class="form-label" data-i18n="full-name"
                                 >Full Name</label
@@ -826,6 +838,7 @@
                                 class="form-control form-control-lg liquid-input"
                                 type="text"
                                 placeholder="R*** D****"
+                                name="login-fullname"
                                 aria-label=".form-control-lg example"
                             />
                         </div>
@@ -839,6 +852,7 @@
                                     type="date"
                                     class="form-control form-control-lg liquid-input liquid-date"
                                     placeholder="dd-mm-yyyy"
+                                    name="login-dob"
                                     lang="id-ID"
                                 />
                             </div>
@@ -851,6 +865,7 @@
                                     class="form-control form-control-lg liquid-input"
                                     type="text"
                                     placeholder="X0000000"
+                                    name="login-passport"
                                     aria-label=".form-control-lg example"
                                 />
                             </div>
@@ -877,8 +892,9 @@
                                     ></ul>
                                     <input
                                         class="form-control form-control-lg liquid-input js-phone-input"
-                                        type="tel"
+                                        type="number"
                                         placeholder="10********"
+                                        name="login-phone"
                                         aria-label="Phone number without country code"
                                     />
                                 </div>
@@ -913,6 +929,7 @@
                                             class="typeahead-input js-university-input"
                                             type="text"
                                             placeholder="University ******"
+                                            name="login-university_name"
                                             aria-label="University name"
                                             autocomplete="off"
                                             role="combobox"
@@ -923,7 +940,7 @@
                                         <input
                                             type="hidden"
                                             class="js-university-value"
-                                            name="university"
+                                            name="login-university"
                                         />
                                     </div>
                                     <ul
@@ -935,7 +952,7 @@
                         </div>
                         <div class="button-container login-btn">
                             <button
-                                type="button"
+                                type="submit"
                                 class="btn glass-btn liquid-red-btn btn-max"
                             >
                                 <span data-i18n="btn-login" id="login"
@@ -1131,6 +1148,82 @@
                 </filter>
             </defs>
         </svg>
+        <div
+            class="modal fade"
+            id="existingStudentModal"
+            tabindex="-1"
+            aria-hidden="true"
+        >
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content liquid blur5s160">
+                    <div class="modal-header bb">
+                        <div>
+                            <h3
+                                class="modal-title text-center"
+                                data-i18n="exist-student"
+                            >
+                                Existing Registration Found!
+                            </h3>
+                            <p
+                                class="mb-3 silent-text text-center"
+                                data-i18n="exist-student-desc"
+                            >
+                                It looks like we had stored your data before.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="modal-body">
+                        <div class="existing-student-details">
+                            <dl class="row mb-0">
+                                <dt class="col-sm-4">Full Name</dt>
+                                <dd class="col-sm-8" data-field="fullname"></dd>
+                                <dt class="col-sm-4">Date of Birth</dt>
+                                <dd class="col-sm-8" data-field="dob"></dd>
+                                <dt class="col-sm-4">Passport</dt>
+                                <dd class="col-sm-8" data-field="passport"></dd>
+                                <dt class="col-sm-4">Phone</dt>
+                                <dd class="col-sm-8" data-field="phone"></dd>
+                                <dt class="col-sm-4">University</dt>
+                                <dd
+                                    class="col-sm-8"
+                                    data-field="university"
+                                ></dd>
+                                <dt class="col-sm-4">Email</dt>
+                                <dd class="col-sm-8" data-field="email"></dd>
+                            </dl>
+                        </div>
+                    </div>
+                    <div class="modal-footer w100 bnone">
+                        <div class="w100">
+                            <div class="modal-button-container">
+                                <button
+                                    type="button"
+                                    class="btn liquid-btn btn-max liquid-light glass-btn"
+                                    data-action="not-me"
+                                >
+                                    <span data-i18n="btn-not-me" id="regist"
+                                        >No, That's not me</span
+                                    >
+                                </button>
+                            </div>
+                            <div class="modal-button-container">
+                                <button
+                                    type="button"
+                                    class="btn glass-btn liquid-red-btn btn-max"
+                                    data-action="is-me"
+                                >
+                                    <span data-i18n="btn-me" id="update"
+                                        >Yes, That's me</span
+                                    >
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="student.js"></script>
+        <script src="app-core.js"></script>
         <script src="main.js"></script>
         <script src="gsap.js"></script>
     </body>

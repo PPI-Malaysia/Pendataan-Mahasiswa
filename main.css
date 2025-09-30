@@ -12,9 +12,9 @@
 body {
     background-color: var(--gray-bg);
     position: relative;
-    width: 100vw;
+    width: 100%;
     height: 100vh;
-    overflow: hidden;
+    overflow-y: scroll;
 }
 .profile-body {
     overflow-y: scroll;
@@ -63,7 +63,6 @@ small::after {
     height: 100%;
     border-radius: 2rem;
     position: relative;
-
     outline: solid 1px #af0e44;
 }
 .bg-image {
@@ -73,7 +72,7 @@ small::after {
     position: absolute;
 }
 .bg-content-filter {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
@@ -87,15 +86,12 @@ small::after {
     position: absolute;
     right: 0;
     top: 0;
-    height: 100vh;
+    height: 100dvh;
     width: 55vw;
     background-color: var(--gray-bg);
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow-y: scroll;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
 }
 .p-app-container {
     width: 100vw;
@@ -122,7 +118,7 @@ small::after {
     position: fixed;
     top: 30px;
     right: 30px;
-    z-index: 3;
+    z-index: 5;
     padding-left: 31px;
 }
 .logo-container {
@@ -158,7 +154,9 @@ small::after {
     color: black;
     white-space: nowrap;
 }
-
+.blur5s160 {
+    backdrop-filter: blur(5px) saturate(160%) !important;
+}
 /* Liquid */
 .liquid {
     z-index: 4;
@@ -442,6 +440,7 @@ small::after {
     max-width: 100%;
     height: 100%;
     padding: 40px;
+    padding-bottom: 0px;
     display: none;
     opacity: 0;
 }
@@ -456,7 +455,6 @@ small::after {
     padding-bottom: 40px;
 }
 .box-large-content {
-    height: 100%;
     padding-top: 180px;
     padding-bottom: 100px;
     position: relative;
@@ -495,6 +493,9 @@ small::after {
 .button-container {
     padding: 0.8rem 0;
 }
+.modal-button-container {
+    padding: 0.5rem 0;
+}
 .subtext {
     font-size: 0.9rem;
     font-weight: 400;
@@ -508,6 +509,9 @@ small::after {
 }
 .profile-info-text {
     font-size: 18px;
+}
+.bb {
+    border-bottom: 0;
 }
 .member-history-header {
     position: relative;
@@ -867,6 +871,9 @@ small::after {
     border-radius: 0 1rem 1rem 0;
     border: none;
 }
+.bnone {
+    border: none;
+}
 .liquid-typeahead {
     position: relative;
 }
@@ -1019,13 +1026,14 @@ small::after {
 @media (max-width: 992px) {
     .bg-container {
         height: 100vh;
-        width: 100vw;
+        width: 100%;
         padding: 0;
         z-index: 0;
     }
     .bg-content,
     .bg-image {
         border-radius: 0;
+        outline: none;
     }
     .app-container {
         position: absolute;
@@ -1062,15 +1070,40 @@ small::after {
         left: 30px !important;
         margin-top: 18px !important;
     }
+    .modal-dialog {
+        margin: 0 !important;
+    }
+    .modal-content {
+        bottom: 0 !important;
+        border-bottom-left-radius: 0 !important;
+        border-bottom-right-radius: 0 !important;
+        position: fixed !important;
+        transform: translateY(100%) !important;
+        transition: transform 0.5s ease-in-out;
+    }
+    .modal.fade.show .modal-content {
+        transform: translateY(0) !important; /* animate into view */
+    }
 }
 .app-row {
     width: 100%;
-    height: 100%;
+    height: 500px;
     border-top-left-radius: 2rem;
     border-top-right-radius: 2rem;
     padding: 0 !important;
     margin: 0 !important;
     overflow: hidden;
+    position: fixed;
+}
+.p-app-row {
+    width: 100vw;
+    height: 100vh;
+    border-top-left-radius: 2rem;
+    border-top-right-radius: 2rem;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: hidden;
+    position: fixed;
 }
 .p-m-ambient,
 .profile-bg-filter {
@@ -1078,6 +1111,9 @@ small::after {
 }
 .br0 {
     border-radius: 0 !important;
+}
+.w100 {
+    width: 100%;
 }
 .app-col {
     position: relative;
@@ -1144,4 +1180,8 @@ small::after {
 }
 .login-btn {
     margin-top: 20px;
+}
+.modal-backdrop,
+.modal-backdrop.fade.in {
+    opacity: 0.1 !important;
 }

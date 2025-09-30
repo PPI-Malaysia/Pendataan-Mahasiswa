@@ -40,8 +40,8 @@
             <img src="image/ppim-logo.png" class="logo" />
         </div>
         <div class="p-app-container test" id="main-content">
-            <div class="app-row br0 d-block d-lg-none">
-                <div class="row app-row br0 p-m-ambient">
+            <div class="p-app-row br0 d-block d-lg-none">
+                <div class="row p-app-row br0 p-m-ambient">
                     <div class="col-6 app-col">
                         <div class="ambient-red-m"></div>
                     </div>
@@ -55,7 +55,10 @@
                 id="profile"
             >
                 <div class="container-content">
-                    <h1><span data-i18n="hello">Hello</span> Rafi!</h1>
+                    <h1>
+                        <span data-i18n="hello">Hello</span>
+                        <span data-profile="fullname">$Name!</span>
+                    </h1>
                     <span class="subtext" data-i18n="profile-instruction"
                         >Here you can update your details anytime. We use your
                         info for admin, services, and emergencies while you are
@@ -88,47 +91,57 @@
                                 <span class="silent-text" data-i18n="full-name"
                                     >Full Name</span
                                 >
-                                <br /><span>Rafi Daffa Ramadhani</span>
+                                <br /><span data-profile="fullname2"
+                                    >**** *****</span
+                                >
                             </div>
                             <div class="col-12 col-sm-6 col-lg-4 mb-3 px-3">
                                 <span class="silent-text" data-i18n="dob"
                                     >Date of Birth</span
                                 >
-                                <br /><span>20 October 2004</span>
+                                <br /><span data-profile="dob"
+                                    >** ******* ****</span
+                                >
                             </div>
                             <div class="col-12 col-sm-6 col-lg-4 mb-3 px-3">
                                 <span class="silent-text" data-i18n="passport"
                                     >Passport Number</span
                                 >
-                                <br /><span>X******7</span>
+                                <br /><span data-profile="passport"
+                                    >********</span
+                                >
                             </div>
                             <div class="col-12 col-sm-6 col-lg-4 mb-3 px-3">
                                 <span class="silent-text" data-i18n="email"
                                     >Email</span
                                 >
-                                <br /><span>ra*******2@gmail.com</span>
+                                <br /><span data-profile="email"
+                                    >**********@gmail.com</span
+                                >
                             </div>
                             <div class="col-12 col-sm-6 col-lg-4 mb-3 px-3">
                                 <span class="silent-text" data-i18n="phone"
                                     >Phone Number</span
                                 >
-                                <br /><span>+6010*****77</span>
+                                <br /><span data-profile="phone"
+                                    >+60*********</span
+                                >
                             </div>
                             <div class="col-12 col-lg-4 mb-3 px-3">
                                 <span class="silent-text" data-i18n="postkode"
                                     >Postal Code</span
                                 >
-                                <br /><span
-                                    >46000 - Petaling Jaya, Selangor</span
+                                <br /><span data-profile="postcode_id"
+                                    >***** - ******** ****, ********</span
                                 >
                             </div>
                             <div class="col-12 mb-3 px-3">
                                 <span class="silent-text" data-i18n="address"
                                     >Address</span
                                 >
-                                <br /><span
-                                    >Pantai Hi***** **** **** *****, *******
-                                    ****, ******or</span
+                                <br /><span data-profile="address"
+                                    >***** ******* **** **** *****, *******
+                                    ****, ********</span
                                 >
                             </div>
                         </div>
@@ -151,7 +164,9 @@
                                 <span class="silent-text" data-i18n="university"
                                     >University</span
                                 >
-                                <br /><span>Universiti Malaya</span>
+                                <br /><span data-profile="university"
+                                    >Universiti ******</span
+                                >
                             </div>
                             <div class="col-12 col-lg-6 mb-3 px-3">
                                 <span
@@ -159,9 +174,9 @@
                                     data-i18n="degree-programme"
                                     >Degree Programme</span
                                 >
-                                <br /><span
-                                    >Bachelor of Computer Science (Artificial
-                                    Intelligence)</span
+                                <br /><span data-profile="programme"
+                                    >Bachelor of ******** ******* (**********
+                                    ************)</span
                                 >
                             </div>
                             <div class="col-6 mb-3 px-3">
@@ -170,7 +185,9 @@
                                     data-i18n="education-level"
                                     >Current Education Level</span
                                 >
-                                <br /><span>Undergraduate</span>
+                                <br /><span data-profile="education_level"
+                                    >*************</span
+                                >
                             </div>
                             <div class="col-6 mb-3 px-3">
                                 <span
@@ -178,7 +195,9 @@
                                     data-i18n="expected-graduation"
                                     >Expected Graduation Date</span
                                 >
-                                <br /><span>20 October 2026</span>
+                                <br /><span data-profile="expected_graduate"
+                                    >** ******* ****</span
+                                >
                             </div>
                         </div>
                         <div
@@ -212,18 +231,19 @@
                                             </th>
                                             <th data-i18n="year">Year</th>
                                             <th>Status</th>
-                                            <th data-i18n="verification">
-                                                Verification
-                                            </th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr class="liquid-table-row">
-                                            <td class="">Intelektual</td>
-                                            <td class="">Member</td>
-                                            <td class="">2022/2023</td>
-                                            <td class="">Ended</td>
-                                            <td class="">Verified</td>
+                                    <tbody data-record-table="ppi-campus">
+                                        <tr
+                                            class="liquid-table-row"
+                                            data-empty-row
+                                        >
+                                            <td
+                                                colspan="4"
+                                                class="text-center text-muted"
+                                            >
+                                                No records available.
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -259,20 +279,19 @@
                                             </th>
                                             <th data-i18n="year">Year</th>
                                             <th>Status</th>
-                                            <th data-i18n="verification">
-                                                Verification
-                                            </th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr class="liquid-table-row">
-                                            <td class="">
-                                                Pusat Data dan Informasi
+                                    <tbody data-record-table="ppi-malaysia">
+                                        <tr
+                                            class="liquid-table-row"
+                                            data-empty-row
+                                        >
+                                            <td
+                                                colspan="4"
+                                                class="text-center text-muted"
+                                            >
+                                                No records available.
                                             </td>
-                                            <td class="">Ketua Biro</td>
-                                            <td class="">2024/2025</td>
-                                            <td class="red">Active</td>
-                                            <td class="">Verified</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -287,6 +306,9 @@
             integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
             crossorigin="anonymous"
         ></script>
+        <script src="student.js"></script>
+        <script src="profile.js"></script>
+        <script src="app-core.js"></script>
         <script src="main.js"></script>
     </body>
 </html>
