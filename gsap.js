@@ -67,7 +67,11 @@ function openform_m() {
         duration: 1,
         onComplete: () => gsap.set(".logo-text", { display: "none" }),
     });
-    gsap.to(".switch-section", { marginTop: "-2px", duration: 1 });
+    gsap.to(".switch-section", {
+        marginTop: "-2px",
+        position: "fixed",
+        duration: 1,
+    });
     gsap.to(".box-content", {
         opacity: 0,
         duration: 1,
