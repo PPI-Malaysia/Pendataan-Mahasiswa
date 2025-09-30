@@ -13,7 +13,7 @@ body {
     background-color: var(--gray-bg);
     position: relative;
     width: 100%;
-    height: 100vh;
+    height: 100dvh;
     overflow-y: scroll;
 }
 .profile-body {
@@ -115,7 +115,7 @@ small::after {
     padding-left: 20px;
 }
 .switch-section {
-    position: fixed;
+    position: absolute;
     top: 30px;
     right: 30px;
     z-index: 5;
@@ -1051,7 +1051,6 @@ small::after {
         border-top-right-radius: 0;
     }
     .switch-section {
-        margin-top: calc(100vh - 498px);
     }
     .p-switch-section {
         margin-top: -2px !important;
@@ -1093,7 +1092,7 @@ small::after {
     padding: 0 !important;
     margin: 0 !important;
     overflow: hidden;
-    position: fixed;
+    position: absolute;
 }
 .p-app-row {
     width: 100vw;
@@ -1103,7 +1102,7 @@ small::after {
     padding: 0 !important;
     margin: 0 !important;
     overflow: hidden;
-    position: fixed;
+    position: absolute;
 }
 .p-m-ambient,
 .profile-bg-filter {

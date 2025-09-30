@@ -10,25 +10,12 @@
             integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
             crossorigin="anonymous"
         />
-        <link href="main.css" rel="stylesheet" />
+        <link href="main.css?dev=1" rel="stylesheet" />
     </head>
     <body>
         <div class="ambient-red"></div>
         <div class="ambient-red-2"></div>
         <div class="bg-content-filter noice"></div>
-        <div class="switch-section">
-            <button
-                class="liquid-switch"
-                id="langSwitch"
-                role="switch"
-                aria-checked="false"
-                data-lang="ID"
-            >
-                <span class="seg" data-v="ID">ID</span>
-                <span class="seg" data-v="EN">EN</span>
-                <span class="thumb"></span>
-            </button>
-        </div>
         <div class="logo-container liquid">
             <img src="image/ppim-logo.png" class="logo" />
             <div class="logo-text">PPI Malaysia</div>
@@ -45,6 +32,19 @@
             </div>
         </div>
         <div class="app-container" id="main-content">
+            <div class="switch-section">
+                <button
+                    class="liquid-switch"
+                    id="langSwitch"
+                    role="switch"
+                    aria-checked="false"
+                    data-lang="ID"
+                >
+                    <span class="seg" data-v="ID">ID</span>
+                    <span class="seg" data-v="EN">EN</span>
+                    <span class="thumb"></span>
+                </button>
+            </div>
             <div class="app-row d-block d-lg-none">
                 <div class="row app-row">
                     <div class="col-6 app-col">
