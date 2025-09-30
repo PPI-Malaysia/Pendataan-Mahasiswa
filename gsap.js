@@ -71,7 +71,7 @@ function openform_m() {
         marginTop: "-2px",
         duration: 1,
         onComplete: () => {
-            gsap.set(current, { position: "fixed" });
+            gsap.set(".switch-section", { position: "fixed" });
         },
     });
     gsap.to(".box-content", {
