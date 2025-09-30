@@ -69,8 +69,10 @@ function openform_m() {
     });
     gsap.to(".switch-section", {
         marginTop: "-2px",
-        position: "fixed",
         duration: 1,
+        onComplete: () => {
+            gsap.set(current, { position: "fixed" });
+        },
     });
     gsap.to(".box-content", {
         opacity: 0,
