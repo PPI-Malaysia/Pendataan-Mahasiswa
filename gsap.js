@@ -49,7 +49,7 @@ function openform_m() {
         duration: 1,
     });
     gsap.to(".app-row", {
-        height: "100vh",
+        height: "100dvh",
         width: "100vw",
         borderTopLeftRadius: 0,
         borderTopRightRadius: 0,
