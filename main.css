@@ -1092,7 +1092,7 @@ small::after {
     padding: 0 !important;
     margin: 0 !important;
     overflow: hidden;
-    position: absolute;
+    position: fixed;
 }
 .p-app-row {
     width: 100vw;
@@ -1102,7 +1102,7 @@ small::after {
     padding: 0 !important;
     margin: 0 !important;
     overflow: hidden;
-    position: absolute;
+    position: fixed;
 }
 .p-m-ambient,
 .profile-bg-filter {
