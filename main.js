@@ -41,6 +41,13 @@
             this.existingStudentModalFields = null;
             this.pendingExistingResult = null;
             this.pendingExistingDecision = null;
+            this.uniNameEls = Array.from(
+                document.querySelectorAll(".uni_name")
+            );
+            this.uniNameDefaults = this.uniNameEls.map(
+                (el) => el?.textContent || ""
+            );
+            this.stepGuardUpdates = new Map();
         }
 
         async start() {
@@ -51,8 +58,10 @@
             await this.initUniversityAutocomplete();
             this.initPpiCampusToggle();
             this.initPpiMalaysiaToggle();
+            this.initStepGuards();
             this.bindRegisterStep1Check();
             this.bindLoginForm();
+            this.bindCompleteRegister();
         }
 
         async forEachGroup(selector, handler) {
@@ -89,8 +98,20 @@
                     menu,
                     input,
                     regionService: this.regionSvc,
+                    onSelect: () => {
+                        if (group.closest("#register1")) {
+                            this.triggerStepGuardUpdate("gotoRegister2");
+                        } else if (group.closest("#register2")) {
+                            this.triggerStepGuardUpdate("gotoRegister3");
+                        } else if (group.closest("#register3")) {
+                            this.triggerStepGuardUpdate("gotoRegister4");
+                        }
+                    },
                 });
                 await selector.init();
+                if (group.closest("#register1")) {
+                    this.triggerStepGuardUpdate("gotoRegister2");
+                }
             });
         }
 
@@ -156,6 +177,10 @@
                         filterFn: filterPostcodes,
                         optionPrefix: "postcode-option",
                         maxItems: 10,
+                        onSelect: () =>
+                            this.triggerStepGuardUpdate("gotoRegister3"),
+                        onClear: () =>
+                            this.triggerStepGuardUpdate("gotoRegister3"),
                     });
                     await postcodeAutocomplete.init();
                 }
@@ -196,10 +221,39 @@
                         clearBtn,
                         hiddenInput,
                         universityService: this.universitySvc,
+                        onSelect: ({ label }) => {
+                            this.setUniversityGreeting(label);
+                            if (group.closest("#register1")) {
+                                this.triggerStepGuardUpdate("gotoRegister2");
+                            }
+                        },
+                        onClear: () => {
+                            this.resetUniversityGreeting();
+                            if (group.closest("#register1")) {
+                                this.triggerStepGuardUpdate("gotoRegister2");
+                            }
+                        },
                     });
                     await autocomplete.init();
                 }
             );
+        }
+
+        setUniversityGreeting(name = "") {
+            if (!this.uniNameEls?.length) return;
+            const label = typeof name === "string" ? name.trim() : "";
+            this.uniNameEls.forEach((el, idx) => {
+                const fallback = this.uniNameDefaults?.[idx] || "";
+                el.textContent = label || fallback;
+            });
+        }
+
+        resetUniversityGreeting() {
+            if (!this.uniNameEls?.length) return;
+            this.uniNameEls.forEach((el, idx) => {
+                const fallback = this.uniNameDefaults?.[idx] || "";
+                el.textContent = fallback;
+            });
         }
 
         initPpiCampusToggle() {
@@ -261,6 +315,133 @@
             });
 
             syncDetails();
+        }
+
+        initStepGuards() {
+            const guards = [
+                {
+                    stepId: "register1",
+                    buttonId: "gotoRegister2",
+                    collectValues: () => this.collectRegisterStep1Values(),
+                    isComplete: (data) => this.isRegisterStep1Complete(data),
+                    selectors: [
+                        "#register-fullname",
+                        "#register-dob",
+                        "#register-passport",
+                        "#register-phone",
+                        ".js-phone-input",
+                        ".js-university-input",
+                        {
+                            selector: ".js-university-value",
+                            events: ["change"],
+                        },
+                        { selector: ".js-university-clear", events: ["click"] },
+                    ],
+                    onInit: ({ container, update }) => {
+                        const phoneMenu =
+                            container.querySelector(".js-phone-menu");
+                        if (phoneMenu) {
+                            phoneMenu.addEventListener("click", update);
+                        }
+                    },
+                },
+                {
+                    stepId: "register2",
+                    buttonId: "gotoRegister3",
+                    collectValues: () => this.collectRegisterStep2Values(),
+                    isComplete: (data) => this.isRegisterStep2Complete(data),
+                    selectors: [
+                        "input[type='email']",
+                        "textarea",
+                        ".js-postcode-input",
+                        { selector: ".js-postcode-value", events: ["change"] },
+                        { selector: ".js-postcode-clear", events: ["click"] },
+                    ],
+                },
+                {
+                    stepId: "register3",
+                    buttonId: "gotoRegister4",
+                    collectValues: () => this.collectRegisterStep3Values(),
+                    isComplete: (data) => this.isRegisterStep3Complete(data),
+                    selectors: [
+                        "select",
+                        "input[type='text']",
+                        "input[type='date']",
+                    ],
+                },
+            ];
+
+            guards.forEach((guard) => this.registerStepGuard(guard));
+        }
+
+        registerStepGuard({
+            stepId,
+            buttonId,
+            collectValues,
+            isComplete,
+            selectors = [],
+            onInit,
+        }) {
+            const button = document.getElementById(buttonId);
+            const container = document.getElementById(stepId);
+            if (!button || !container) return;
+
+            const update = () => {
+                const data =
+                    typeof collectValues === "function"
+                        ? collectValues()
+                        : null;
+                const complete =
+                    typeof isComplete === "function"
+                        ? Boolean(isComplete(data))
+                        : false;
+                button.disabled = !complete;
+                return complete;
+            };
+
+            button.disabled = true;
+
+            const elementBindings = new WeakMap();
+            const attach = (el, events) => {
+                if (!el) return;
+                const seen = elementBindings.get(el) || new Set();
+                events.forEach((evt) => {
+                    if (seen.has(evt)) return;
+                    el.addEventListener(evt, update);
+                    seen.add(evt);
+                });
+                elementBindings.set(el, seen);
+            };
+
+            selectors.forEach((entry) => {
+                const detail =
+                    typeof entry === "string"
+                        ? { selector: entry, events: ["input", "change"] }
+                        : entry;
+                const { selector, events = ["input", "change"] } = detail || {};
+                if (!selector) return;
+                container
+                    .querySelectorAll(selector)
+                    .forEach((el) => attach(el, events));
+            });
+
+            if (typeof onInit === "function") {
+                try {
+                    onInit({ container, button, update });
+                } catch (error) {
+                    console.error("Step guard onInit failed", error);
+                }
+            }
+
+            this.stepGuardUpdates.set(buttonId, { update, button, container });
+            update();
+        }
+
+        triggerStepGuardUpdate(buttonId) {
+            if (!buttonId) return;
+            const guard = this.stepGuardUpdates?.get(buttonId);
+            if (!guard) return;
+            guard.update();
         }
 
         bindRegisterStep1Check() {
@@ -344,6 +525,42 @@
             });
         }
 
+        bindCompleteRegister() {
+            const button = document.getElementById("completeRegister");
+            if (!button) return;
+
+            button.addEventListener("click", (event) =>
+                this.handleCompleteRegister(event)
+            );
+        }
+
+        async handleCompleteRegister(event) {
+            const trigger = event?.currentTarget;
+            if (trigger) trigger.disabled = true;
+
+            const payload = this.collectAllRegistrationValues();
+            console.log("Registration payload:", payload);
+            console.log(
+                "Registration payload (JSON):",
+                JSON.stringify(payload, null, 2)
+            );
+
+            try {
+                const result = await this.api.add(payload);
+                console.log("Registration add result:", result);
+                if (result?.success) {
+                    this.persistAuthResult(result);
+                    console.info("Registration saved successfully");
+                    window.location.href = "profile.html";
+                    return;
+                }
+            } catch (error) {
+                console.error("Registration submission failed", error);
+            } finally {
+                if (trigger) trigger.disabled = false;
+            }
+        }
+
         persistAuthResult(result = {}) {
             if (!result || typeof result !== "object") return;
             if (result.token) {
@@ -411,7 +628,156 @@
             };
         }
 
-        validateRegistrationStep1(data) {
+        isRegisterStep1Complete(data) {
+            return this.validateRegistrationStep1(data, { silent: true });
+        }
+
+        collectRegisterStep2Values() {
+            const container = document.getElementById("register2");
+            if (!container) return null;
+
+            const trimValue = (el) =>
+                typeof el?.value === "string" ? el.value.trim() : "";
+
+            const emailInput = container.querySelector("input[type='email']");
+            const addressInput = container.querySelector("textarea");
+            const postcodeHidden =
+                container.querySelector(".js-postcode-value");
+
+            return {
+                email: trimValue(emailInput),
+                address: trimValue(addressInput),
+                postcode: trimValue(postcodeHidden),
+            };
+        }
+
+        isRegisterStep2Complete(data) {
+            if (!data) return false;
+            const keys = ["email", "address", "postcode"];
+            return keys.every((key) => Boolean(data[key]));
+        }
+
+        collectRegisterStep3Values() {
+            const container = document.getElementById("register3");
+            if (!container) return null;
+
+            const trimValue = (el) =>
+                typeof el?.value === "string" ? el.value.trim() : "";
+
+            const levelSelect = container.querySelector("select");
+            const programmeInput =
+                container.querySelector("input[type='text']");
+            const graduationInput =
+                container.querySelector("input[type='date']");
+
+            return {
+                level: trimValue(levelSelect),
+                programme: trimValue(programmeInput),
+                graduation: trimValue(graduationInput),
+            };
+        }
+
+        isRegisterStep3Complete(data) {
+            if (!data) return false;
+            const keys = ["level", "programme", "graduation"];
+            return keys.every((key) => Boolean(data[key]));
+        }
+
+        collectRegisterStep4Values() {
+            const container = document.getElementById("register4");
+            if (!container) return null;
+
+            const trimValue = (el) =>
+                typeof el?.value === "string" ? el.value.trim() : "";
+
+            const membership = container.querySelector(
+                "input[name='ppiCampusMember']:checked"
+            )?.value;
+
+            const details = container.querySelector("#ppiCampusDetails");
+            const inputs = details
+                ? Array.from(details.querySelectorAll("input"))
+                : [];
+            const textarea = details?.querySelector("textarea");
+            if (membership == "no") {
+                return {};
+            }
+            return {
+                membership,
+                startYear: trimValue(inputs[0]),
+                endYear: trimValue(inputs[1]),
+                department: trimValue(inputs[2]),
+                position: trimValue(inputs[3]),
+                additionalInfo: trimValue(textarea),
+            };
+        }
+
+        collectRegisterStep5Values() {
+            const container = document.getElementById("register5");
+            if (!container) return null;
+
+            const trimValue = (el) =>
+                typeof el?.value === "string" ? el.value.trim() : "";
+
+            const membership = container.querySelector(
+                "input[name='ppiMalaysiaMember']:checked"
+            )?.value;
+
+            const details = container.querySelector("#ppiMalaysiaDetails");
+            const inputs = details
+                ? Array.from(details.querySelectorAll("input"))
+                : [];
+            const textarea = details?.querySelector("textarea");
+
+            if (membership == "no") {
+                return {};
+            }
+
+            return {
+                membership,
+                startYear: trimValue(inputs[0]),
+                endYear: trimValue(inputs[1]),
+                department: trimValue(inputs[2]),
+                position: trimValue(inputs[3]),
+                additionalInfo: trimValue(textarea),
+            };
+        }
+
+        collectAllRegistrationValues() {
+            const personal = this.collectRegisterStep1Values() || {};
+            const contact = this.collectRegisterStep2Values() || {};
+            const education = this.collectRegisterStep3Values() || {};
+            const ppiCampus = this.collectRegisterStep4Values() || {};
+            const ppiMalaysia = this.collectRegisterStep5Values() || {};
+
+            return {
+                fullname: personal.fullname || "",
+                dob: personal.dob || "",
+                passport: personal.passport || "",
+                phone_number: personal.phone_number || "",
+                university: personal.university || "",
+                university_id: this.coerceNumeric(personal.university_id),
+                email: contact.email || "",
+                address: contact.address || "",
+                postcode: contact.postcode || "",
+                education_level: education.level || "",
+                education_programme: education.programme || "",
+                education_graduation: education.graduation || "",
+                ppi_campus: ppiCampus,
+                ppim: ppiMalaysia,
+            };
+        }
+
+        coerceNumeric(value) {
+            if (value === undefined || value === null) return "";
+            const trimmed =
+                typeof value === "string" ? value.trim() : String(value);
+            if (!trimmed) return "";
+            const numeric = Number(trimmed);
+            return Number.isFinite(numeric) ? numeric : trimmed;
+        }
+
+        validateRegistrationStep1(data, { silent = false } = {}) {
             if (!data) return false;
             const required = [
                 ["fullname", "Full Name"],
@@ -424,7 +790,9 @@
                 .filter(([key]) => !data[key])
                 .map(([, label]) => label);
             if (missing.length) {
-                alert(`Please complete: ${missing.join(", ")}`);
+                if (!silent) {
+                    alert(`Please complete: ${missing.join(", ")}`);
+                }
                 return false;
             }
             return true;
@@ -489,6 +857,9 @@
                 this.goToRegisterStepTwo();
             } finally {
                 if (trigger) trigger.disabled = false;
+                if (trigger?.id) {
+                    this.triggerStepGuardUpdate(trigger.id);
+                }
             }
         }
 

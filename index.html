@@ -10,7 +10,7 @@
             integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
             crossorigin="anonymous"
         />
-        <link href="main.css?dev=1.1.4" rel="stylesheet" />
+        <link href="main.css?dev=2.0" rel="stylesheet" />
     </head>
     <body>
         <div class="ambient-red"></div>
@@ -57,7 +57,7 @@
             </div>
             <div class="box-content">
                 <h1 data-i18n="header-title">
-                    Pendataan mahasiswa Indonesia di Malaysia
+                    Pendataan Mahasiswa Indonesia di Malaysia
                 </h1>
                 <div class="subtext">
                     <span data-i18n="subtext-1"
@@ -70,6 +70,12 @@
                         >Data Anda akan digunakan untuk kepentingan
                         administratif, pelayanan, dan kebutuhan darurat selama
                         di Malaysia.</span
+                    >
+                    <span
+                        class="subtext red text-nowrap"
+                        style="text-decoration: underline"
+                        data-i18n="data-protection"
+                        >[See how we protect your data]</span
                     >
                 </div>
                 <div class="button-container">
@@ -162,7 +168,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="box-large-content test">
+                    <div class="box-large-content p150 test">
                         <form class="form-container test">
                             <div id="register1">
                                 <div class="mb-3">
@@ -177,12 +183,13 @@
                                         id="register-fullname"
                                         name="register-fullname"
                                         type="text"
+                                        autocomplete="name"
                                         placeholder="R*** D****"
                                         aria-label=".form-control-lg example"
                                     />
                                 </div>
                                 <div class="row">
-                                    <div class="col-6 mb-3">
+                                    <div class="col-12 col-sm-6 mb-3">
                                         <label
                                             class="form-label"
                                             data-i18n="dob"
@@ -198,7 +205,7 @@
                                             lang="id-ID"
                                         />
                                     </div>
-                                    <div class="col-6 mb-3">
+                                    <div class="col-12 col-sm-6 mb-3">
                                         <label
                                             class="form-label"
                                             data-i18n="passport"
@@ -231,6 +238,7 @@
                                                 data-bs-toggle="dropdown"
                                                 aria-expanded="false"
                                                 data-prefix="+60"
+                                                autocomplete="tel-country-code"
                                             >
                                                 +60
                                             </button>
@@ -243,6 +251,7 @@
                                                 name="register-phone"
                                                 type="tel"
                                                 placeholder="10********"
+                                                autocomplete="tel-national"
                                                 aria-label="Phone number without country code"
                                             />
                                         </div>
@@ -320,6 +329,7 @@
                                     <input
                                         class="form-control form-control-lg liquid-input"
                                         type="email"
+                                        autocomplete="email"
                                         placeholder="R***@gmail.com"
                                         aria-label=".form-control-lg example"
                                     />
@@ -337,6 +347,7 @@
                                         placeholder="Pa*** No. ***, J***"
                                         aria-label=".form-control-lg example"
                                         rows="3"
+                                        autocomplete="street-address"
                                         maxlength="255"
                                     ></textarea>
                                 </div>
@@ -418,7 +429,7 @@
                                             >Hello</span
                                         >
                                         <span class="red uni_name"
-                                            >$Uni_name</span
+                                            >$University</span
                                         ><span data-i18n="hellouniname2"
                                             >Student</span
                                         >
@@ -439,22 +450,18 @@
                                         <option value="" disabled selected>
                                             --
                                         </option>
-                                        <option value="certificate">
-                                            Certificate
-                                        </option>
-                                        <option value="diploma">Diploma</option>
-                                        <option value="bachelor">
+                                        <option value="1">Certificate</option>
+                                        <option value="2">Diploma</option>
+                                        <option value="3">
                                             Undergraduate (Bachelor)
                                         </option>
-                                        <option value="master">
+                                        <option value="4">
                                             Postgraduate (Master)
                                         </option>
-                                        <option value="phd">
+                                        <option value="5">
                                             Postgraduate (Doctorate)
                                         </option>
-                                        <option value="postdoc">
-                                            Postdoctoral
-                                        </option>
+                                        <option value="6">Postdoctoral</option>
                                     </select>
                                 </div>
                                 <div class="mb-3">
@@ -823,144 +830,150 @@
                 </div>
             </div>
             <div class="box-large-container" id="updateProfile">
-                <div class="box-large-content test">
-                    <form
-                        class="form-container2 test"
-                        action="/profile.html"
-                        id="loginform"
-                    >
-                        <div class="mb-3">
-                            <label class="form-label" data-i18n="full-name"
-                                >Full Name</label
-                            >
-
-                            <input
-                                class="form-control form-control-lg liquid-input"
-                                type="text"
-                                placeholder="R*** D****"
-                                name="login-fullname"
-                                aria-label=".form-control-lg example"
-                            />
-                        </div>
-                        <div class="row">
-                            <div class="col-6 mb-3">
-                                <label class="form-label" data-i18n="dob"
-                                    >Date of Birth</label
-                                >
-
-                                <input
-                                    type="date"
-                                    class="form-control form-control-lg liquid-input liquid-date"
-                                    placeholder="dd-mm-yyyy"
-                                    name="login-dob"
-                                    lang="id-ID"
-                                />
-                            </div>
-                            <div class="col-6 mb-3">
-                                <label class="form-label" data-i18n="passport"
-                                    >Passport Number</label
+                <div class="relative-wrapper">
+                    <div class="box-large-content test">
+                        <form
+                            class="form-container2 test"
+                            action="/profile.html"
+                            id="loginform"
+                        >
+                            <div class="mb-3">
+                                <label class="form-label" data-i18n="full-name"
+                                    >Full Name</label
                                 >
 
                                 <input
                                     class="form-control form-control-lg liquid-input"
                                     type="text"
-                                    placeholder="X0000000"
-                                    name="login-passport"
+                                    placeholder="R*** D****"
+                                    name="login-fullname"
                                     aria-label=".form-control-lg example"
                                 />
                             </div>
-                            <div class="col-12 col-lg-6 mb-3">
-                                <label class="form-label" data-i18n="phone"
-                                    >Phone Number</label
-                                >
-
-                                <div
-                                    class="input-group input-group-lg liquid-input-group js-phone-group"
-                                    style="z-index: 5"
-                                >
-                                    <button
-                                        class="btn dropdown-toggle liquid-input-prefix js-phone-prefix"
-                                        type="button"
-                                        data-bs-toggle="dropdown"
-                                        aria-expanded="false"
-                                        data-prefix="+60"
+                            <div class="row">
+                                <div class="col-12 col-sm-6 mb-3">
+                                    <label class="form-label" data-i18n="dob"
+                                        >Date of Birth</label
                                     >
-                                        +60
-                                    </button>
-                                    <ul
-                                        class="dropdown-menu js-phone-menu"
-                                    ></ul>
+
                                     <input
-                                        class="form-control form-control-lg liquid-input js-phone-input"
-                                        type="number"
-                                        placeholder="10********"
-                                        name="login-phone"
-                                        aria-label="Phone number without country code"
+                                        type="date"
+                                        class="form-control form-control-lg liquid-input liquid-date"
+                                        placeholder="dd-mm-yyyy"
+                                        name="login-dob"
+                                        lang="id-ID"
                                     />
                                 </div>
-                            </div>
-                            <div class="col-12 col-lg-6 mb-3">
-                                <label class="form-label" data-i18n="university"
-                                    >University</label
-                                >
-
-                                <div
-                                    class="liquid-typeahead js-university-group"
-                                >
-                                    <div
-                                        class="liquid-typeahead-control liquid-input js-university-control"
+                                <div class="col-12 col-sm-6 mb-3">
+                                    <label
+                                        class="form-label"
+                                        data-i18n="passport"
+                                        >Passport Number</label
                                     >
-                                        <span
-                                            class="typeahead-pill js-university-pill"
-                                            hidden
-                                        >
-                                            <span
-                                                class="pill-label js-university-pill-label"
-                                            ></span>
-                                            <button
-                                                type="button"
-                                                class="pill-clear js-university-clear"
-                                                aria-label="Remove selected university"
-                                            >
-                                                &times;
-                                            </button>
-                                        </span>
-                                        <input
-                                            class="typeahead-input js-university-input"
-                                            type="text"
-                                            placeholder="University ******"
-                                            name="login-university_name"
-                                            aria-label="University name"
-                                            autocomplete="off"
-                                            role="combobox"
-                                            aria-autocomplete="list"
-                                            aria-haspopup="listbox"
+
+                                    <input
+                                        class="form-control form-control-lg liquid-input"
+                                        type="text"
+                                        placeholder="X0000000"
+                                        name="login-passport"
+                                        aria-label=".form-control-lg example"
+                                    />
+                                </div>
+                                <div class="col-12 col-lg-6 mb-3">
+                                    <label class="form-label" data-i18n="phone"
+                                        >Phone Number</label
+                                    >
+
+                                    <div
+                                        class="input-group input-group-lg liquid-input-group js-phone-group"
+                                        style="z-index: 5"
+                                    >
+                                        <button
+                                            class="btn dropdown-toggle liquid-input-prefix js-phone-prefix"
+                                            type="button"
+                                            data-bs-toggle="dropdown"
                                             aria-expanded="false"
-                                        />
+                                            data-prefix="+60"
+                                        >
+                                            +60
+                                        </button>
+                                        <ul
+                                            class="dropdown-menu js-phone-menu"
+                                        ></ul>
                                         <input
-                                            type="hidden"
-                                            class="js-university-value"
-                                            name="login-university"
+                                            class="form-control form-control-lg liquid-input js-phone-input"
+                                            type="number"
+                                            placeholder="10********"
+                                            name="login-phone"
+                                            aria-label="Phone number without country code"
                                         />
                                     </div>
-                                    <ul
-                                        class="dropdown-menu js-university-menu"
-                                        role="listbox"
-                                    ></ul>
+                                </div>
+                                <div class="col-12 col-lg-6 mb-3">
+                                    <label
+                                        class="form-label"
+                                        data-i18n="university"
+                                        >University</label
+                                    >
+
+                                    <div
+                                        class="liquid-typeahead js-university-group"
+                                    >
+                                        <div
+                                            class="liquid-typeahead-control liquid-input js-university-control"
+                                        >
+                                            <span
+                                                class="typeahead-pill js-university-pill"
+                                                hidden
+                                            >
+                                                <span
+                                                    class="pill-label js-university-pill-label"
+                                                ></span>
+                                                <button
+                                                    type="button"
+                                                    class="pill-clear js-university-clear"
+                                                    aria-label="Remove selected university"
+                                                >
+                                                    &times;
+                                                </button>
+                                            </span>
+                                            <input
+                                                class="typeahead-input js-university-input"
+                                                type="text"
+                                                placeholder="University ******"
+                                                name="login-university_name"
+                                                aria-label="University name"
+                                                autocomplete="off"
+                                                role="combobox"
+                                                aria-autocomplete="list"
+                                                aria-haspopup="listbox"
+                                                aria-expanded="false"
+                                            />
+                                            <input
+                                                type="hidden"
+                                                class="js-university-value"
+                                                name="login-university"
+                                            />
+                                        </div>
+                                        <ul
+                                            class="dropdown-menu js-university-menu"
+                                            role="listbox"
+                                        ></ul>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="button-container login-btn">
-                            <button
-                                type="submit"
-                                class="btn glass-btn liquid-red-btn btn-max"
-                            >
-                                <span data-i18n="btn-login" id="login"
-                                    >Login</span
+                            <div class="button-container login-btn">
+                                <button
+                                    type="submit"
+                                    class="btn glass-btn liquid-red-btn btn-max"
                                 >
-                            </button>
-                        </div>
-                    </form>
+                                    <span data-i18n="btn-login" id="login"
+                                        >Login</span
+                                    >
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1222,9 +1235,9 @@
                 </div>
             </div>
         </div>
-        <script src="student.js"></script>
-        <script src="app-core.js"></script>
-        <script src="main.js"></script>
-        <script src="gsap.js?dev=1.1.4"></script>
+        <script src="student.js?dev=2.0"></script>
+        <script src="app-core.js?dev=2.0"></script>
+        <script src="main.js?dev=2.0"></script>
+        <script src="gsap.js??dev=2.0"></script>
     </body>
 </html>

@@ -178,12 +178,14 @@
             input,
             defaultCode = "+60",
             regionService,
+            onSelect,
         }) {
             this.button = button;
             this.menu = menu;
             this.input = input;
             this.defaultCode = button?.dataset?.prefix || defaultCode;
             this.regionService = regionService;
+            this.onSelect = typeof onSelect === "function" ? onSelect : null;
         }
 
         updatePlaceholder(code) {
@@ -214,6 +216,9 @@
                     dd.hide();
                 }
                 this.button.focus();
+                if (this.onSelect) {
+                    this.onSelect(code);
+                }
             });
             li.append(btn);
             return li;
@@ -224,6 +229,7 @@
             const codes = await this.regionService.getAll();
             if (!Array.isArray(codes) || codes.length === 0) {
                 this.updateSelection(this.defaultCode);
+                if (this.onSelect) this.onSelect(this.defaultCode);
                 return;
             }
 
@@ -235,6 +241,7 @@
             }
             this.menu.append(frag);
             this.updateSelection(this.defaultCode);
+            if (this.onSelect) this.onSelect(this.defaultCode);
         }
     }
 
@@ -255,6 +262,8 @@
             fallbackItem,
             filterFn,
             optionPrefix = "typeahead-option",
+            onSelect,
+            onClear,
         }) {
             this.input = input;
             this.menu = menu;
@@ -289,6 +298,9 @@
                 fallbackItem === undefined ? defaultFallback : fallbackItem;
             this.filterFn = typeof filterFn === "function" ? filterFn : null;
             this.optionPrefix = optionPrefix || "typeahead-option";
+            this.onSelect =
+                typeof onSelect === "function" ? onSelect : null;
+            this.onClear = typeof onClear === "function" ? onClear : null;
         }
 
         async ensureData() {
@@ -481,10 +493,26 @@
             if (this.clearBtn) {
                 requestAnimationFrame(() => this.clearBtn.focus());
             }
-            const uniNameEls = document.querySelectorAll(".uni_name");
-            uniNameEls.forEach((el) => {
-                el.textContent = label;
-            });
+            if (this.onSelect) {
+                try {
+                    this.onSelect({
+                        id: id || label,
+                        label,
+                        name: label,
+                        dataset: { id, name },
+                    });
+                } catch (callbackError) {
+                    console.error(
+                        "UniversityAutocomplete onSelect failed",
+                        callbackError
+                    );
+                }
+            } else {
+                const uniNameEls = document.querySelectorAll(".uni_name");
+                uniNameEls.forEach((el) => {
+                    el.textContent = label;
+                });
+            }
         }
 
         clearSelection() {
@@ -500,6 +528,16 @@
             this.menu.innerHTML = "";
             if (this.control) this.control.classList.remove("is-locked");
             this.input.focus();
+            if (this.onClear) {
+                try {
+                    this.onClear();
+                } catch (callbackError) {
+                    console.error(
+                        "UniversityAutocomplete onClear failed",
+                        callbackError
+                    );
+                }
+            }
         }
 
         handleDocumentClick(evt) {

@@ -47,8 +47,10 @@ function openform_m() {
         borderTopLeftRadius: 0,
         borderTopRightRadius: 0,
         duration: 1,
+        onComplete: () => gsap.set(".bg-container", { display: "none" }),
     });
     gsap.to(".app-row", {
+        height: "100vh",
         height: "100dvh",
         width: "100vw",
         borderTopLeftRadius: 0,

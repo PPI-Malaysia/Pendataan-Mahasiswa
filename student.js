@@ -60,19 +60,17 @@ class StudentAPI {
         return this.#post({
             action: "edit",
             ...updates,
-            dsw: window.innerWidth,
+            w: window.innerWidth,
             ua: navigator.userAgent,
             ugt: this.ugt,
         });
     }
 
-    async add(resource, payload = {}) {
-        if (!resource) throw new Error("resource required");
+    async add(payload = {}) {
         return this.#post({
             action: "add",
-            resource,
             ...payload,
-            dsw: window.innerWidth,
+            w: window.innerWidth,
             ua: navigator.userAgent,
             ugt: this.ugt,
         });
