@@ -81,6 +81,7 @@
                             </h3>
                             <button
                                 type="button"
+                                id="editPersonalDetails"
                                 class="btn ms-3 liquid-btn liquid-light glass-btn btn-rounded edit-btn"
                             >
                                 <i class="bi bi-pencil"></i>
@@ -154,6 +155,7 @@
                             </h3>
                             <button
                                 type="button"
+                                id="editUniversityDetails"
                                 class="btn ms-3 liquid-btn liquid-light glass-btn btn-rounded edit-btn"
                             >
                                 <i class="bi bi-pencil"></i>
@@ -231,6 +233,7 @@
                                             </th>
                                             <th data-i18n="year">Year</th>
                                             <th>Status</th>
+                                            <th></th>
                                         </tr>
                                     </thead>
                                     <tbody data-record-table="ppi-campus">
@@ -239,7 +242,7 @@
                                             data-empty-row
                                         >
                                             <td
-                                                colspan="4"
+                                                colspan="5"
                                                 class="text-center text-muted"
                                             >
                                                 No records available.
@@ -279,6 +282,7 @@
                                             </th>
                                             <th data-i18n="year">Year</th>
                                             <th>Status</th>
+                                            <th></th>
                                         </tr>
                                     </thead>
                                     <tbody data-record-table="ppi-malaysia">
@@ -287,7 +291,7 @@
                                             data-empty-row
                                         >
                                             <td
-                                                colspan="4"
+                                                colspan="5"
                                                 class="text-center text-muted"
                                             >
                                                 No records available.
@@ -301,11 +305,22 @@
                 </div>
             </div>
         </div>
+        <div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div
+                    class="modal-content liquid blur5s160 modal-dialog-setting"
+                    id="editModalContent"
+                >
+                    Null
+                </div>
+            </div>
+        </div>
         <script
             src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
             crossorigin="anonymous"
         ></script>
+
         <script src="student.js?dev=2.0"></script>
         <script src="profile.js?dev=2.0"></script>
         <script src="app-core.js?dev=2.0"></script>

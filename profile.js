@@ -912,7 +912,7 @@
 
     function createModal(title, titleT, content) {
         return `
-<div class="modal-header bb p0">
+<div class="modal-header bb p0 d-flex justify-content-center">
     <div>
         <h3 class="modal-title text-center"> Edit <span data-i18n="${titleT}">${title}</span></h3>
         <p class="mb-3 silent-text text-center" data-i18n="whole"> Note: You need to update whole information below! </p>

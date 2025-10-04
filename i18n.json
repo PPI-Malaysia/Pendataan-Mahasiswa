@@ -6,6 +6,7 @@
         "subtext-2": "Data Anda akan digunakan untuk kepentingan administratif, pelayanan, dan kebutuhan darurat selama di Malaysia.",
         "btn-new": "Daftar Baru",
         "btn-update": "Perbarui Data",
+        "update": "Perbarui",
         "full-name": "Nama Lengkap",
         "dob": "Tanggal Lahir",
         "passport": "Nomor Paspor",
@@ -42,6 +43,7 @@
         "ppimask": "pengurus PPI Malaysia?",
         "btn-save": "Selesai",
         "hello": "Halo",
+        "cancel": "Kembali",
         "profile-instruction": "Di page ini kamu bisa memperbarui data diri kamu kapan saja. Data kamu akan dipakai untuk administrasi, layanan, dan keadaan darurat selama kamu berada di Malaysia. Beberapa data sensitif disamarkan supaya data kamu tetap aman.",
         "data-protection": "[Cara kami melindungi data kamu]",
         "personal-details": "Detail Pribadi",
@@ -60,7 +62,8 @@
         "btn-me": "Ya, itu aku",
         "btn-not-me": "Tidak, itu bukan aku",
         "exist-student-desc": "Sepertinya data kamu sudah ada dalam sistem kami",
-        "exist-student": "Data kamu sudah terdaftar"
+        "exist-student": "Data kamu sudah terdaftar",
+        "whole": "Catatan: Kamu harus isi semua informasi dibawah!"
     },
     "EN": {
         "header-title": "Indonesian Student Registration in Malaysia",
@@ -69,6 +72,7 @@
         "subtext-2": "Your data will be used for administrative purposes, services, and emergencies while in Malaysia.",
         "btn-new": "New Registration",
         "btn-update": "Update Profile",
+        "update": "Update",
         "full-name": "Full Name",
         "dob": "Date of Birth",
         "passport": "Passport Number",
@@ -105,6 +109,7 @@
         "ppimask": "member of PPI Malaysia?",
         "btn-save": "Save",
         "hello": "Hello",
+        "cancel": "Cancel",
         "profile-instruction": "Here you can update your details anytime. Your info will be used for admin, services, and emergencies while you are in Malaysia. Some sensitive parts are redacted to keep your data safe.",
         "data-protection": "[See how we protect your data]",
         "personal-details": "Personal Details",
@@ -123,6 +128,7 @@
         "btn-not-me": "No, That's not me",
         "btn-me": "Yes, That's me",
         "exist-student": "Existing Registration Found!",
-        "exist-student-desc": "It looks like we had stored your data before."
+        "exist-student-desc": "It looks like we had stored your data before.",
+        "whole": "Note: You need to fill whole information below!"
     }
 }
