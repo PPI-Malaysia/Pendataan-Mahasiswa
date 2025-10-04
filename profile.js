@@ -5,8 +5,728 @@
         window.location.href = "index.html";
     }
     const api = new StudentAPI({ token: token });
+    function refreshTranslations() {
+        const lang = localStorage.getItem("lang") || "ID";
+        document.dispatchEvent(
+            new CustomEvent("languagechange", { detail: { lang } })
+        );
+    }
+
+    const editPD = document.getElementById("editPersonalDetails");
+    const editUD = document.getElementById("editUniversityDetails");
+    const editModalElement = document.getElementById("editModal");
+    let editModalInstance;
+
+    let regionService;
+    let postcodeService;
+    let universityService;
+    let currentStudent = null;
     run();
 
+    function formatPostcodeLabel(row) {
+        if (!row) return "";
+        const zip =
+            row?.zip_code !== undefined && row?.zip_code !== null
+                ? String(row.zip_code).trim()
+                : "";
+        const city = row?.city ? String(row.city).trim() : "";
+        const state = row?.state_name ? String(row.state_name).trim() : "";
+        const location = [city, state].filter(Boolean).join(", ");
+        return [zip, location].filter(Boolean).join(" - ");
+    }
+
+    function filterPostcodes(term, rows) {
+        const lower = term.trim().toLowerCase();
+        if (!lower) return [];
+        return rows.filter((row) =>
+            formatPostcodeLabel(row).toLowerCase().includes(lower)
+        );
+    }
+
+    function ensureAppCore() {
+        const core = window.AppCore;
+        if (!core) {
+            console.warn("AppCore is not available");
+        }
+        return core || null;
+    }
+
+    function getRegionService(core) {
+        if (!core?.RegionCodesService) return null;
+        if (!regionService) {
+            regionService = new core.RegionCodesService();
+        }
+        return regionService;
+    }
+
+    function getPostcodeService(core) {
+        if (!core?.PostcodesService) return null;
+        if (!postcodeService) {
+            postcodeService = new core.PostcodesService();
+        }
+        return postcodeService;
+    }
+
+    function getUniversityService(core) {
+        if (!core?.UniversitiesService) return null;
+        if (!universityService) {
+            universityService = new core.UniversitiesService();
+        }
+        return universityService;
+    }
+
+    async function initPhoneSelectors(root) {
+        if (!root) return [];
+        const core = ensureAppCore();
+        if (!core?.PhonePrefixSelector) return [];
+        const regionSvc = getRegionService(core);
+        if (!regionSvc) return [];
+
+        const groups = root.querySelectorAll(".js-phone-group");
+        if (!groups.length) return [];
+
+        const promises = [];
+        groups.forEach((group, index) => {
+            const button = group.querySelector(".js-phone-prefix");
+            const menu = group.querySelector(".js-phone-menu");
+            const input = group.querySelector(".js-phone-input");
+            if (!button || !menu || !input) return;
+
+            const uid = `profile-phone-${index + 1}`;
+            button.id = `${uid}-button`;
+            menu.id = `${uid}-menu`;
+            menu.setAttribute("aria-labelledby", button.id);
+
+            const selector = new core.PhonePrefixSelector({
+                button,
+                menu,
+                input,
+                regionService: regionSvc,
+            });
+            const initPromise = selector
+                .init()
+                .then(() => ({ selector, group, button, menu, input }));
+            promises.push(initPromise);
+        });
+
+        if (!promises.length) return [];
+        const results = await Promise.allSettled(promises);
+        const successes = [];
+        results.forEach((result) => {
+            if (result.status === "fulfilled") {
+                successes.push(result.value);
+            } else {
+                console.error("Phone selector failed to init", result.reason);
+            }
+        });
+        return successes;
+    }
+
+    async function initPostcodeAutocomplete(root) {
+        if (!root) return [];
+        const core = ensureAppCore();
+        if (!core?.UniversityAutocomplete) return [];
+        const postcodeSvc = getPostcodeService(core);
+        if (!postcodeSvc) return [];
+
+        const groups = root.querySelectorAll(".js-postcode-group");
+        if (!groups.length) return [];
+
+        const promises = [];
+        groups.forEach((group, index) => {
+            const input = group.querySelector(".js-postcode-input");
+            const menu = group.querySelector(".js-postcode-menu");
+            if (!input || !menu) return;
+
+            const pill = group.querySelector(".js-postcode-pill");
+            const pillLabel = group.querySelector(".js-postcode-pill-label");
+            const clearBtn = group.querySelector(".js-postcode-clear");
+            const hiddenInput = group.querySelector(".js-postcode-value");
+
+            const uid = `profile-postcode-${index + 1}`;
+            input.id = `${uid}-input`;
+            menu.id = `${uid}-menu`;
+            input.setAttribute("aria-controls", menu.id);
+            input.setAttribute("aria-owns", menu.id);
+            menu.setAttribute("aria-labelledby", input.id);
+
+            const autocomplete = new core.UniversityAutocomplete({
+                input,
+                menu,
+                pill,
+                pillLabel,
+                clearBtn,
+                hiddenInput,
+                dataService: postcodeSvc,
+                minChars: 1,
+                maxItems: 10,
+                itemLabel: formatPostcodeLabel,
+                itemValue: (row) =>
+                    row?.zip_code !== undefined && row?.zip_code !== null
+                        ? String(row.zip_code)
+                        : "",
+                fallbackItem: null,
+                filterFn: filterPostcodes,
+                optionPrefix: `profile-postcode-option-${index + 1}`,
+            });
+            const initPromise = autocomplete.init().then(() => ({
+                autocomplete,
+                group,
+                input,
+                menu,
+                pill,
+                pillLabel,
+                clearBtn,
+                hiddenInput,
+            }));
+            promises.push(initPromise);
+        });
+
+        if (!promises.length) return [];
+        const results = await Promise.allSettled(promises);
+        const successes = [];
+        results.forEach((result) => {
+            if (result.status === "fulfilled") {
+                successes.push(result.value);
+            } else {
+                console.error(
+                    "Postcode autocomplete failed to init",
+                    result.reason
+                );
+            }
+        });
+        return successes;
+    }
+
+    async function initUniversityAutocomplete(root) {
+        if (!root) return [];
+        const core = ensureAppCore();
+        if (!core?.UniversityAutocomplete) return [];
+        const universitySvc = getUniversityService(core);
+        if (!universitySvc) return [];
+
+        const groups = root.querySelectorAll(".js-university-group");
+        if (!groups.length) return [];
+
+        const promises = [];
+        groups.forEach((group, index) => {
+            const input = group.querySelector(".js-university-input");
+            const menu = group.querySelector(".js-university-menu");
+            if (!input || !menu) return;
+
+            const pill = group.querySelector(".js-university-pill");
+            const pillLabel = group.querySelector(".js-university-pill-label");
+            const clearBtn = group.querySelector(".js-university-clear");
+            const hiddenInput = group.querySelector(".js-university-value");
+
+            const uid = `profile-university-${index + 1}`;
+            input.id = `${uid}-input`;
+            menu.id = `${uid}-menu`;
+            input.setAttribute("aria-controls", menu.id);
+            input.setAttribute("aria-owns", menu.id);
+            menu.setAttribute("aria-labelledby", input.id);
+
+            const autocomplete = new core.UniversityAutocomplete({
+                input,
+                menu,
+                pill,
+                pillLabel,
+                clearBtn,
+                hiddenInput,
+                universityService: universitySvc,
+                optionPrefix: `profile-university-option-${index + 1}`,
+            });
+            const initPromise = autocomplete.init().then(() => ({
+                autocomplete,
+                group,
+                input,
+                menu,
+                pill,
+                pillLabel,
+                clearBtn,
+                hiddenInput,
+            }));
+            promises.push(initPromise);
+        });
+
+        if (!promises.length) return [];
+        const results = await Promise.allSettled(promises);
+        const successes = [];
+        results.forEach((result) => {
+            if (result.status === "fulfilled") {
+                successes.push(result.value);
+            } else {
+                console.error(
+                    "University autocomplete failed to init",
+                    result.reason
+                );
+            }
+        });
+        return successes;
+    }
+
+    async function initPersonalModalFeatures(root) {
+        try {
+            const [phone, postcode] = await Promise.all([
+                initPhoneSelectors(root),
+                initPostcodeAutocomplete(root),
+            ]);
+            return { phone, postcode };
+        } catch (error) {
+            console.error("Failed to init personal modal features", error);
+            return { phone: [], postcode: [] };
+        }
+    }
+
+    async function initUniversityModalFeatures(root) {
+        try {
+            const [university] = await Promise.all([
+                initUniversityAutocomplete(root),
+            ]);
+            return { university };
+        } catch (error) {
+            console.error("Failed to init university modal features", error);
+            return { university: [] };
+        }
+    }
+
+    function applyTypeaheadSelection(feature, { value, label }) {
+        if (!feature || value === undefined || value === null) return;
+        const { autocomplete, pill, pillLabel, clearBtn, hiddenInput, input } =
+            feature;
+
+        const textValue = label || String(value);
+
+        if (hiddenInput) hiddenInput.value = String(value);
+        if (pillLabel) pillLabel.textContent = textValue;
+        if (pill) pill.hidden = false;
+        if (clearBtn) clearBtn.hidden = false;
+        if (input) {
+            input.value = "";
+            input.setAttribute("readonly", "true");
+            input.setAttribute("aria-readonly", "true");
+            input.setAttribute("placeholder", "");
+        }
+
+        if (autocomplete) {
+            autocomplete.hasSelection = true;
+            if (autocomplete.control) {
+                autocomplete.control.classList.add("is-locked");
+            }
+            if (typeof autocomplete.hideMenu === "function") {
+                autocomplete.hideMenu();
+            }
+        }
+    }
+
+    function setPhoneValue(studentPhone, feature, root) {
+        if (!studentPhone) return;
+        const trimmed = String(studentPhone).trim();
+        if (!trimmed) return;
+        let prefix = "";
+        let remainder = trimmed;
+
+        const detected = trimmed.match(/^(\+\d{1,4})(.*)$/);
+        if (detected) {
+            prefix = detected[1].trim();
+            remainder = detected[2].replace(/\D+/g, "").trim();
+        } else {
+            remainder = trimmed.replace(/\D+/g, "").trim();
+        }
+
+        const input = feature?.input || root?.querySelector(".js-phone-input");
+        const button =
+            feature?.button || root?.querySelector(".js-phone-prefix");
+        const selector = feature?.selector;
+
+        if (
+            selector &&
+            prefix &&
+            typeof selector.updateSelection === "function"
+        ) {
+            selector.updateSelection(prefix);
+        } else if (button && prefix) {
+            button.textContent = prefix;
+            button.dataset.prefix = prefix;
+        }
+
+        if (input) input.value = remainder;
+    }
+
+    async function populatePersonalModal(root, featureBag = {}) {
+        if (!root) return;
+        const student = currentStudent;
+        if (!student) return;
+
+        const fullNameInput = root.querySelector("#register-fullname");
+        if (fullNameInput) fullNameInput.value = student.fullname || "";
+
+        const dobInput = root.querySelector("#register-dob");
+        if (dobInput && student.dob) dobInput.value = student.dob;
+
+        const postcodeFeature = Array.isArray(featureBag.postcode)
+            ? featureBag.postcode[0]
+            : null;
+        const postcodeValue =
+            student.postcode_id || student.postcode || student.postcodeId;
+
+        if (postcodeValue) {
+            let label = String(postcodeValue);
+            if (postcodeFeature) {
+                try {
+                    const core = ensureAppCore();
+                    const svc = getPostcodeService(core);
+                    const rows = (await svc?.getAll?.()) || [];
+                    const match = rows.find(
+                        (row) => String(row?.zip_code) === String(postcodeValue)
+                    );
+                    if (match) label = formatPostcodeLabel(match);
+                } catch (error) {
+                    console.error("Unable to resolve postcode label", error);
+                }
+
+                applyTypeaheadSelection(postcodeFeature, {
+                    value: String(postcodeValue),
+                    label,
+                });
+            } else {
+                const postcodeInput = root.querySelector(".js-postcode-input");
+                const hiddenInput = root.querySelector(".js-postcode-value");
+                if (hiddenInput) hiddenInput.value = String(postcodeValue);
+                if (postcodeInput) postcodeInput.value = label;
+            }
+        }
+    }
+
+    function findUniversityFeature(featureBag) {
+        if (!featureBag) return null;
+        if (Array.isArray(featureBag)) return featureBag[0] || null;
+        if (Array.isArray(featureBag.university))
+            return featureBag.university[0] || null;
+        return null;
+    }
+
+    async function populateUniversityModal(root, featureBag = {}) {
+        if (!root) return;
+        const student = currentStudent;
+        if (!student) return;
+
+        const universityFeature = findUniversityFeature(featureBag);
+        const universityLabel =
+            student.university || student.university_name || "";
+        const universityValue =
+            student.university_id || student.universityId || universityLabel;
+
+        if (universityLabel) {
+            if (universityFeature) {
+                applyTypeaheadSelection(universityFeature, {
+                    value: String(universityValue),
+                    label: universityLabel,
+                });
+            } else {
+                const hiddenInput = root.querySelector(".js-university-value");
+                const input = root.querySelector(".js-university-input");
+                if (hiddenInput) hiddenInput.value = String(universityValue);
+                if (input) input.value = universityLabel;
+            }
+        }
+
+        const programmeInput = root.querySelector("#register-programme");
+        if (programmeInput) {
+            programmeInput.value =
+                student.degree_programme ||
+                student.degree ||
+                student.programme ||
+                student.program ||
+                "";
+        }
+
+        const levelSelect = root.querySelector("#register-education-level");
+        const levelValue =
+            student.level_of_qualification_id ??
+            student.education_level_id ??
+            student.education_level;
+        if (levelSelect && levelValue !== undefined && levelValue !== null) {
+            const normalized = String(levelValue).trim();
+            if (normalized) levelSelect.value = normalized;
+        }
+
+        const graduationInput = root.querySelector(
+            "#register-expected-graduation"
+        );
+        const graduationValue =
+            student.expected_graduate ||
+            student.expected_graduation ||
+            student.graduation_date;
+        if (graduationInput && graduationValue) {
+            graduationInput.value = graduationValue;
+        }
+    }
+
+    function bindModalUpdateAction(root, handler) {
+        if (!root || typeof handler !== "function") return;
+        const updateButton = root.querySelector('[data-action="update"]');
+        if (!updateButton) return;
+        updateButton.addEventListener("click", (event) => handler(event, root));
+    }
+
+    function bindPersonalModalActions(root) {
+        bindModalUpdateAction(root, handlePersonalUpdate);
+    }
+
+    function bindUniversityModalActions(root) {
+        bindModalUpdateAction(root, handleUniversityUpdate);
+    }
+
+    function setButtonBusy(button, busy) {
+        if (!button) return;
+        button.disabled = Boolean(busy);
+        if (busy) {
+            button.setAttribute("aria-busy", "true");
+        } else {
+            button.removeAttribute("aria-busy");
+        }
+    }
+
+    function collectPersonalModalValues(root) {
+        if (!root) return null;
+        const inputValue = (selector) => {
+            const el = root.querySelector(selector);
+            return typeof el?.value === "string" ? el.value.trim() : "";
+        };
+
+        const fullName = inputValue("#register-fullname");
+        const dob = inputValue("#register-dob");
+        const passport = inputValue("#register-passport");
+
+        const phoneInput = root.querySelector("#register-phone");
+        const prefixButton = root.querySelector(".js-phone-prefix");
+        const phoneDigits = phoneInput
+            ? phoneInput.value.replace(/\D+/g, "").trim()
+            : "";
+        const phonePrefix = (
+            prefixButton?.dataset?.prefix ||
+            prefixButton?.textContent ||
+            ""
+        )
+            .replace(/\s+/g, "")
+            .trim();
+        const phoneNumber = phoneDigits
+            ? `${phonePrefix}${phoneDigits}`.trim()
+            : "";
+
+        const postcodeHidden = inputValue(".js-postcode-value");
+        const postcodeDisplay = inputValue(".js-postcode-input");
+        const postcodeId = postcodeHidden || postcodeDisplay;
+
+        const address = inputValue("#register-address");
+
+        return {
+            section: "personal",
+            fullname: fullName,
+            dob,
+            passport,
+            phone_number: phoneNumber,
+            phone: phoneNumber,
+            postcode: postcodeId,
+            postcode_id: postcodeId,
+            address,
+        };
+    }
+
+    function validatePersonalModal(values) {
+        if (!values) return false;
+        const required = [
+            ["fullname", "Full Name"],
+            ["dob", "Date of Birth"],
+            ["passport", "Passport Number"],
+            ["phone_number", "Phone Number"],
+            ["postcode_id", "Postcode"],
+            ["address", "Address"],
+        ];
+
+        const missing = required
+            .filter(([key]) => !values[key])
+            .map(([, label]) => label);
+
+        if (missing.length) {
+            alert(`Please complete: ${missing.join(", ")}`);
+            return false;
+        }
+        return true;
+    }
+
+    function collectUniversityModalValues(root) {
+        if (!root) return null;
+        const inputValue = (selector) => {
+            const el = root.querySelector(selector);
+            return typeof el?.value === "string" ? el.value.trim() : "";
+        };
+
+        const hiddenUniversity = inputValue(".js-university-value");
+        const pillLabel = root.querySelector(".js-university-pill-label");
+        const typedUniversity = inputValue(".js-university-input");
+        const universityName = (
+            pillLabel?.textContent ||
+            typedUniversity ||
+            ""
+        ).trim();
+
+        const programme = inputValue("#register-programme");
+        const level = inputValue("#register-education-level");
+        const graduation = inputValue("#register-expected-graduation");
+
+        return {
+            section: "university",
+            university_id: hiddenUniversity || "",
+            university: universityName,
+            education_programme: programme,
+            programme,
+            degree: programme,
+            level_of_qualification_id: level,
+            education_level: level,
+            level,
+            education_graduation: graduation,
+            expected_graduate: graduation,
+        };
+    }
+
+    function validateUniversityModal(values) {
+        if (!values) return false;
+        const required = [
+            ["university", "University"],
+            ["university_id", "University ID"],
+            ["education_programme", "Degree Programme"],
+            ["education_level", "Current Education Level"],
+            ["education_graduation", "Expected Graduation Date"],
+        ];
+
+        const missing = required
+            .filter(([key]) => !values[key])
+            .map(([, label]) => label);
+
+        if (missing.length) {
+            alert(`Please complete: ${missing.join(", ")}`);
+            return false;
+        }
+        return true;
+    }
+
+    function applyStudentUpdate(result, fallback) {
+        if (result?.token) {
+            localStorage.setItem("token", result.token);
+            api.setToken(result.token);
+        }
+
+        if (result?.student) {
+            currentStudent = result.student;
+            renderStudent(currentStudent);
+            persistStudentSnapshot(currentStudent);
+            return;
+        }
+
+        if (fallback && currentStudent) {
+            currentStudent = { ...currentStudent, ...fallback };
+            renderStudent(currentStudent);
+            persistStudentSnapshot(currentStudent);
+        }
+    }
+
+    function persistStudentSnapshot(student) {
+        if (!student) return;
+        try {
+            sessionStorage.setItem("student", JSON.stringify(student));
+        } catch (error) {
+            console.warn("Unable to cache updated student", error);
+        }
+    }
+
+    async function handlePersonalUpdate(event, root) {
+        if (event) event.preventDefault();
+        const submitButton = root?.querySelector('[data-action="update"]');
+        if (submitButton?.disabled) return;
+
+        const values = collectPersonalModalValues(root);
+        if (!validatePersonalModal(values)) return;
+
+        const payload = {
+            ...values,
+        };
+
+        if (!payload.token && api?.token) {
+            payload.token = api.token;
+        }
+
+        try {
+            setButtonBusy(submitButton, true);
+            const result = await api.edit(payload);
+            applyStudentUpdate(result, {
+                fullname: values.fullname,
+                dob: values.dob,
+                passport: values.passport,
+                phone: values.phone_number,
+                phone_number: values.phone_number,
+                address: values.address,
+                postcode_id: values.postcode_id,
+                postcode: values.postcode,
+            });
+            if (editModalInstance?.hide) {
+                editModalInstance.hide();
+            }
+        } catch (error) {
+            console.error("Failed to update personal details", error);
+            alert(`Unable to update personal details: ${error.message}`);
+        } finally {
+            setButtonBusy(submitButton, false);
+        }
+    }
+
+    async function handleUniversityUpdate(event, root) {
+        if (event) event.preventDefault();
+        const submitButton = root?.querySelector('[data-action="update"]');
+        if (submitButton?.disabled) return;
+
+        const values = collectUniversityModalValues(root);
+        if (!validateUniversityModal(values)) return;
+
+        const payload = { ...values };
+        if (!payload.token && api?.token) {
+            payload.token = api.token;
+        }
+
+        try {
+            setButtonBusy(submitButton, true);
+            const result = await api.edit(payload);
+            applyStudentUpdate(result, {
+                university: values.university,
+                university_name: values.university,
+                university_id: values.university_id,
+                programme: values.education_programme,
+                degree_programme: values.education_programme,
+                degree: values.education_programme,
+                level_of_qualification_id: values.education_level,
+                education_level: values.education_level,
+                expected_graduate: values.education_graduation,
+                expected_graduation: values.education_graduation,
+                graduation_date: values.education_graduation,
+            });
+            if (editModalInstance?.hide) {
+                editModalInstance.hide();
+            }
+        } catch (error) {
+            console.error("Failed to update university details", error);
+            alert(`Unable to update university details: ${error.message}`);
+        } finally {
+            setButtonBusy(submitButton, false);
+        }
+    }
+
+    if (editModalElement) {
+        editPD.addEventListener("click", (event) => editPersonalDetails(event));
+        editUD.addEventListener("click", (event) =>
+            editUniversityDetails(event)
+        );
+    }
     // ---- flow ----
     function run() {
         let student;
@@ -71,6 +791,7 @@
         if (v === 0) return "Unverified";
         if (v === 1) return "Active";
         if (v === 2) return "Ended";
+        if (v === 3) return "Rejected";
         return "-";
     }
 
@@ -135,24 +856,284 @@
             if (/active/i.test(label)) st.classList.add("red");
             tr.appendChild(st);
 
+            const action = document.createElement("td");
+            action.className = "text-end";
+
+            const dropdown = document.createElement("div");
+            dropdown.className = "dropdown";
+
+            const toggle = document.createElement("button");
+            toggle.type = "button";
+            toggle.className = "btn btn-link p-0 text-decoration-none fs22b";
+            toggle.setAttribute("data-bs-toggle", "dropdown");
+            toggle.setAttribute("aria-expanded", "false");
+            toggle.setAttribute("aria-label", "Actions");
+
+            const icon = document.createElement("i");
+            icon.className = "bi bi-list";
+            toggle.appendChild(icon);
+
+            const menu = document.createElement("ul");
+            menu.className = "dropdown-menu dropdown-menu-end";
+
+            const addMenuItem = (label, actionName) => {
+                const li = document.createElement("li");
+                const btn = document.createElement("button");
+                btn.type = "button";
+                btn.className = "dropdown-item";
+                btn.dataset.action = actionName;
+                btn.textContent = label;
+                li.appendChild(btn);
+                menu.appendChild(li);
+            };
+
+            const rawStatus = item?.status ?? item?.is_active;
+            const statusValue =
+                typeof rawStatus === "number"
+                    ? rawStatus
+                    : typeof rawStatus === "string" && rawStatus.trim() !== ""
+                    ? parseInt(rawStatus, 10)
+                    : null;
+
+            if (statusValue === 3) {
+                addMenuItem("Re-verify", "reverify");
+            }
+            addMenuItem("Edit", "edit");
+            addMenuItem("Delete", "delete");
+
+            dropdown.appendChild(toggle);
+            dropdown.appendChild(menu);
+            action.appendChild(dropdown);
+            tr.appendChild(action);
+
             tbody.appendChild(tr);
         });
     }
 
+    function createModal(title, titleT, content) {
+        return `
+<div class="modal-header bb p0">
+    <div>
+        <h3 class="modal-title text-center"> Edit <span data-i18n="${titleT}">${title}</span></h3>
+        <p class="mb-3 silent-text text-center" data-i18n="whole"> Note: You need to update whole information below! </p>
+    </div>
+</div>
+<form>
+    <div class="modal-body">
+        <div class="existing-student-details">
+            <dl class="mb-0">
+                <div class="row">
+                ${content}
+                </div>
+            </dl>
+        </div>
+    </div>
+    <div class="modal-footer bnone gap-2 d-flex justify-content-center">
+        <div class="modal-button-container">
+            <button type="button" class="btn liquid-btn btn-max liquid-light glass-btn btn-edit-conf" data-bs-dismiss="modal">
+                <span data-i18n="cancel" id="cancel ">Cancel</span>
+            </button>
+        </div>
+        <div class="modal-button-container">
+            <button type="button" class="btn glass-btn liquid-red-btn btn-max btn-edit-conf" data-action="update">
+                <span data-i18n="update" id="update">Update</span>
+            </button>
+        </div>
+    </div>
+</form>
+        `;
+    }
+
+    function editPersonalDetails(event) {
+        if (event) event.preventDefault();
+        if (!editModalElement) return;
+
+        const editModalContent = document.getElementById("editModalContent");
+        if (editModalContent) {
+            const content = `
+<div class="mb-3">
+    <label class="form-label" data-i18n="full-name">Full Name</label>
+    <input class="form-control form-control-lg liquid-input" id="register-fullname" name="register-fullname" type="text" autocomplete="name" placeholder="R*** D****" aria-label=".form-control-lg example" />
+</div>
+<div class="col-12 col-sm-6 mb-3">
+    <label class="form-label" data-i18n="dob">Date of Birth</label>
+    <input type="date" class="form-control form-control-lg liquid-input liquid-date" id="register-dob" name="register-dob" placeholder="dd-mm-yyyy" lang="id-ID" />
+</div>
+<div class="col-12 col-sm-6 mb-3">
+    <label class="form-label" data-i18n="passport">Passport Number</label>
+    <input class="form-control form-control-lg liquid-input" id="register-passport" name="register-passport" type="text" placeholder="X0000000" aria-label=".form-control-lg example" />
+</div>
+<div class="col-12 col-lg-6 mb-3">
+    <label class="form-label" data-i18n="phone">Phone Number</label>
+    <div class="input-group input-group-lg liquid-input-group js-phone-group" style="z-index: 5">
+        <button class="btn dropdown-toggle liquid-input-prefix js-phone-prefix" type="button" data-bs-toggle="dropdown" aria-expanded="false" data-prefix="+60" autocomplete="tel-country-code"> +60 </button>
+        <ul class="dropdown-menu js-phone-menu"></ul>
+        <input class="form-control form-control-lg liquid-input js-phone-input" id="register-phone" name="register-phone" type="tel" placeholder="10********" autocomplete="tel-national" aria-label="Phone number without country code" />
+    </div>
+</div>
+<div class="col-12 col-lg-6 mb-3">
+    <label class="form-label" data-i18n="postkode">Postcode</label>
+    <div class="liquid-typeahead js-postcode-group">
+        <div class="liquid-typeahead-control liquid-input js-postcode-control">
+            <span class="typeahead-pill js-postcode-pill" hidden>
+                <span class="pill-label js-postcode-pill-label"></span>
+                <button type="button" class="pill-clear js-postcode-clear" aria-label="Remove selected postcode"> &times; </button>
+            </span>
+            <input class="typeahead-input js-postcode-input" type="text" placeholder="46000 - Petaling Jaya, Selangor" aria-label="Postcode" autocomplete="off" role="combobox" aria-autocomplete="list" aria-haspopup="listbox" aria-expanded="false" />
+            <input type="hidden" class="js-postcode-value" name="postcode" />
+        </div>
+        <ul class="dropdown-menu js-postcode-menu" role="listbox"></ul>
+    </div>
+</div>
+<div class="mb-3">
+    <label class="form-label" data-i18n="Address">Address</label>
+    <textarea class="form-control form-control-lg liquid-input" id="register-address" placeholder="Pa*** No. ***, J***" aria-label="Residential address" rows="3" autocomplete="street-address" maxlength="255"></textarea>
+</div>
+            `;
+            contentHTML = createModal(
+                "Personal Details",
+                "personal-details",
+                content
+            );
+            editModalContent.innerHTML = contentHTML;
+            refreshTranslations();
+            bindPersonalModalActions(editModalContent);
+            initPersonalModalFeatures(editModalContent)
+                .then((features) =>
+                    populatePersonalModal(editModalContent, features)
+                )
+                .catch((error) => {
+                    console.error("Personal modal features failed", error);
+                    populatePersonalModal(editModalContent);
+                });
+        }
+
+        if (!editModalInstance && window.bootstrap?.Modal) {
+            editModalInstance =
+                window.bootstrap.Modal.getOrCreateInstance(editModalElement);
+        }
+
+        if (editModalInstance?.show) {
+            editModalInstance.show();
+        }
+    }
+
+    function editUniversityDetails(event) {
+        if (event) event.preventDefault();
+        if (!editModalElement) return;
+
+        const editModalContent = document.getElementById("editModalContent");
+        if (editModalContent) {
+            const content = `
+<div class="mb-3">
+    <label class="form-label" data-i18n="university">University</label>
+    <div class="liquid-typeahead js-university-group">
+        <div class="liquid-typeahead-control liquid-input js-university-control">
+            <span class="typeahead-pill js-university-pill" hidden>
+                <span class="pill-label js-university-pill-label"></span>
+                <button type="button" class="pill-clear js-university-clear" aria-label="Remove selected university"> &times; </button>
+            </span>
+            <input class="typeahead-input js-university-input" type="text" placeholder="University ******" name="login-university_name" aria-label="University name" autocomplete="off" role="combobox" aria-autocomplete="list" aria-haspopup="listbox" aria-expanded="false" />
+            <input type="hidden" class="js-university-value" name="login-university" />
+        </div>
+        <ul class="dropdown-menu js-university-menu" role="listbox"></ul>
+    </div>
+</div>
+<div class="mb-3">
+    <label class="form-label" data-i18n="degree-programme">Degree Programme</label>
+    <input class="form-control form-control-lg liquid-input" id="register-programme" type="text" placeholder="Bachelor of Artificial Intelligence" aria-label="Degree programme" />
+</div>
+<div class="col-12 col-sm-6 mb-3">
+    <label class="form-label" data-i18n="education-level">Current Education Level</label>
+    <select class="form-select form-select-lg liquid-input" id="register-education-level" aria-label="Current education level">
+        <option value="" disabled selected> -- </option>
+        <option value="1">Certificate</option>
+        <option value="2">Diploma</option>
+        <option value="3"> Undergraduate (Bachelor) </option>
+        <option value="4"> Postgraduate (Master) </option>
+        <option value="5"> Postgraduate (Doctorate) </option>
+        <option value="6">Postdoctoral</option>
+    </select>
+</div>
+<div class="col-12 col-sm-6 mb-3">
+    <label class="form-label" data-i18n="expected-graduation">Expected Graduate Date</label>
+    <input type="date" class="form-control form-control-lg liquid-input liquid-date" id="register-expected-graduation" placeholder="dd-mm-yyyy" lang="id-ID" />
+</div>
+            `;
+            contentHTML = createModal(
+                "University Details",
+                "university-details",
+                content
+            );
+            editModalContent.innerHTML = contentHTML;
+            refreshTranslations();
+            bindUniversityModalActions(editModalContent);
+            initUniversityModalFeatures(editModalContent)
+                .then((features) =>
+                    populateUniversityModal(editModalContent, features)
+                )
+                .catch((error) => {
+                    console.error("University modal features failed", error);
+                    populateUniversityModal(editModalContent);
+                });
+        }
+
+        if (!editModalInstance && window.bootstrap?.Modal) {
+            editModalInstance =
+                window.bootstrap.Modal.getOrCreateInstance(editModalElement);
+        }
+
+        if (editModalInstance?.show) {
+            editModalInstance.show();
+        }
+    }
+    function eduLevel(num) {
+        switch (num) {
+            case 1:
+                return "Certificate";
+            case 2:
+                return "Diploma";
+            case 3:
+                return "Undergraduate";
+            case 4:
+                return "Postgraduate (Master)";
+            case 5:
+                return "Postgraduate (PhD)";
+            case 6:
+                return "Postdoctoral";
+            default:
+                return "";
+        }
+    }
     // ---- render ----
     function renderStudent(student) {
+        currentStudent = student || null;
         assignText("fullname", student.fullname);
         assignText("fullname2", student.fullname);
         assignText("dob", student.dob);
-        assignText("postcode_id", student.postcode_id);
+        assignText("postcode_id", student.postcode_id || student.postcode);
         assignText("email", student.email);
         assignText("passport", student.passport);
-        assignText("phone", student.phone);
-        assignText("university", student.university);
-        assignText("expected_graduate", student.expected_graduate);
+        assignText("phone", student.phone || student.phone_number);
+        assignText("university", student.university || student.university_name);
+        assignText(
+            "expected_graduate",
+            student.expected_graduate ||
+                student.expected_graduation ||
+                student.graduation_date
+        );
         assignText("address", student.address);
-        assignText("programme", student.programme);
-        assignText("education_level", student.level_of_qualification_id);
+        assignText(
+            "programme",
+            student.degree_programme ||
+                student.degree ||
+                student.programme ||
+                student.program
+        );
+        assignText(
+            "education_level",
+            eduLevel(student.level_of_qualification_id)
+        );
 
         renderTable("ppi-campus", parseRecordPayload(student.ppi));
         renderTable("ppi-malaysia", parseRecordPayload(student.ppim));
@@ -162,22 +1143,11 @@
         if (!result || typeof result !== "object") return;
         if (result.token) {
             localStorage.setItem("token", result.token);
-            this.token = result.token;
-            this.api.setToken(result.token);
+            api.setToken(result.token);
         }
 
         if (result.student) {
-            try {
-                sessionStorage.setItem(
-                    "student",
-                    JSON.stringify(result.student)
-                );
-            } catch (storageError) {
-                console.warn(
-                    "Unable to persist student in sessionStorage",
-                    storageError
-                );
-            }
+            persistStudentSnapshot(result.student);
         }
     }
     // ---- Call API ----
@@ -196,6 +1166,7 @@
 
     // ---- temp for testing ----
     function renderBlank() {
+        currentStudent = null;
         document.querySelectorAll("[data-profile]").forEach((el) => {
             el.textContent = "empty";
             el.classList.add("red");

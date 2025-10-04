@@ -586,7 +586,32 @@ small::after {
     pointer-events: none;
     z-index: 0;
 }
+.p0 {
+    padding: 0 !important;
+}
+.fs22b {
+    font-size: 22px;
+    color: var(--black);
+}
+.modal {
+    --bs-modal-width: min(992px, 90%);
+}
 
+.modal-dialog-setting {
+    display: grid;
+    grid-template-rows: 1fr auto; /* top spacer, then content */
+    row-gap: 16px; /* the “+16px” */
+    max-block-size: 85dvh;
+    overflow-y: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+.modal-dialog-setting::-webkit-scrollbar {
+    display: none;
+}
+.btn-edit-conf {
+    width: min(300px, 36vw);
+}
 .member-history-card > * {
     z-index: 1;
 }
@@ -1102,6 +1127,9 @@ small::after {
         left: 30px !important;
         margin-top: 18px !important;
     }
+    .modal {
+        --bs-modal-width: 100%;
+    }
     .modal-dialog {
         margin: 0 !important;
     }
@@ -1115,6 +1143,8 @@ small::after {
     }
     .modal.fade.show .modal-content {
         transform: translateY(0) !important; /* animate into view */
+    }
+    .modal-dialog-setting {
     }
 }
 .app-row {
