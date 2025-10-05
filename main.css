@@ -601,7 +601,7 @@ small::after {
 }
 
 .modal-dialog-setting {
-    max-height: 85vh;
+    max-height: 84vh;
     overflow: hidden;
     overflow-y: scroll;
     -ms-overflow-style: none;

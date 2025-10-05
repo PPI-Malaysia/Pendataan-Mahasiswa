@@ -25,6 +25,12 @@
     let currentStudent = null;
     run();
 
+    function truncateLabel(text, max = 20) {
+        if (!text) return "";
+        console.log(text);
+        return text.length <= max ? text : `${text.slice(0, max - 3)}...`;
+    }
+
     function formatPostcodeLabel(row) {
         if (!row) return "";
         const zip =
@@ -34,7 +40,8 @@
         const city = row?.city ? String(row.city).trim() : "";
         const state = row?.state_name ? String(row.state_name).trim() : "";
         const location = [city, state].filter(Boolean).join(", ");
-        return [zip, location].filter(Boolean).join(" - ");
+        const clippedLocation = truncateLabel(location, 22); // tweak length to taste
+        return [zip, clippedLocation].filter(Boolean).join(" - ");
     }
 
     function filterPostcodes(term, rows) {
@@ -1387,7 +1394,7 @@
         const editModalContent = document.getElementById("editModalContent");
         if (editModalContent) {
             const content = `
-    <div class="mb-3">
+    <div class="col-12 mb-3">
         <label class="form-label" data-i18n="full-name">Full Name</label>
         <input class="form-control form-control-lg liquid-input" id="register-fullname" name="register-fullname" type="text" autocomplete="name" placeholder="R*** D****" aria-label=".form-control-lg example" />
     </div>
@@ -1425,7 +1432,7 @@
             <ul class="dropdown-menu js-postcode-menu" role="listbox"></ul>
         </div>
     </div>
-    <div class="mb-3">
+    <div class="col-12 mb-3">
         <label class="form-label" data-i18n="Address">Address</label>
         <textarea class="form-control form-control-lg liquid-input" id="register-address" placeholder="Pa*** No. ***, J***" aria-label="Residential address" rows="3" autocomplete="street-address" maxlength="255"></textarea>
     </div>
