@@ -1387,11 +1387,11 @@
         const editModalContent = document.getElementById("editModalContent");
         if (editModalContent) {
             const content = `
-<div class="mb-3">
-    <label class="form-label" data-i18n="full-name">Full Name</label>
-    <input class="form-control form-control-lg liquid-input" id="register-fullname" name="register-fullname" type="text" autocomplete="name" placeholder="R*** D****" aria-label=".form-control-lg example" />
-</div>
 <div class="row">
+    <div class="mb-3">
+        <label class="form-label" data-i18n="full-name">Full Name</label>
+        <input class="form-control form-control-lg liquid-input" id="register-fullname" name="register-fullname" type="text" autocomplete="name" placeholder="R*** D****" aria-label=".form-control-lg example" />
+    </div>
     <div class="col-12 col-sm-6 mb-3">
         <label class="form-label" data-i18n="dob">Date of Birth</label>
         <input type="date" class="form-control form-control-lg liquid-input liquid-date" id="register-dob" name="register-dob" placeholder="dd-mm-yyyy" lang="id-ID" />
@@ -1426,10 +1426,10 @@
             <ul class="dropdown-menu js-postcode-menu" role="listbox"></ul>
         </div>
     </div>
-</div>
-<div class="mb-3">
-    <label class="form-label" data-i18n="Address">Address</label>
-    <textarea class="form-control form-control-lg liquid-input" id="register-address" placeholder="Pa*** No. ***, J***" aria-label="Residential address" rows="3" autocomplete="street-address" maxlength="255"></textarea>
+    <div class="mb-3">
+        <label class="form-label" data-i18n="Address">Address</label>
+        <textarea class="form-control form-control-lg liquid-input" id="register-address" placeholder="Pa*** No. ***, J***" aria-label="Residential address" rows="3" autocomplete="street-address" maxlength="255"></textarea>
+    </div>
 </div>
             `;
             contentHTML = createModal(
