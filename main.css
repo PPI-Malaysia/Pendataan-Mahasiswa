@@ -601,10 +601,7 @@ small::after {
 }
 
 .modal-dialog-setting {
-    display: grid;
-    grid-template-rows: 1fr auto; /* top spacer, then content */
-    row-gap: 16px; /* the “+16px” */
-    max-block-size: 85dvh;
+    max-height: 85vh;
     overflow: hidden;
     overflow-y: scroll;
     -ms-overflow-style: none;
@@ -1147,16 +1144,6 @@ small::after {
     }
     .modal.fade.show .modal-content {
         transform: translateY(0) !important; /* animate into view */
-    }
-    .modal-dialog.modal-bottom {
-        margin: 0;
-        align-items: flex-end;
-    }
-    .modal-dialog.modal-bottom .modal-scroll {
-        max-height: 85vh;
-        overflow-y: auto;
-        overflow-x: hidden;
-        padding-bottom: 1.5rem; /* keeps footer visible */
     }
 }
 .app-row {
