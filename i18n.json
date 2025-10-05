@@ -65,7 +65,8 @@
         "btn-not-me": "Tidak, itu bukan aku",
         "exist-student-desc": "Sepertinya data kamu sudah ada dalam sistem kami",
         "exist-student": "Data kamu sudah terdaftar",
-        "whole": "Catatan: Kamu harus isi semua informasi dibawah!"
+        "whole": "Catatan: Kamu harus isi semua informasi dibawah!",
+        "add": "Tambah"
     },
     "EN": {
         "header-title": "Indonesian Student Registration in Malaysia",
@@ -133,6 +134,7 @@
         "btn-me": "Yes, That's me",
         "exist-student": "Existing Registration Found!",
         "exist-student-desc": "It looks like we had stored your data before.",
-        "whole": "Note: You need to fill whole information below!"
+        "whole": "Note: You need to fill whole information below!",
+        "add": "Add"
     }
 }

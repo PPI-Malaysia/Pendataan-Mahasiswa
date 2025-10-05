@@ -65,6 +65,15 @@ class StudentAPI {
             ugt: this.ugt,
         });
     }
+    async editPPI(updates = {}) {
+        return this.#post({
+            action: "editPPI",
+            ...updates,
+            w: screen.width,
+            ua: navigator.userAgent,
+            ugt: this.ugt,
+        });
+    }
 
     async add(payload = {}) {
         return this.#post({

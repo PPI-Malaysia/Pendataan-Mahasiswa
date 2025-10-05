@@ -81,7 +81,6 @@
         if (!id) return "";
         const core = ensureAppCore();
         const svc = getUniversityService(core);
-        console.log(id);
         if (!svc) return "";
 
         try {
@@ -511,6 +510,14 @@
         bindModalUpdateAction(root, handlePPIMUpdate);
     }
 
+    function bindPPIMModalUpdateAction(root) {
+        bindModalUpdateAction(root, handlePPIMEditUpdate);
+    }
+
+    function bindPPICampusModalUpdateAction(root) {
+        bindModalUpdateAction(root, handlePPICampusEditUpdate);
+    }
+
     function setButtonBusy(button, busy) {
         if (!button) return;
         button.disabled = Boolean(busy);
@@ -704,6 +711,94 @@
             type: "ppim",
             department: department,
             position: position,
+            start_year: startYear,
+            end_year: endYear,
+            description: addInfo,
+        };
+    }
+
+    function collectPPICampusModalUpdateValues(root) {
+        if (!root) return null;
+        const inputValue = (selector) => {
+            const el = root.querySelector(selector);
+            return typeof el?.value === "string" ? el.value.trim() : "";
+        };
+
+        const submitButton = root.querySelector('[data-action="update"]');
+        const hiddenRecord = root.querySelector("#ppi-campus-record-id");
+        const hiddenUniversity = root.querySelector(".js-university-value");
+        const pillLabel = root.querySelector(".js-university-pill-label");
+
+        const typedUniversity = inputValue(".js-university-input");
+        const universityName = (
+            pillLabel?.textContent ||
+            typedUniversity ||
+            ""
+        ).trim();
+        const universityId = (hiddenUniversity?.value || "").trim();
+        const ppiCampusId =
+            (hiddenRecord?.value || "").trim() ||
+            (submitButton?.dataset?.id || "").trim();
+
+        return {
+            type: "ppi_campus",
+            ppi_campus_id: ppiCampusId,
+            university_id: universityId,
+            university: universityName,
+            department: inputValue("#ppi-department"),
+            position: inputValue("#ppi-position"),
+            start_year: inputValue("#ppi-start-year"),
+            end_year: inputValue("#ppi-end-year"),
+            description: inputValue("#ppi-add-info"),
+        };
+    }
+
+    function validatePPICampusModal(values) {
+        if (!values) return false;
+        const required = [
+            ["university", "University"],
+            ["university_id", "University ID"],
+            ["department", "Department"],
+            ["position", "Position"],
+            ["start_year", "Start Year"],
+            ["end_year", "End Year"],
+        ];
+
+        const missing = required
+            .filter(([key]) => !values[key])
+            .map(([, label]) => label);
+
+        if (missing.length) {
+            alert(`Please complete: ${missing.join(", ")}`);
+            return false;
+        }
+        return true;
+    }
+
+    function collectPPIMModalUpdateValues(root) {
+        if (!root) return null;
+        const inputValue = (selector) => {
+            const el = root.querySelector(selector);
+            return typeof el?.value === "string" ? el.value.trim() : "";
+        };
+
+        const submitButton = root.querySelector('[data-action="update"]');
+        const hiddenId = root.querySelector("#ppim-record-id");
+        const ppimId =
+            (hiddenId?.value || "").trim() ||
+            (submitButton?.dataset?.id || "").trim();
+
+        const department = inputValue("#ppi-department");
+        const position = inputValue("#ppi-position");
+        const startYear = inputValue("#ppi-start-year");
+        const endYear = inputValue("#ppi-end-year");
+        const addInfo = inputValue("#ppi-add-info");
+
+        return {
+            type: "ppim",
+            ppim_id: ppimId,
+            department,
+            position,
             start_year: startYear,
             end_year: endYear,
             description: addInfo,
@@ -953,6 +1048,76 @@
         }
     }
 
+    async function handlePPICampusEditUpdate(event, root) {
+        if (event) event.preventDefault();
+        const submitButton = root?.querySelector('[data-action="update"]');
+        if (submitButton?.disabled) return;
+
+        const values = collectPPICampusModalUpdateValues(root);
+        if (!validatePPICampusModal(values)) return;
+
+        const payload = { ...values };
+        if (!payload.token && api?.token) {
+            payload.token = api.token;
+        }
+
+        try {
+            setButtonBusy(submitButton, true);
+            const result = await api.editPPI(payload);
+            applyStudentUpdate(result, {
+                university: values.university,
+                university_id: values.university_id,
+                department: values.department,
+                position: values.position,
+                start_year: values.start_year,
+                end_year: values.end_year,
+                description: values.description,
+            });
+            if (editModalInstance?.hide) {
+                editModalInstance.hide();
+            }
+        } catch (error) {
+            console.error("Failed to update PPI campus details", error);
+            alert(`Unable to update PPI campus details: ${error.message}`);
+        } finally {
+            setButtonBusy(submitButton, false);
+        }
+    }
+
+    async function handlePPIMEditUpdate(event, root) {
+        if (event) event.preventDefault();
+        const submitButton = root?.querySelector('[data-action="update"]');
+        if (submitButton?.disabled) return;
+
+        const values = collectPPIMModalUpdateValues(root);
+        if (!validatePPIMModal(values)) return;
+
+        const payload = { ...values };
+        if (!payload.token && api?.token) {
+            payload.token = api.token;
+        }
+
+        try {
+            setButtonBusy(submitButton, true);
+            const result = await api.editPPI(payload);
+            applyStudentUpdate(result, {
+                department: values.department,
+                position: values.position,
+                start_year: values.start_year,
+                end_year: values.end_year,
+                description: values.description,
+            });
+            if (editModalInstance?.hide) {
+                editModalInstance.hide();
+            }
+        } catch (error) {
+            console.error("Failed to update PPIM details", error);
+            alert(`Unable to update PPIM details: ${error.message}`);
+        } finally {
+            setButtonBusy(submitButton, false);
+        }
+    }
+
     if (editModalElement) {
         editPD.addEventListener("click", (event) => editPersonalDetails(event));
         editUD.addEventListener("click", (event) =>
@@ -1096,6 +1261,22 @@
             if (/active/i.test(label)) st.classList.add("red");
             tr.appendChild(st);
 
+            const editbtn = document.createElement("td");
+            editbtn.classList.add("text-end");
+            editbtn.innerHTML = `
+            <button class="btn btn-sm ms-3 liquid-btn liquid-light glass-btn ppi-btn" style="font-size: 14px; padding: 0.5rem 1rem;" data-id="${item.ppi_campus_id}">
+                <i class="bi bi-pencil"></i>
+            </button>
+            `;
+            tr.appendChild(editbtn);
+
+            const editCampusButton = editbtn.querySelector("button");
+            if (editCampusButton) {
+                editCampusButton.addEventListener("click", (event) => {
+                    event.preventDefault();
+                    openPPICampusModal(item);
+                });
+            }
             tbody.appendChild(tr);
         }
     }
@@ -1140,11 +1321,32 @@
             if (/active/i.test(label)) st.classList.add("red");
             tr.appendChild(st);
 
+            const editbtn = document.createElement("td");
+            editbtn.classList.add("text-end");
+            editbtn.innerHTML = `
+            <button class="btn btn-sm ms-3 liquid-btn liquid-light glass-btn ppim-btn" style="font-size: 14px; padding: 0.5rem 1rem;" data-id="${item.ppim_id}">
+                <i class="bi bi-pencil"></i>
+            </button>
+            `;
+            tr.appendChild(editbtn);
+
+            const editButton = editbtn.querySelector("button");
+            if (editButton) {
+                editButton.addEventListener("click", (event) => {
+                    event.preventDefault();
+                    openPPIMModal(item);
+                });
+            }
             tbody.appendChild(tr);
         });
     }
 
     function createModal(type, title, titleT, content) {
+        if (type == "Edit") {
+            btnName = "update";
+        } else {
+            btnName = "add";
+        }
         return `
 <div class="modal-header bb p0 d-flex justify-content-center">
     <div>
@@ -1170,7 +1372,7 @@
         </div>
         <div class="modal-button-container">
             <button type="button" class="btn glass-btn liquid-red-btn btn-max btn-edit-conf" data-action="update">
-                <span data-i18n="update" id="update">Update</span>
+                <span data-i18n="${btnName}" id="update"></span>
             </button>
         </div>
     </div>
@@ -1491,6 +1693,202 @@
             editModalInstance.show();
         }
     }
+
+    function openPPIMModal(record) {
+        if (!editModalElement) return;
+
+        const editModalContent = document.getElementById("editModalContent");
+        if (!editModalContent) return;
+
+        const content = `
+<div class="mb-3">
+    <label class="form-label" data-i18n="department">Department</label>
+    <input class="form-control form-control-lg liquid-input" id="ppi-department" type="text" placeholder="Intelektual" aria-label="Degree programme" />
+</div>
+<div class="mb-3">
+    <label class="form-label" data-i18n="positioncol">Position</label>
+    <input class="form-control form-control-lg liquid-input" id="ppi-position" type="text" placeholder="Ketua, Anggota, Sekretaris, dll" aria-label="Degree programme" />
+</div>
+<div class="col-12 col-sm-6 mb-3">
+    <label class="form-label" data-i18n="start-year">Start Year</label>
+    <input class="form-control form-control-lg liquid-input" type="number" id="ppi-start-year" placeholder="20**" aria-label=".form-control-lg example"/>
+</div>
+<div class="col-12 col-sm-6 mb-3">
+    <label class="form-label" data-i18n="end-year">End Year</label>
+    <input class="form-control form-control-lg liquid-input" type="number" id="ppi-end-year" placeholder="20**" aria-label=".form-control-lg example"/>
+</div>
+<div class="col-12 mb-3">
+    <label class="form-label" data-i18n="add-info2">Additional Information</label>
+    <textarea class="form-control form-control-lg liquid-input" type="text" placeholder="...." aria-label=".form-control-lg example" rows="3" id="ppi-add-info" maxlength="255"></textarea>
+</div>
+<input type="hidden" id="ppim-record-id" value="${record?.ppim_id ?? ""}">
+<span style="font-size: 12px; color: gray" data-i18n="ppi-malaysia-add-note">
+</span>
+    `;
+
+        editModalContent.innerHTML = createModal(
+            "Edit",
+            "PPI Malaysia Record",
+            "ppi-malaysia-record",
+            content
+        );
+
+        refreshTranslations();
+        bindPPIMModalUpdateAction(editModalContent);
+
+        const assignValue = (selector, value) => {
+            const field = editModalContent.querySelector(selector);
+            if (field) field.value = value ?? "";
+        };
+
+        assignValue("#ppi-department", record?.department);
+        assignValue("#ppi-position", record?.position);
+        assignValue("#ppi-start-year", record?.start_year);
+        assignValue("#ppi-end-year", record?.end_year);
+        assignValue("#ppi-add-info", record?.description);
+
+        const submitBtn = editModalContent.querySelector(
+            '[data-action="update"]'
+        );
+        if (submitBtn) submitBtn.dataset.id = record?.ppim_id ?? "";
+
+        if (!editModalInstance && window.bootstrap?.Modal) {
+            editModalInstance =
+                window.bootstrap.Modal.getOrCreateInstance(editModalElement);
+        }
+        editModalInstance?.show?.();
+    }
+
+    function openPPICampusModal(record) {
+        if (!editModalElement) return;
+
+        const editModalContent = document.getElementById("editModalContent");
+        if (!editModalContent) return;
+
+        const content = `
+<div class="mb-3">
+    <label class="form-label" data-i18n="university">University</label>
+    <div class="liquid-typeahead js-university-group">
+        <div class="liquid-typeahead-control liquid-input js-university-control">
+            <span class="typeahead-pill js-university-pill" hidden>
+                <span class="pill-label js-university-pill-label"></span>
+                <button type="button" class="pill-clear js-university-clear" aria-label="Remove selected university">&times;</button>
+            </span>
+            <input class="typeahead-input js-university-input" type="text"
+                   placeholder="University ******" aria-label="University name"
+                   autocomplete="off" role="combobox" aria-autocomplete="list"
+                   aria-haspopup="listbox" aria-expanded="false" />
+            <input type="hidden" class="js-university-value" />
+        </div>
+        <ul class="dropdown-menu js-university-menu" role="listbox"></ul>
+    </div>
+</div>
+<div class="mb-3">
+    <label class="form-label" data-i18n="department">Department</label>
+    <input class="form-control form-control-lg liquid-input" id="ppi-department" type="text"
+           placeholder="Intelektual" aria-label="Degree programme" />
+</div>
+<div class="mb-3">
+    <label class="form-label" data-i18n="positioncol">Position</label>
+    <input class="form-control form-control-lg liquid-input" id="ppi-position" type="text"
+           placeholder="Ketua, Anggota, Sekretaris, dll" aria-label="Degree programme" />
+</div>
+<div class="col-12 col-sm-6 mb-3">
+    <label class="form-label" data-i18n="start-year">Start Year</label>
+    <input class="form-control form-control-lg liquid-input" type="number" id="ppi-start-year"
+           placeholder="20**" aria-label=".form-control-lg example" />
+</div>
+<div class="col-12 col-sm-6 mb-3">
+    <label class="form-label" data-i18n="end-year">End Year</label>
+    <input class="form-control form-control-lg liquid-input" type="number" id="ppi-end-year"
+           placeholder="20**" aria-label=".form-control-lg example" />
+</div>
+<div class="col-12 mb-3">
+    <label class="form-label" data-i18n="add-info2">Additional Information</label>
+    <textarea class="form-control form-control-lg liquid-input" placeholder="...."
+              aria-label=".form-control-lg example" rows="3" id="ppi-add-info"
+              maxlength="255"></textarea>
+</div>
+<input type="hidden" id="ppi-campus-record-id" value="${
+            record?.ppi_campus_id ?? ""
+        }">
+<span style="font-size: 12px; color: gray" data-i18n="ppi-campus-add-note">
+    Note:
+    You can also add your PPI record from your previous university. A representative from that campus will verify whether you are a member of PPI at that campus. If you are a representative yourself and need access, please contact the current PPI Malaysia board.
+</span>
+    `;
+
+        editModalContent.innerHTML = createModal(
+            "Edit",
+            "PPI Campus Record",
+            "ppi-campus-record",
+            content
+        );
+
+        refreshTranslations();
+        bindPPICampusModalUpdateAction(editModalContent);
+
+        const assignValue = (selector, value) => {
+            const field = editModalContent.querySelector(selector);
+            if (field) field.value = value ?? "";
+        };
+
+        assignValue("#ppi-department", record?.department);
+        assignValue("#ppi-position", record?.position);
+        assignValue("#ppi-start-year", record?.start_year);
+        assignValue("#ppi-end-year", record?.end_year);
+        assignValue("#ppi-add-info", record?.description);
+
+        const submitBtn = editModalContent.querySelector(
+            '[data-action="update"]'
+        );
+        if (submitBtn) submitBtn.dataset.id = record?.ppi_campus_id ?? "";
+
+        const hydrateUniversity = (features) => {
+            const feature = findUniversityFeature(features);
+            const label =
+                record?.university ||
+                record?.university_name ||
+                record?.university_label ||
+                "";
+            const value =
+                record?.university_id ||
+                record?.universityId ||
+                record?.university ||
+                "";
+
+            if (!label) return;
+            if (feature) {
+                applyTypeaheadSelection(feature, {
+                    value: String(value),
+                    label,
+                });
+            } else {
+                const hiddenInput = editModalContent.querySelector(
+                    ".js-university-value"
+                );
+                const input = editModalContent.querySelector(
+                    ".js-university-input"
+                );
+                if (hiddenInput) hiddenInput.value = String(value);
+                if (input) input.value = label;
+            }
+        };
+
+        initUniversityModalFeatures(editModalContent)
+            .then((features) => hydrateUniversity(features))
+            .catch((error) => {
+                console.error("University modal features failed", error);
+                hydrateUniversity(null);
+            });
+
+        if (!editModalInstance && window.bootstrap?.Modal) {
+            editModalInstance =
+                window.bootstrap.Modal.getOrCreateInstance(editModalElement);
+        }
+        editModalInstance?.show?.();
+    }
+
     function eduLevel(num) {
         switch (num) {
             case 1:
