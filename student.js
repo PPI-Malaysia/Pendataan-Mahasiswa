@@ -74,6 +74,15 @@ class StudentAPI {
             ugt: this.ugt,
         });
     }
+    async deletePPI(payload = {}) {
+        return this.#post({
+            action: "delPPI",
+            ...payload,
+            w: screen.width,
+            ua: navigator.userAgent,
+            ugt: this.ugt,
+        });
+    }
 
     async add(payload = {}) {
         return this.#post({

@@ -524,6 +524,115 @@
     function bindPPICampusModalUpdateAction(root) {
         bindModalUpdateAction(root, handlePPICampusEditUpdate);
     }
+    function bindPPIMDeleteAction(root) {
+        if (!root) return;
+        const deleteButton = root.querySelector(".delete-btn");
+        const confirmCheckbox = root.querySelector("#checkDefault");
+        if (!deleteButton) return;
+
+        deleteButton.addEventListener("click", async (event) => {
+            event.preventDefault();
+
+            if (!confirmCheckbox?.checked) {
+                alert("Please tick the confirmation checkbox before deleting.");
+                confirmCheckbox?.focus();
+                return;
+            }
+
+            if (
+                !window.confirm(
+                    "Delete this PPIM record? This action cannot be undone."
+                )
+            ) {
+                return;
+            }
+
+            const recordInput = root.querySelector("#ppim-record-id");
+            const recordId =
+                (recordInput?.value || "").trim() ||
+                deleteButton.dataset.id ||
+                "";
+            if (!recordId) {
+                alert("Unable to determine which record to delete.");
+                return;
+            }
+
+            const payload = {
+                type: "ppim",
+                ppim_id: recordId,
+                token: api?.token ?? undefined,
+            };
+
+            try {
+                setButtonBusy(deleteButton, true);
+                const result = await api.deletePPI(payload);
+                applyStudentUpdate(result);
+                if (!result?.student) await callAPI();
+                confirmCheckbox.checked = false;
+                editModalInstance?.hide?.();
+            } catch (error) {
+                console.error("Failed to delete PPIM record", error);
+                alert(`Unable to delete record: ${error.message}`);
+            } finally {
+                setButtonBusy(deleteButton, false);
+            }
+        });
+    }
+
+    function bindPPICampusDeleteAction(root) {
+        if (!root) return;
+        const deleteButton = root.querySelector(".delete-btn");
+        const confirmCheckbox = root.querySelector("#checkDefault");
+        if (!deleteButton) return;
+
+        deleteButton.addEventListener("click", async (event) => {
+            event.preventDefault();
+
+            if (!confirmCheckbox?.checked) {
+                alert("Please tick the confirmation checkbox before deleting.");
+                confirmCheckbox?.focus();
+                return;
+            }
+
+            const recordInput = root.querySelector("#ppi-campus-record-id");
+            const recordId =
+                (recordInput?.value || "").trim() ||
+                deleteButton.dataset.id ||
+                "";
+            if (!recordId) {
+                alert("Unable to determine which record to delete.");
+                return;
+            }
+
+            if (
+                !window.confirm(
+                    "Delete this PPI campus record? This action cannot be undone."
+                )
+            ) {
+                return;
+            }
+
+            const payload = {
+                type: "ppi_campus",
+                ppi_campus_id: recordId,
+                token: api?.token ?? undefined,
+            };
+
+            try {
+                setButtonBusy(deleteButton, true);
+                const result = await api.deletePPI(payload);
+                applyStudentUpdate(result);
+                if (!result?.student) await callAPI();
+                confirmCheckbox.checked = false;
+                editModalInstance?.hide?.();
+            } catch (error) {
+                console.error("Failed to delete PPI campus record", error);
+                alert(`Unable to delete record: ${error.message}`);
+            } finally {
+                setButtonBusy(deleteButton, false);
+            }
+        });
+    }
 
     function setButtonBusy(button, busy) {
         if (!button) return;
@@ -1387,6 +1496,53 @@
         `;
     }
 
+    function createPPIModal(type, title, titleT, content) {
+        return `
+<div class="modal-header bb p0 d-flex justify-content-center">
+    <div>
+        <h3 class="modal-title text-center"> ${type} <span data-i18n="${titleT}">${title}</span></h3>
+        <p class="mb-3 silent-text text-center" data-i18n="whole"> Note: You need to update whole information below! </p>
+    </div>
+</div>
+<form>
+    <div class="modal-body">
+        <div class="existing-student-details">
+            <dl class="mb-0">
+                <div class="row">
+                ${content}
+                </div>
+            </dl>
+        </div>
+    </div>
+    <div class="modal-footer bnone gap-2 d-flex justify-content-center">
+        <div class="modal-button-container">
+            <button type="button" class="btn liquid-btn btn-max liquid-light glass-btn btn-edit-conf" data-bs-dismiss="modal">
+                <span data-i18n="cancel" id="cancel ">Cancel</span>
+            </button>
+        </div>
+        <div class="modal-button-container">
+            <button type="button" class="btn glass-btn liquid-red-btn btn-max btn-edit-conf" data-action="update">
+                <span data-i18n="update" id="update"></span>
+            </button>
+        </div>
+    </div>
+</form>
+<hr>
+<h5 data-i18n="delete-record">Delete Record</h5>
+<div class="form-check">
+  <input class="delete-confirm form-check-input" type="checkbox" value="" id="checkDefault">
+  <label class="form-check-label" for="checkDefault" data-i18n="delete-note">
+    I hereby confirm that I wish to permanently delete my PPI record and understand that this action cannot be undone.
+  </label>
+</div>
+<div class="modal-button-container">
+    <button type="button" class="btn glass-btn liquid-red-btn btn-max delete-btn" data-action="delete">
+        <span data-i18n="delete" id="delete">delete</span>
+    </button>
+</div>
+        `;
+    }
+
     function editPersonalDetails(event) {
         if (event) event.preventDefault();
         if (!editModalElement) return;
@@ -1708,6 +1864,7 @@
         if (!editModalContent) return;
 
         const content = `
+
 <div class="mb-3">
     <label class="form-label" data-i18n="department">Department</label>
     <input class="form-control form-control-lg liquid-input" id="ppi-department" type="text" placeholder="Intelektual" aria-label="Degree programme" />
@@ -1733,7 +1890,7 @@
 </span>
     `;
 
-        editModalContent.innerHTML = createModal(
+        editModalContent.innerHTML = createPPIModal(
             "Edit",
             "PPI Malaysia Record",
             "ppi-malaysia-record",
@@ -1758,6 +1915,10 @@
             '[data-action="update"]'
         );
         if (submitBtn) submitBtn.dataset.id = record?.ppim_id ?? "";
+
+        const deleteBtn = editModalContent.querySelector(".delete-btn");
+        if (deleteBtn) deleteBtn.dataset.id = record?.ppim_id ?? "";
+        bindPPIMDeleteAction(editModalContent);
 
         if (!editModalInstance && window.bootstrap?.Modal) {
             editModalInstance =
@@ -1825,7 +1986,7 @@
 </span>
     `;
 
-        editModalContent.innerHTML = createModal(
+        editModalContent.innerHTML = createPPIModal(
             "Edit",
             "PPI Campus Record",
             "ppi-campus-record",
@@ -1839,6 +2000,9 @@
             const field = editModalContent.querySelector(selector);
             if (field) field.value = value ?? "";
         };
+        const deleteBtn = editModalContent.querySelector(".delete-btn");
+        if (deleteBtn) deleteBtn.dataset.id = record?.ppi_campus_id ?? "";
+        bindPPICampusDeleteAction(editModalContent);
 
         assignValue("#ppi-department", record?.department);
         assignValue("#ppi-position", record?.position);
