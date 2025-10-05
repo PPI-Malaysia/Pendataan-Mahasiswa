@@ -1387,7 +1387,6 @@
         const editModalContent = document.getElementById("editModalContent");
         if (editModalContent) {
             const content = `
-<div class="row">
     <div class="mb-3">
         <label class="form-label" data-i18n="full-name">Full Name</label>
         <input class="form-control form-control-lg liquid-input" id="register-fullname" name="register-fullname" type="text" autocomplete="name" placeholder="R*** D****" aria-label=".form-control-lg example" />
@@ -1430,7 +1429,6 @@
         <label class="form-label" data-i18n="Address">Address</label>
         <textarea class="form-control form-control-lg liquid-input" id="register-address" placeholder="Pa*** No. ***, J***" aria-label="Residential address" rows="3" autocomplete="street-address" maxlength="255"></textarea>
     </div>
-</div>
             `;
             contentHTML = createModal(
                 "Edit",
