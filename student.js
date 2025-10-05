@@ -41,7 +41,7 @@ class StudentAPI {
             phone_number,
             university_id,
             university,
-            w: window.innerWidth,
+            w: screen.width,
             ua: navigator.userAgent,
             ugt: this.ugt,
         });
@@ -51,7 +51,7 @@ class StudentAPI {
         return this.#post({
             action: "get",
             token: this.token,
-            w: window.innerWidth,
+            w: screen.width,
             ua: navigator.userAgent,
             ugt: this.ugt,
         });
@@ -60,7 +60,7 @@ class StudentAPI {
         return this.#post({
             action: "edit",
             ...updates,
-            w: window.innerWidth,
+            w: screen.width,
             ua: navigator.userAgent,
             ugt: this.ugt,
         });
@@ -70,7 +70,16 @@ class StudentAPI {
         return this.#post({
             action: "add",
             ...payload,
-            w: window.innerWidth,
+            w: screen.width,
+            ua: navigator.userAgent,
+            ugt: this.ugt,
+        });
+    }
+    async addPPI(payload = {}) {
+        return this.#post({
+            action: "addPPI",
+            ...payload,
+            w: screen.width,
             ua: navigator.userAgent,
             ugt: this.ugt,
         });

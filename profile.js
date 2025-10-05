@@ -14,6 +14,8 @@
 
     const editPD = document.getElementById("editPersonalDetails");
     const editUD = document.getElementById("editUniversityDetails");
+    const addPPI = document.getElementById("addPPICampusRecord");
+    const addPPIM = document.getElementById("addPPIMRecord");
     const editModalElement = document.getElementById("editModal");
     let editModalInstance;
 
@@ -73,6 +75,29 @@
             universityService = new core.UniversitiesService();
         }
         return universityService;
+    }
+
+    async function resolveUniversityLabelById(id) {
+        if (!id) return "";
+        const core = ensureAppCore();
+        const svc = getUniversityService(core);
+        console.log(id);
+        if (!svc) return "";
+
+        try {
+            if (typeof svc.getById === "function") {
+                const row = await svc.getById(String(id));
+                return row?.name || row?.university || "";
+            }
+            const rows = (await svc.getAll?.()) || [];
+            const m = rows.find(
+                (r) => String(r.id ?? r.university_id) === String(id)
+            );
+            return m?.name || m?.university_name || m?.label || "";
+        } catch (e) {
+            console.warn("resolveUniversityLabelById failed", e);
+            return "";
+        }
     }
 
     async function initPhoneSelectors(root) {
@@ -478,6 +503,14 @@
         bindModalUpdateAction(root, handleUniversityUpdate);
     }
 
+    function bindPPIModalActions(root) {
+        bindModalUpdateAction(root, handlePPIUpdate);
+    }
+
+    function bindPPIMModalActions(root) {
+        bindModalUpdateAction(root, handlePPIMUpdate);
+    }
+
     function setButtonBusy(button, busy) {
         if (!button) return;
         button.disabled = Boolean(busy);
@@ -497,7 +530,22 @@
 
         const fullName = inputValue("#register-fullname");
         const dob = inputValue("#register-dob");
-        const passport = inputValue("#register-passport");
+
+        const passportInput = root.querySelector("#register-passport");
+        const passportRaw = inputValue("#register-passport");
+        const passport = passportRaw.toUpperCase();
+        if (passportInput) passportInput.value = passport;
+
+        const emailInput = root.querySelector("#register-email");
+        const emailRaw = inputValue("#register-email");
+        const fallbackEmail =
+            typeof currentStudent?.email === "string"
+                ? currentStudent.email.trim()
+                : "";
+        const email = emailRaw || fallbackEmail;
+        if (emailInput && !emailRaw && fallbackEmail) {
+            emailInput.value = fallbackEmail;
+        }
 
         const phoneInput = root.querySelector("#register-phone");
         const prefixButton = root.querySelector(".js-phone-prefix");
@@ -526,6 +574,7 @@
             fullname: fullName,
             dob,
             passport,
+            email,
             phone_number: phoneNumber,
             phone: phoneNumber,
             postcode: postcodeId,
@@ -540,6 +589,7 @@
             ["fullname", "Full Name"],
             ["dob", "Date of Birth"],
             ["passport", "Passport Number"],
+            ["email", "Email"],
             ["phone_number", "Phone Number"],
             ["postcode_id", "Postcode"],
             ["address", "Address"],
@@ -551,6 +601,20 @@
 
         if (missing.length) {
             alert(`Please complete: ${missing.join(", ")}`);
+            return false;
+        }
+
+        const passportPattern = /^[A-Z][0-9]{7}$/;
+        if (!passportPattern.test(values.passport || "")) {
+            alert(
+                "Invalid Indonesian passport format. Required: 1 uppercase letter + 7 digits (e.g., A1234567)"
+            );
+            return false;
+        }
+
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailPattern.test(values.email || "")) {
+            alert("Email invalid. Please enter a valid email address.");
             return false;
         }
         return true;
@@ -591,6 +655,61 @@
         };
     }
 
+    function collectPPIModalValues(root) {
+        if (!root) return null;
+        const inputValue = (selector) => {
+            const el = root.querySelector(selector);
+            return typeof el?.value === "string" ? el.value.trim() : "";
+        };
+
+        const hiddenUniversity = inputValue(".js-university-value");
+        const pillLabel = root.querySelector(".js-university-pill-label");
+        const typedUniversity = inputValue(".js-university-input");
+        const universityName = (
+            pillLabel?.textContent ||
+            typedUniversity ||
+            ""
+        ).trim();
+        const department = inputValue("#ppi-department");
+        const position = inputValue("#ppi-position");
+        const startYear = inputValue("#ppi-start-year");
+        const endYear = inputValue("#ppi-end-year");
+        const addInfo = inputValue("#ppi-add-info");
+
+        return {
+            type: "ppi_campus",
+            university_id: hiddenUniversity || "",
+            university: universityName,
+            department: department,
+            position: position,
+            start_year: startYear,
+            end_year: endYear,
+            description: addInfo,
+        };
+    }
+
+    function collectPPIMModalValues(root) {
+        if (!root) return null;
+        const inputValue = (selector) => {
+            const el = root.querySelector(selector);
+            return typeof el?.value === "string" ? el.value.trim() : "";
+        };
+        const department = inputValue("#ppi-department");
+        const position = inputValue("#ppi-position");
+        const startYear = inputValue("#ppi-start-year");
+        const endYear = inputValue("#ppi-end-year");
+        const addInfo = inputValue("#ppi-add-info");
+
+        return {
+            type: "ppim",
+            department: department,
+            position: position,
+            start_year: startYear,
+            end_year: endYear,
+            description: addInfo,
+        };
+    }
+
     function validateUniversityModal(values) {
         if (!values) return false;
         const required = [
@@ -599,6 +718,48 @@
             ["education_programme", "Degree Programme"],
             ["education_level", "Current Education Level"],
             ["education_graduation", "Expected Graduation Date"],
+        ];
+
+        const missing = required
+            .filter(([key]) => !values[key])
+            .map(([, label]) => label);
+
+        if (missing.length) {
+            alert(`Please complete: ${missing.join(", ")}`);
+            return false;
+        }
+        return true;
+    }
+
+    function validatePPIModal(values) {
+        if (!values) return false;
+        const required = [
+            ["university", "University"],
+            ["university_id", "University ID"],
+            ["department", "Department"],
+            ["position", "position"],
+            ["start_year", "Start Year"],
+            ["end_year", "End Year"],
+        ];
+
+        const missing = required
+            .filter(([key]) => !values[key])
+            .map(([, label]) => label);
+
+        if (missing.length) {
+            alert(`Please complete: ${missing.join(", ")}`);
+            return false;
+        }
+        return true;
+    }
+
+    function validatePPIMModal(values) {
+        if (!values) return false;
+        const required = [
+            ["department", "Department"],
+            ["position", "position"],
+            ["start_year", "Start Year"],
+            ["end_year", "End Year"],
         ];
 
         const missing = required
@@ -664,6 +825,7 @@
                 fullname: values.fullname,
                 dob: values.dob,
                 passport: values.passport,
+                email: values.email,
                 phone: values.phone_number,
                 phone_number: values.phone_number,
                 address: values.address,
@@ -721,11 +883,83 @@
         }
     }
 
+    async function handlePPIUpdate(event, root) {
+        if (event) event.preventDefault();
+        const submitButton = root?.querySelector('[data-action="update"]');
+        if (submitButton?.disabled) return;
+
+        const values = collectPPIModalValues(root);
+        if (!validatePPIModal(values)) return;
+
+        const payload = { ...values };
+        if (!payload.token && api?.token) {
+            payload.token = api.token;
+        }
+
+        try {
+            setButtonBusy(submitButton, true);
+            const result = await api.addPPI(payload);
+            applyStudentUpdate(result, {
+                university: values.university,
+                university_id: values.university_id,
+                department: values.department,
+                position: values.position,
+                start_year: values.start_year,
+                end_year: values.end_year,
+                description: values.description,
+            });
+            if (editModalInstance?.hide) {
+                editModalInstance.hide();
+            }
+        } catch (error) {
+            console.error("Failed to update university details", error);
+            alert(`Unable to update university details: ${error.message}`);
+        } finally {
+            setButtonBusy(submitButton, false);
+        }
+    }
+
+    async function handlePPIMUpdate(event, root) {
+        if (event) event.preventDefault();
+        const submitButton = root?.querySelector('[data-action="update"]');
+        if (submitButton?.disabled) return;
+
+        const values = collectPPIMModalValues(root);
+        if (!validatePPIMModal(values)) return;
+
+        const payload = { ...values };
+        if (!payload.token && api?.token) {
+            payload.token = api.token;
+        }
+
+        try {
+            setButtonBusy(submitButton, true);
+            const result = await api.addPPI(payload);
+            applyStudentUpdate(result, {
+                department: values.department,
+                position: values.position,
+                start_year: values.start_year,
+                end_year: values.end_year,
+                description: values.description,
+            });
+            if (editModalInstance?.hide) {
+                editModalInstance.hide();
+            }
+        } catch (error) {
+            console.error("Failed to update university details", error);
+            alert(`Unable to update university details: ${error.message}`);
+        } finally {
+            setButtonBusy(submitButton, false);
+        }
+    }
+
     if (editModalElement) {
         editPD.addEventListener("click", (event) => editPersonalDetails(event));
         editUD.addEventListener("click", (event) =>
             editUniversityDetails(event)
         );
+        addPPI.addEventListener("click", (event) => addPPICampusRecord(event));
+        addPPIM.addEventListener("click", (event) => addPPIMRecord(event));
     }
     // ---- flow ----
     function run() {
@@ -814,7 +1048,57 @@
         el.textContent = textValue;
         el.classList.remove("red");
     }
+    async function renderPPITable(selector, records) {
+        const tbody = document.querySelector(
+            `[data-record-table="${selector}"]`
+        );
+        if (!tbody) return;
+        tbody.innerHTML = "";
 
+        if (!records.length) {
+            const tr = document.createElement("tr");
+            tr.className = "liquid-table-row";
+            const td = document.createElement("td");
+            td.colSpan = 5;
+            td.className = "text-center text-muted";
+            td.textContent = "No records available.";
+            tr.appendChild(td);
+            tbody.appendChild(tr);
+            return;
+        }
+
+        for (const item of records) {
+            const tr = document.createElement("tr");
+            tr.className = "liquid-table-row";
+
+            const uni = document.createElement("td");
+            const universityLabel =
+                item?.university ||
+                (await resolveUniversityLabelById(item?.university_id));
+            uni.textContent = text(universityLabel);
+            tr.appendChild(uni);
+
+            const dep = document.createElement("td");
+            dep.textContent = text(item?.department);
+            tr.appendChild(dep);
+
+            const pos = document.createElement("td");
+            pos.textContent = text(item?.position);
+            tr.appendChild(pos);
+
+            const year = document.createElement("td");
+            year.textContent = yearRange(item?.start_year, item?.end_year);
+            tr.appendChild(year);
+
+            const st = document.createElement("td");
+            const label = status(item?.status ?? item?.is_active);
+            st.textContent = label;
+            if (/active/i.test(label)) st.classList.add("red");
+            tr.appendChild(st);
+
+            tbody.appendChild(tr);
+        }
+    }
     function renderTable(selector, records) {
         const tbody = document.querySelector(
             `[data-record-table="${selector}"]`
@@ -856,65 +1140,15 @@
             if (/active/i.test(label)) st.classList.add("red");
             tr.appendChild(st);
 
-            const action = document.createElement("td");
-            action.className = "text-end";
-
-            const dropdown = document.createElement("div");
-            dropdown.className = "dropdown";
-
-            const toggle = document.createElement("button");
-            toggle.type = "button";
-            toggle.className = "btn btn-link p-0 text-decoration-none fs22b";
-            toggle.setAttribute("data-bs-toggle", "dropdown");
-            toggle.setAttribute("aria-expanded", "false");
-            toggle.setAttribute("aria-label", "Actions");
-
-            const icon = document.createElement("i");
-            icon.className = "bi bi-list";
-            toggle.appendChild(icon);
-
-            const menu = document.createElement("ul");
-            menu.className = "dropdown-menu dropdown-menu-end";
-
-            const addMenuItem = (label, actionName) => {
-                const li = document.createElement("li");
-                const btn = document.createElement("button");
-                btn.type = "button";
-                btn.className = "dropdown-item";
-                btn.dataset.action = actionName;
-                btn.textContent = label;
-                li.appendChild(btn);
-                menu.appendChild(li);
-            };
-
-            const rawStatus = item?.status ?? item?.is_active;
-            const statusValue =
-                typeof rawStatus === "number"
-                    ? rawStatus
-                    : typeof rawStatus === "string" && rawStatus.trim() !== ""
-                    ? parseInt(rawStatus, 10)
-                    : null;
-
-            if (statusValue === 3) {
-                addMenuItem("Re-verify", "reverify");
-            }
-            addMenuItem("Edit", "edit");
-            addMenuItem("Delete", "delete");
-
-            dropdown.appendChild(toggle);
-            dropdown.appendChild(menu);
-            action.appendChild(dropdown);
-            tr.appendChild(action);
-
             tbody.appendChild(tr);
         });
     }
 
-    function createModal(title, titleT, content) {
+    function createModal(type, title, titleT, content) {
         return `
 <div class="modal-header bb p0 d-flex justify-content-center">
     <div>
-        <h3 class="modal-title text-center"> Edit <span data-i18n="${titleT}">${title}</span></h3>
+        <h3 class="modal-title text-center"> ${type} <span data-i18n="${titleT}">${title}</span></h3>
         <p class="mb-3 silent-text text-center" data-i18n="whole"> Note: You need to update whole information below! </p>
     </div>
 </div>
@@ -971,7 +1205,11 @@
         <input class="form-control form-control-lg liquid-input js-phone-input" id="register-phone" name="register-phone" type="tel" placeholder="10********" autocomplete="tel-national" aria-label="Phone number without country code" />
     </div>
 </div>
-<div class="col-12 col-lg-6 mb-3">
+<div class="col-12 col-sm-6 mb-3">
+    <label class="form-label" data-i18n="email">Email</label>
+    <input class="form-control form-control-lg liquid-input" id="register-email" name="register-email" type="text" placeholder="xxx@gmail.com" aria-label=".form-control-lg example" />
+</div>
+<div class="col-12 mb-3">
     <label class="form-label" data-i18n="postkode">Postcode</label>
     <div class="liquid-typeahead js-postcode-group">
         <div class="liquid-typeahead-control liquid-input js-postcode-control">
@@ -991,6 +1229,7 @@
 </div>
             `;
             contentHTML = createModal(
+                "Edit",
                 "Personal Details",
                 "personal-details",
                 content
@@ -1061,6 +1300,7 @@
 </div>
             `;
             contentHTML = createModal(
+                "Edit",
                 "University Details",
                 "university-details",
                 content
@@ -1068,6 +1308,170 @@
             editModalContent.innerHTML = contentHTML;
             refreshTranslations();
             bindUniversityModalActions(editModalContent);
+            initUniversityModalFeatures(editModalContent)
+                .then((features) =>
+                    populateUniversityModal(editModalContent, features)
+                )
+                .catch((error) => {
+                    console.error("University modal features failed", error);
+                    populateUniversityModal(editModalContent);
+                });
+        }
+
+        if (!editModalInstance && window.bootstrap?.Modal) {
+            editModalInstance =
+                window.bootstrap.Modal.getOrCreateInstance(editModalElement);
+        }
+
+        if (editModalInstance?.show) {
+            editModalInstance.show();
+        }
+    }
+    function addPPICampusRecord(event) {
+        if (event) event.preventDefault();
+        if (!editModalElement) return;
+
+        const editModalContent = document.getElementById("editModalContent");
+        if (editModalContent) {
+            const content = `
+<div class="mb-3">
+    <label class="form-label" data-i18n="university">University</label>
+    <div class="liquid-typeahead js-university-group">
+        <div class="liquid-typeahead-control liquid-input js-university-control">
+            <span class="typeahead-pill js-university-pill" hidden>
+                <span class="pill-label js-university-pill-label"></span>
+                <button type="button" class="pill-clear js-university-clear" aria-label="Remove selected university"> &times; </button>
+            </span>
+            <input class="typeahead-input js-university-input" type="text" placeholder="University ******" name="login-university_name" aria-label="University name" autocomplete="off" role="combobox" aria-autocomplete="list" aria-haspopup="listbox" aria-expanded="false" />
+            <input type="hidden" class="js-university-value" name="login-university" />
+        </div>
+        <ul class="dropdown-menu js-university-menu" role="listbox"></ul>
+    </div>
+</div>
+<div class="mb-3">
+    <label class="form-label" data-i18n="department">Department</label>
+    <input class="form-control form-control-lg liquid-input" id="ppi-department" type="text" placeholder="Intelektual" aria-label="Degree programme" />
+</div>
+<div class="mb-3">
+    <label class="form-label" data-i18n="positioncol">Position</label>
+    <input class="form-control form-control-lg liquid-input" id="ppi-position" type="text" placeholder="Ketua, Anggota, Sekretaris, dll" aria-label="Degree programme" />
+</div>
+<div class="col-12 col-sm-6 mb-3">
+    <label class="form-label" data-i18n="start-year">Start Year</label>
+    <input class="form-control form-control-lg liquid-input" type="number" id="ppi-start-year" placeholder="20**" aria-label=".form-control-lg example"/>
+</div>
+<div class="col-12 col-sm-6 mb-3">
+    <label class="form-label" data-i18n="end-year">End Year</label>
+    <input class="form-control form-control-lg liquid-input" type="number" id="ppi-end-year" placeholder="20**" aria-label=".form-control-lg example"/>
+</div>
+<div class="col-12 mb-3">
+    <label
+        class="form-label"
+        data-i18n="add-info2"
+        >Additional Information</label
+    >
+    <textarea
+        class="form-control form-control-lg liquid-input"
+        type="text"
+        placeholder="...."
+        aria-label=".form-control-lg example"
+        rows="3"
+        id="ppi-add-info"
+        maxlength="255"
+    ></textarea>
+</div>
+<span
+    style="font-size: 12px; color: gray"
+    data-i18n="ppi-campus-add-note"
+>
+    Note: 
+    You can also add your PPI record from your previous university. A representative from that campus will verify whether you are a member of PPI at that campus. If you are a representative yourself and need access, please contact the current PPI Malaysia board.
+</span>
+            `;
+            contentHTML = createModal(
+                "",
+                "PPI Campus Record",
+                "ppi-campus-record",
+                content
+            );
+            editModalContent.innerHTML = contentHTML;
+            refreshTranslations();
+            bindPPIModalActions(editModalContent);
+            initUniversityModalFeatures(editModalContent)
+                .then((features) =>
+                    populateUniversityModal(editModalContent, features)
+                )
+                .catch((error) => {
+                    console.error("University modal features failed", error);
+                    populateUniversityModal(editModalContent);
+                });
+        }
+
+        if (!editModalInstance && window.bootstrap?.Modal) {
+            editModalInstance =
+                window.bootstrap.Modal.getOrCreateInstance(editModalElement);
+        }
+
+        if (editModalInstance?.show) {
+            editModalInstance.show();
+        }
+    }
+    function addPPIMRecord(event) {
+        if (event) event.preventDefault();
+        if (!editModalElement) return;
+
+        const editModalContent = document.getElementById("editModalContent");
+        if (editModalContent) {
+            const content = `
+<div class="mb-3">
+    <label class="form-label" data-i18n="department">Department</label>
+    <input class="form-control form-control-lg liquid-input" id="ppi-department" type="text" placeholder="Intelektual" aria-label="Degree programme" />
+</div>
+<div class="mb-3">
+    <label class="form-label" data-i18n="positioncol">Position</label>
+    <input class="form-control form-control-lg liquid-input" id="ppi-position" type="text" placeholder="Ketua, Anggota, Sekretaris, dll" aria-label="Degree programme" />
+</div>
+<div class="col-12 col-sm-6 mb-3">
+    <label class="form-label" data-i18n="start-year">Start Year</label>
+    <input class="form-control form-control-lg liquid-input" type="number" id="ppi-start-year" placeholder="20**" aria-label=".form-control-lg example"/>
+</div>
+<div class="col-12 col-sm-6 mb-3">
+    <label class="form-label" data-i18n="end-year">End Year</label>
+    <input class="form-control form-control-lg liquid-input" type="number" id="ppi-end-year" placeholder="20**" aria-label=".form-control-lg example"/>
+</div>
+<div class="col-12 mb-3">
+    <label
+        class="form-label"
+        data-i18n="add-info2"
+        >Additional Information</label
+    >
+    <textarea
+        class="form-control form-control-lg liquid-input"
+        type="text"
+        placeholder="...."
+        aria-label=".form-control-lg example"
+        rows="3"
+        id="ppi-add-info"
+        maxlength="255"
+    ></textarea>
+</div>
+<span
+    style="font-size: 12px; color: gray"
+    data-i18n="ppi-malaysia-add-note"
+>
+    Note: 
+    You can also add your PPI record from your previous university. A representative from that campus will verify whether you are a member of PPI at that campus. If you are a representative yourself and need access, please contact the current PPI Malaysia board.
+</span>
+            `;
+            contentHTML = createModal(
+                "",
+                "PPI Malaysia Record",
+                "ppi-malaysia-record",
+                content
+            );
+            editModalContent.innerHTML = contentHTML;
+            refreshTranslations();
+            bindPPIMModalActions(editModalContent);
             initUniversityModalFeatures(editModalContent)
                 .then((features) =>
                     populateUniversityModal(editModalContent, features)
@@ -1108,7 +1512,11 @@
     // ---- render ----
     function renderStudent(student) {
         currentStudent = student || null;
-        assignText("fullname", student.fullname);
+        assignText(
+            "surename",
+            ((p = student.fullname.trim().split(/\s+/)) =>
+                p.length > 1 ? `${p[0]} ${p[1]}` : p[0])()
+        );
         assignText("fullname2", student.fullname);
         assignText("dob", student.dob);
         assignText("postcode_id", student.postcode_id || student.postcode);
@@ -1135,7 +1543,7 @@
             eduLevel(student.level_of_qualification_id)
         );
 
-        renderTable("ppi-campus", parseRecordPayload(student.ppi));
+        renderPPITable("ppi-campus", parseRecordPayload(student.ppi));
         renderTable("ppi-malaysia", parseRecordPayload(student.ppim));
     }
 

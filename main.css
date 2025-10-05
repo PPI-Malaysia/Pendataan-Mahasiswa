@@ -593,6 +593,9 @@ small::after {
     font-size: 22px;
     color: var(--black);
 }
+.capitalize {
+    text-transform: capitalize;
+}
 .modal {
     --bs-modal-width: min(992px, 90%);
 }
@@ -602,7 +605,8 @@ small::after {
     grid-template-rows: 1fr auto; /* top spacer, then content */
     row-gap: 16px; /* the “+16px” */
     max-block-size: 85dvh;
-    overflow-y: auto;
+    overflow: hidden;
+    overflow-y: scroll;
     -ms-overflow-style: none;
     scrollbar-width: none;
 }

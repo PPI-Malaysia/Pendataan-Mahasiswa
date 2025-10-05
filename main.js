@@ -653,8 +653,14 @@
 
         isRegisterStep2Complete(data) {
             if (!data) return false;
-            const keys = ["email", "address", "postcode"];
-            return keys.every((key) => Boolean(data[key]));
+            const baseComplete = ["email", "address", "postcode"].every((key) =>
+                Boolean(data[key])
+            );
+            if (!baseComplete) return false;
+
+            const email = (data.email || "").trim();
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailPattern.test(email);
         }
 
         collectRegisterStep3Values() {
@@ -795,6 +801,23 @@
                 }
                 return false;
             }
+
+            const passport = data.passport
+                ? data.passport.trim().toUpperCase()
+                : "";
+            data.passport = passport;
+            const passportPattern = /^[A-Z][0-9]{7}$/; // 1 letter + 7 digits (e.g., A1234567)
+            if (!passportPattern.test(passport)) {
+                if (!silent) {
+                    alert(
+                        "Nomor paspor tidak valid. Gunakan format huruf kapital diikuti 7 digit, mis. A1234567."
+                    );
+                    const input = document.getElementById("register-passport");
+                    if (input) input.value = passport;
+                }
+                return false;
+            }
+
             return true;
         }
 

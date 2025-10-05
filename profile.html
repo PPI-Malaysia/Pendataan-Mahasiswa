@@ -57,7 +57,9 @@
                 <div class="container-content">
                     <h1>
                         <span data-i18n="hello">Hello</span>
-                        <span data-profile="fullname">$Name!</span>
+                        <span data-profile="surename" class="capitalize"
+                            >$Name!</span
+                        >
                     </h1>
                     <span class="subtext" data-i18n="profile-instruction"
                         >Here you can update your details anytime. We use your
@@ -92,7 +94,9 @@
                                 <span class="silent-text" data-i18n="full-name"
                                     >Full Name</span
                                 >
-                                <br /><span data-profile="fullname2"
+                                <br /><span
+                                    data-profile="fullname2"
+                                    class="capitalize"
                                     >**** *****</span
                                 >
                             </div>
@@ -213,9 +217,10 @@
                             </h5>
                             <button
                                 type="button"
+                                id="addPPICampusRecord"
                                 class="btn ms-auto liquid-btn liquid-light glass-btn btn-rounded edit-btn"
                             >
-                                <i class="bi bi-pencil"></i>
+                                <i class="bi bi-plus-lg"></i>
                             </button>
                         </div>
                         <div class="member-history-card">
@@ -225,6 +230,9 @@
                                 >
                                     <thead>
                                         <tr>
+                                            <th data-i18n="university">
+                                                University
+                                            </th>
                                             <th data-i18n="department">
                                                 Department
                                             </th>
@@ -242,7 +250,7 @@
                                             data-empty-row
                                         >
                                             <td
-                                                colspan="5"
+                                                colspan="6"
                                                 class="text-center text-muted"
                                             >
                                                 No records available.
@@ -262,9 +270,10 @@
                             </h3>
                             <button
                                 type="button"
-                                class="btn ms-auto liquid-btn liquid-light glass-btn btn-rounded"
+                                id="addPPIMRecord"
+                                class="btn ms-auto liquid-btn liquid-light glass-btn btn-rounded edit-btn"
                             >
-                                <i class="bi bi-pencil"></i>
+                                <i class="bi bi-plus-lg"></i>
                             </button>
                         </div>
                         <div class="member-history-card">
@@ -321,9 +330,9 @@
             crossorigin="anonymous"
         ></script>
 
+        <script src="app-core.js?dev=2.1"></script>
         <script src="student.js?dev=2.1"></script>
         <script src="profile.js?dev=2.1"></script>
-        <script src="app-core.js?dev=2.1"></script>
         <script src="main.js?dev=2.1"></script>
     </body>
 </html>
