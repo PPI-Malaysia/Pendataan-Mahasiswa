@@ -1467,7 +1467,7 @@
 <div class="modal-header bb p0 d-flex justify-content-center">
     <div>
         <h3 class="modal-title text-center"> ${type} <span data-i18n="${titleT}">${title}</span></h3>
-        <p class="mb-3 silent-text text-center" data-i18n="whole"> Note: You need to update whole information below! </p>
+        <p class="mb-3 silent-text text-center" data-i18n="whole"></p>
     </div>
 </div>
 <form>
@@ -1483,7 +1483,7 @@
     <div class="modal-footer bnone gap-2 d-flex justify-content-center">
         <div class="modal-button-container">
             <button type="button" class="btn liquid-btn btn-max liquid-light glass-btn btn-edit-conf" data-bs-dismiss="modal">
-                <span data-i18n="cancel" id="cancel ">Cancel</span>
+                <span data-i18n="cancel" id="cancel "></span>
             </button>
         </div>
         <div class="modal-button-container">
@@ -1501,7 +1501,7 @@
 <div class="modal-header bb p0 d-flex justify-content-center">
     <div>
         <h3 class="modal-title text-center"> ${type} <span data-i18n="${titleT}">${title}</span></h3>
-        <p class="mb-3 silent-text text-center" data-i18n="whole"> Note: You need to update whole information below! </p>
+        <p class="mb-3 silent-text text-center" data-i18n="whole"></p>
     </div>
 </div>
 <form>
@@ -1517,7 +1517,7 @@
     <div class="modal-footer bnone gap-2 d-flex justify-content-center">
         <div class="modal-button-container">
             <button type="button" class="btn liquid-btn btn-max liquid-light glass-btn btn-edit-conf" data-bs-dismiss="modal">
-                <span data-i18n="cancel" id="cancel ">Cancel</span>
+                <span data-i18n="cancel" id="cancel "></span>
             </button>
         </div>
         <div class="modal-button-container">
@@ -1528,17 +1528,20 @@
     </div>
 </form>
 <hr>
-<h5 data-i18n="delete-record">Delete Record</h5>
+<div class="modal-footer bnone gap-2">
+<div class="w100">
+<h5 data-i18n="delete-record"></h5>
 <div class="form-check">
   <input class="delete-confirm form-check-input" type="checkbox" value="" id="checkDefault">
   <label class="form-check-label" for="checkDefault" data-i18n="delete-note">
-    I hereby confirm that I wish to permanently delete my PPI record and understand that this action cannot be undone.
   </label>
 </div>
 <div class="modal-button-container">
     <button type="button" class="btn glass-btn liquid-red-btn btn-max delete-btn" data-action="delete">
-        <span data-i18n="delete" id="delete">delete</span>
+        <span data-i18n="delete" id="delete"></span>
     </button>
+</div>
+</div>
 </div>
         `;
     }
@@ -1551,19 +1554,19 @@
         if (editModalContent) {
             const content = `
     <div class="col-12 mb-3">
-        <label class="form-label" data-i18n="full-name">Full Name</label>
+        <label class="form-label" data-i18n="full-name"></label>
         <input class="form-control form-control-lg liquid-input" id="register-fullname" name="register-fullname" type="text" autocomplete="name" placeholder="R*** D****" aria-label=".form-control-lg example" />
     </div>
     <div class="col-12 col-sm-6 mb-3">
-        <label class="form-label" data-i18n="dob">Date of Birth</label>
+        <label class="form-label" data-i18n="dob"></label>
         <input type="date" class="form-control form-control-lg liquid-input liquid-date" id="register-dob" name="register-dob" placeholder="dd-mm-yyyy" lang="id-ID" />
     </div>
     <div class="col-12 col-sm-6 mb-3">
-        <label class="form-label" data-i18n="passport">Passport Number</label>
+        <label class="form-label" data-i18n="passport"></label>
         <input class="form-control form-control-lg liquid-input" id="register-passport" name="register-passport" type="text" placeholder="X0000000" aria-label=".form-control-lg example" />
     </div>
     <div class="col-12 col-lg-6 mb-3">
-        <label class="form-label" data-i18n="phone">Phone Number</label>
+        <label class="form-label" data-i18n="phone"></label>
         <div class="input-group input-group-lg liquid-input-group js-phone-group" style="z-index: 5">
             <button class="btn dropdown-toggle liquid-input-prefix js-phone-prefix" type="button" data-bs-toggle="dropdown" aria-expanded="false" data-prefix="+60" autocomplete="tel-country-code"> +60 </button>
             <ul class="dropdown-menu js-phone-menu"></ul>
@@ -1571,11 +1574,11 @@
         </div>
     </div>
     <div class="col-12 col-lg-6 mb-3">
-        <label class="form-label" data-i18n="email">Email</label>
+        <label class="form-label" data-i18n="email"></label>
         <input class="form-control form-control-lg liquid-input" id="register-email" name="register-email" type="text" placeholder="xxx@gmail.com" aria-label=".form-control-lg example" />
     </div>
     <div class="col-12 mb-3">
-        <label class="form-label" data-i18n="postkode">Postcode</label>
+        <label class="form-label" data-i18n="postkode"></label>
         <div class="liquid-typeahead js-postcode-group">
             <div class="liquid-typeahead-control liquid-input js-postcode-control">
                 <span class="typeahead-pill js-postcode-pill" hidden>
@@ -1589,7 +1592,7 @@
         </div>
     </div>
     <div class="col-12 mb-3">
-        <label class="form-label" data-i18n="Address">Address</label>
+        <label class="form-label" data-i18n="Address"></label>
         <textarea class="form-control form-control-lg liquid-input" id="register-address" placeholder="Pa*** No. ***, J***" aria-label="Residential address" rows="3" autocomplete="street-address" maxlength="255"></textarea>
     </div>
             `;
@@ -1630,7 +1633,7 @@
         if (editModalContent) {
             const content = `
 <div class="mb-3">
-    <label class="form-label" data-i18n="university">University</label>
+    <label class="form-label" data-i18n="university"></label>
     <div class="liquid-typeahead js-university-group">
         <div class="liquid-typeahead-control liquid-input js-university-control">
             <span class="typeahead-pill js-university-pill" hidden>
@@ -1644,11 +1647,11 @@
     </div>
 </div>
 <div class="mb-3">
-    <label class="form-label" data-i18n="degree-programme">Degree Programme</label>
+    <label class="form-label" data-i18n="degree-programme"></label>
     <input class="form-control form-control-lg liquid-input" id="register-programme" type="text" placeholder="Bachelor of Artificial Intelligence" aria-label="Degree programme" />
 </div>
 <div class="col-12 col-sm-6 mb-3">
-    <label class="form-label" data-i18n="education-level">Current Education Level</label>
+    <label class="form-label" data-i18n="education-level"></label>
     <select class="form-select form-select-lg liquid-input" id="register-education-level" aria-label="Current education level">
         <option value="" disabled selected> -- </option>
         <option value="1">Certificate</option>
@@ -1660,7 +1663,7 @@
     </select>
 </div>
 <div class="col-12 col-sm-6 mb-3">
-    <label class="form-label" data-i18n="expected-graduation">Expected Graduate Date</label>
+    <label class="form-label" data-i18n="expected-graduation"></label>
     <input type="date" class="form-control form-control-lg liquid-input liquid-date" id="register-expected-graduation" placeholder="dd-mm-yyyy" lang="id-ID" />
 </div>
             `;
@@ -1700,7 +1703,7 @@
         if (editModalContent) {
             const content = `
 <div class="mb-3">
-    <label class="form-label" data-i18n="university">University</label>
+    <label class="form-label" data-i18n="university"></label>
     <div class="liquid-typeahead js-university-group">
         <div class="liquid-typeahead-control liquid-input js-university-control">
             <span class="typeahead-pill js-university-pill" hidden>
@@ -1714,19 +1717,19 @@
     </div>
 </div>
 <div class="mb-3">
-    <label class="form-label" data-i18n="department">Department</label>
+    <label class="form-label" data-i18n="department"></label>
     <input class="form-control form-control-lg liquid-input" id="ppi-department" type="text" placeholder="Intelektual" aria-label="Degree programme" />
 </div>
 <div class="mb-3">
-    <label class="form-label" data-i18n="positioncol">Position</label>
+    <label class="form-label" data-i18n="positioncol"></label>
     <input class="form-control form-control-lg liquid-input" id="ppi-position" type="text" placeholder="Ketua, Anggota, Sekretaris, dll" aria-label="Degree programme" />
 </div>
 <div class="col-12 col-sm-6 mb-3">
-    <label class="form-label" data-i18n="start-year">Start Year</label>
+    <label class="form-label" data-i18n="start-year"></label>
     <input class="form-control form-control-lg liquid-input" type="number" id="ppi-start-year" placeholder="20**" aria-label=".form-control-lg example"/>
 </div>
 <div class="col-12 col-sm-6 mb-3">
-    <label class="form-label" data-i18n="end-year">End Year</label>
+    <label class="form-label" data-i18n="end-year"></label>
     <input class="form-control form-control-lg liquid-input" type="number" id="ppi-end-year" placeholder="20**" aria-label=".form-control-lg example"/>
 </div>
 <div class="col-12 mb-3">
@@ -1748,10 +1751,7 @@
 <span
     style="font-size: 12px; color: gray"
     data-i18n="ppi-campus-add-note"
->
-    Note: 
-    You can also add your PPI record from your previous university. A representative from that campus will verify whether you are a member of PPI at that campus. If you are a representative yourself and need access, please contact the current PPI Malaysia board.
-</span>
+></span>
             `;
             contentHTML = createModal(
                 "",
@@ -1789,26 +1789,26 @@
         if (editModalContent) {
             const content = `
 <div class="mb-3">
-    <label class="form-label" data-i18n="department">Department</label>
+    <label class="form-label" data-i18n="department"></label>
     <input class="form-control form-control-lg liquid-input" id="ppi-department" type="text" placeholder="Intelektual" aria-label="Degree programme" />
 </div>
 <div class="mb-3">
-    <label class="form-label" data-i18n="positioncol">Position</label>
+    <label class="form-label" data-i18n="positioncol"></label>
     <input class="form-control form-control-lg liquid-input" id="ppi-position" type="text" placeholder="Ketua, Anggota, Sekretaris, dll" aria-label="Degree programme" />
 </div>
 <div class="col-12 col-sm-6 mb-3">
-    <label class="form-label" data-i18n="start-year">Start Year</label>
+    <label class="form-label" data-i18n="start-year"> </label>
     <input class="form-control form-control-lg liquid-input" type="number" id="ppi-start-year" placeholder="20**" aria-label=".form-control-lg example"/>
 </div>
 <div class="col-12 col-sm-6 mb-3">
-    <label class="form-label" data-i18n="end-year">End Year</label>
+    <label class="form-label" data-i18n="end-year"></label>
     <input class="form-control form-control-lg liquid-input" type="number" id="ppi-end-year" placeholder="20**" aria-label=".form-control-lg example"/>
 </div>
 <div class="col-12 mb-3">
     <label
         class="form-label"
         data-i18n="add-info2"
-        >Additional Information</label
+        > </label
     >
     <textarea
         class="form-control form-control-lg liquid-input"
@@ -1823,10 +1823,7 @@
 <span
     style="font-size: 12px; color: gray"
     data-i18n="ppi-malaysia-add-note"
->
-    Note: 
-    You can also add your PPI record from your previous university. A representative from that campus will verify whether you are a member of PPI at that campus. If you are a representative yourself and need access, please contact the current PPI Malaysia board.
-</span>
+></span>
             `;
             contentHTML = createModal(
                 "",
@@ -1866,23 +1863,23 @@
         const content = `
 
 <div class="mb-3">
-    <label class="form-label" data-i18n="department">Department</label>
+    <label class="form-label" data-i18n="department"></label>
     <input class="form-control form-control-lg liquid-input" id="ppi-department" type="text" placeholder="Intelektual" aria-label="Degree programme" />
 </div>
 <div class="mb-3">
-    <label class="form-label" data-i18n="positioncol">Position</label>
+    <label class="form-label" data-i18n="positioncol"></label>
     <input class="form-control form-control-lg liquid-input" id="ppi-position" type="text" placeholder="Ketua, Anggota, Sekretaris, dll" aria-label="Degree programme" />
 </div>
 <div class="col-12 col-sm-6 mb-3">
-    <label class="form-label" data-i18n="start-year">Start Year</label>
+    <label class="form-label" data-i18n="start-year"> </label>
     <input class="form-control form-control-lg liquid-input" type="number" id="ppi-start-year" placeholder="20**" aria-label=".form-control-lg example"/>
 </div>
 <div class="col-12 col-sm-6 mb-3">
-    <label class="form-label" data-i18n="end-year">End Year</label>
+    <label class="form-label" data-i18n="end-year"> </label>
     <input class="form-control form-control-lg liquid-input" type="number" id="ppi-end-year" placeholder="20**" aria-label=".form-control-lg example"/>
 </div>
 <div class="col-12 mb-3">
-    <label class="form-label" data-i18n="add-info2">Additional Information</label>
+    <label class="form-label" data-i18n="add-info2"> </label>
     <textarea class="form-control form-control-lg liquid-input" type="text" placeholder="...." aria-label=".form-control-lg example" rows="3" id="ppi-add-info" maxlength="255"></textarea>
 </div>
 <input type="hidden" id="ppim-record-id" value="${record?.ppim_id ?? ""}">
@@ -1935,7 +1932,7 @@
 
         const content = `
 <div class="mb-3">
-    <label class="form-label" data-i18n="university">University</label>
+    <label class="form-label" data-i18n="university"></label>
     <div class="liquid-typeahead js-university-group">
         <div class="liquid-typeahead-control liquid-input js-university-control">
             <span class="typeahead-pill js-university-pill" hidden>
@@ -1952,27 +1949,27 @@
     </div>
 </div>
 <div class="mb-3">
-    <label class="form-label" data-i18n="department">Department</label>
+    <label class="form-label" data-i18n="department"></label>
     <input class="form-control form-control-lg liquid-input" id="ppi-department" type="text"
            placeholder="Intelektual" aria-label="Degree programme" />
 </div>
 <div class="mb-3">
-    <label class="form-label" data-i18n="positioncol">Position</label>
+    <label class="form-label" data-i18n="positioncol"></label>
     <input class="form-control form-control-lg liquid-input" id="ppi-position" type="text"
            placeholder="Ketua, Anggota, Sekretaris, dll" aria-label="Degree programme" />
 </div>
 <div class="col-12 col-sm-6 mb-3">
-    <label class="form-label" data-i18n="start-year">Start Year</label>
+    <label class="form-label" data-i18n="start-year"> </label>
     <input class="form-control form-control-lg liquid-input" type="number" id="ppi-start-year"
            placeholder="20**" aria-label=".form-control-lg example" />
 </div>
 <div class="col-12 col-sm-6 mb-3">
-    <label class="form-label" data-i18n="end-year">End Year</label>
+    <label class="form-label" data-i18n="end-year"> </label>
     <input class="form-control form-control-lg liquid-input" type="number" id="ppi-end-year"
            placeholder="20**" aria-label=".form-control-lg example" />
 </div>
 <div class="col-12 mb-3">
-    <label class="form-label" data-i18n="add-info2">Additional Information</label>
+    <label class="form-label" data-i18n="add-info2"> </label>
     <textarea class="form-control form-control-lg liquid-input" placeholder="...."
               aria-label=".form-control-lg example" rows="3" id="ppi-add-info"
               maxlength="255"></textarea>
@@ -1981,8 +1978,6 @@
             record?.ppi_campus_id ?? ""
         }">
 <span style="font-size: 12px; color: gray" data-i18n="ppi-campus-add-note">
-    Note:
-    You can also add your PPI record from your previous university. A representative from that campus will verify whether you are a member of PPI at that campus. If you are a representative yourself and need access, please contact the current PPI Malaysia board.
 </span>
     `;
 
