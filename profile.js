@@ -1391,38 +1391,40 @@
     <label class="form-label" data-i18n="full-name">Full Name</label>
     <input class="form-control form-control-lg liquid-input" id="register-fullname" name="register-fullname" type="text" autocomplete="name" placeholder="R*** D****" aria-label=".form-control-lg example" />
 </div>
-<div class="col-12 col-sm-6 mb-3">
-    <label class="form-label" data-i18n="dob">Date of Birth</label>
-    <input type="date" class="form-control form-control-lg liquid-input liquid-date" id="register-dob" name="register-dob" placeholder="dd-mm-yyyy" lang="id-ID" />
-</div>
-<div class="col-12 col-sm-6 mb-3">
-    <label class="form-label" data-i18n="passport">Passport Number</label>
-    <input class="form-control form-control-lg liquid-input" id="register-passport" name="register-passport" type="text" placeholder="X0000000" aria-label=".form-control-lg example" />
-</div>
-<div class="col-12 col-lg-6 mb-3">
-    <label class="form-label" data-i18n="phone">Phone Number</label>
-    <div class="input-group input-group-lg liquid-input-group js-phone-group" style="z-index: 5">
-        <button class="btn dropdown-toggle liquid-input-prefix js-phone-prefix" type="button" data-bs-toggle="dropdown" aria-expanded="false" data-prefix="+60" autocomplete="tel-country-code"> +60 </button>
-        <ul class="dropdown-menu js-phone-menu"></ul>
-        <input class="form-control form-control-lg liquid-input js-phone-input" id="register-phone" name="register-phone" type="tel" placeholder="10********" autocomplete="tel-national" aria-label="Phone number without country code" />
+<div class="row">
+    <div class="col-12 col-sm-6 mb-3">
+        <label class="form-label" data-i18n="dob">Date of Birth</label>
+        <input type="date" class="form-control form-control-lg liquid-input liquid-date" id="register-dob" name="register-dob" placeholder="dd-mm-yyyy" lang="id-ID" />
     </div>
-</div>
-<div class="col-12 col-sm-6 mb-3">
-    <label class="form-label" data-i18n="email">Email</label>
-    <input class="form-control form-control-lg liquid-input" id="register-email" name="register-email" type="text" placeholder="xxx@gmail.com" aria-label=".form-control-lg example" />
-</div>
-<div class="col-12 mb-3">
-    <label class="form-label" data-i18n="postkode">Postcode</label>
-    <div class="liquid-typeahead js-postcode-group">
-        <div class="liquid-typeahead-control liquid-input js-postcode-control">
-            <span class="typeahead-pill js-postcode-pill" hidden>
-                <span class="pill-label js-postcode-pill-label"></span>
-                <button type="button" class="pill-clear js-postcode-clear" aria-label="Remove selected postcode"> &times; </button>
-            </span>
-            <input class="typeahead-input js-postcode-input" type="text" placeholder="46000 - Petaling Jaya, Selangor" aria-label="Postcode" autocomplete="off" role="combobox" aria-autocomplete="list" aria-haspopup="listbox" aria-expanded="false" />
-            <input type="hidden" class="js-postcode-value" name="postcode" />
+    <div class="col-12 col-sm-6 mb-3">
+        <label class="form-label" data-i18n="passport">Passport Number</label>
+        <input class="form-control form-control-lg liquid-input" id="register-passport" name="register-passport" type="text" placeholder="X0000000" aria-label=".form-control-lg example" />
+    </div>
+    <div class="col-12 col-lg-6 mb-3">
+        <label class="form-label" data-i18n="phone">Phone Number</label>
+        <div class="input-group input-group-lg liquid-input-group js-phone-group" style="z-index: 5">
+            <button class="btn dropdown-toggle liquid-input-prefix js-phone-prefix" type="button" data-bs-toggle="dropdown" aria-expanded="false" data-prefix="+60" autocomplete="tel-country-code"> +60 </button>
+            <ul class="dropdown-menu js-phone-menu"></ul>
+            <input class="form-control form-control-lg liquid-input js-phone-input" id="register-phone" name="register-phone" type="tel" placeholder="10********" autocomplete="tel-national" aria-label="Phone number without country code" />
         </div>
-        <ul class="dropdown-menu js-postcode-menu" role="listbox"></ul>
+    </div>
+    <div class="col-12 col-lg-6 mb-3">
+        <label class="form-label" data-i18n="email">Email</label>
+        <input class="form-control form-control-lg liquid-input" id="register-email" name="register-email" type="text" placeholder="xxx@gmail.com" aria-label=".form-control-lg example" />
+    </div>
+    <div class="col-12 mb-3">
+        <label class="form-label" data-i18n="postkode">Postcode</label>
+        <div class="liquid-typeahead js-postcode-group">
+            <div class="liquid-typeahead-control liquid-input js-postcode-control">
+                <span class="typeahead-pill js-postcode-pill" hidden>
+                    <span class="pill-label js-postcode-pill-label"></span>
+                    <button type="button" class="pill-clear js-postcode-clear" aria-label="Remove selected postcode"> &times; </button>
+                </span>
+                <input class="typeahead-input js-postcode-input" type="text" placeholder="46000 - Petaling Jaya, Selangor" aria-label="Postcode" autocomplete="off" role="combobox" aria-autocomplete="list" aria-haspopup="listbox" aria-expanded="false" />
+                <input type="hidden" class="js-postcode-value" name="postcode" />
+            </div>
+            <ul class="dropdown-menu js-postcode-menu" role="listbox"></ul>
+        </div>
     </div>
 </div>
 <div class="mb-3">
