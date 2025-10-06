@@ -4,7 +4,6 @@
         console.error("AppCore is missing");
         return;
     }
-
     const {
         VisualEnforcer,
         RegionCodesService,
@@ -48,6 +47,7 @@
                 (el) => el?.textContent || ""
             );
             this.stepGuardUpdates = new Map();
+            this.loginFailedModal = null;
         }
 
         async start() {
@@ -237,6 +237,44 @@
                     await autocomplete.init();
                 }
             );
+        }
+
+        ensureLoginFailedModal() {
+            if (this.loginFailedModal) return this.loginFailedModal;
+
+            const modalEl = document.getElementById("loginFailedModal");
+            if (!modalEl) {
+                console.warn("loginFailedModal element is missing");
+                this.loginFailedModal = { el: null, instance: null };
+                return this.loginFailedModal;
+            }
+
+            const messageEl = modalEl.querySelector(
+                "[data-role='login-failed-message']"
+            );
+            const ModalCtor = window.bootstrap?.Modal;
+            const instance = ModalCtor
+                ? ModalCtor.getOrCreateInstance(modalEl, {
+                      backdrop: "static",
+                      keyboard: true,
+                  })
+                : null;
+
+            this.loginFailedModal = { el: modalEl, instance };
+            return this.loginFailedModal;
+        }
+
+        showLoginFailedModal(message) {
+            const modal = this.ensureLoginFailedModal();
+
+            if (modal?.instance) {
+                modal.instance.show();
+            } else {
+                window.alert(
+                    message ||
+                        "We couldn't find a matching student. Please check your details or create a new registration."
+                );
+            }
         }
 
         setUniversityGreeting(name = "") {
@@ -510,15 +548,19 @@
 
                 try {
                     const result = await this.api.check(payload);
-                    if (result?.success) {
+                    if (result?.success && result.student) {
                         this.persistAuthResult(result);
                         if (result.student) {
                             window.location.href = "profile.html";
                             return;
                         }
                     }
+                    this.showLoginFailedModal();
                 } catch (error) {
                     console.error("Login failed", error);
+                    this.showLoginFailedModal(
+                        "Student information not found. Please double-check your information or create a new registration."
+                    );
                 } finally {
                     if (submitBtn) submitBtn.disabled = false;
                 }

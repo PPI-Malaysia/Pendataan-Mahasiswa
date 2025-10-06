@@ -69,7 +69,9 @@
         "add": "Tambah",
         "delete-record": "Hapus Riwayat",
         "delete-note": "Dengan ini aku menghapus riwayat PPI-ku secara permanen dan paham bahwa tindakan ini tidak bisa dibatalkan.",
-        "delete": "Hapus"
+        "delete": "Hapus",
+        "notfound": "Informasi Pelajar Tidak Ditemukan",
+        "notfounddesc": "Data pelajar tidak ditemukan. Silakan periksa kembali informasi kamu atau buat pendaftaran baru."
     },
     "EN": {
         "header-title": "Indonesian Student Registration in Malaysia",
@@ -141,6 +143,8 @@
         "add": "Add",
         "delete-record": "Delete Record",
         "delete-note": "I hereby confirm that I wish to permanently delete my PPI record and understand that this action cannot be undone.",
-        "delete": "Delete"
+        "delete": "Delete",
+        "notfound": "Student Information Not Found",
+        "notfounddesc": "Student information not found. Please double-check your information or create a new registration."
     }
 }

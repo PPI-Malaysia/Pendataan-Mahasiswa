@@ -50,6 +50,45 @@ small::after {
     pointer-events: none;
 }
 
+.loading-overlay {
+    position: absolute;
+    width: 100vw;
+    height: 100dvh;
+    overflow: hidden !important;
+    background: var(--gray-bg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 99999;
+    transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+}
+.loading-overlay.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+.loading-ring {
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    border: 4px solid #f0f0f0;
+    border-top: 4px solid var(--lg-red);
+    border-radius: 50%;
+    animation: spin 1.5s linear infinite;
+}
+@keyframes spin {
+    0% {
+        transform: rotate(0deg); /* Start at 0 degrees */
+    }
+    100% {
+        transform: rotate(360deg); /* End at 360 degrees (full rotation) */
+    }
+}
+.logo-circle {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    vertical-align: middle;
+}
 .bg-container {
     position: fixed;
     left: 0;
