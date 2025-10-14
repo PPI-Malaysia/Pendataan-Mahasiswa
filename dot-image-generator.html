@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <title>Halftone SVG + Save</title>
+        <style>
+            body {
+                background: oklch(from #fe0 0.9 0.064 h);
+                font-family: system-ui, sans-serif;
+                padding: 1rem;
+            }
+            img {
+                max-width: 100%;
+                height: auto;
+                margin-top: 1rem;
+            }
+            .row {
+                display: flex;
+                gap: 0.5rem;
+                flex-wrap: wrap;
+                align-items: center;
+            }
+            button {
+                padding: 0.55rem 0.9rem;
+                cursor: pointer;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="row">
+            <input type="file" accept="image/*" id="upload" />
+            <select id="filter-select">
+                <option value="">None</option>
+                <option selected value="half-tone">half-tone</option>
+                <option value="half-tone-hd">half-tone-hd</option>
+            </select>
+            <input type="color" value="#166496" id="color" />
+            <button id="saveBtn">Save Image</button>
+        </div>
+
+        <img
+            src="https://i.imgur.com/CMox3HF.jpeg"
+            id="preview"
+            crossorigin="anonymous"
+        />
+
+        <!-- Live preview filters (safe in DOM) -->
+        <svg width="0" height="0" style="position: absolute">
+            <defs id="defs-half-tone">
+                <circle id="ht-dot1" cx="4" cy="4" r="0.5" />
+                <circle id="ht-dot2" cx="4" cy="4" r="1" />
+                <circle id="ht-dot3" cx="4" cy="4" r="1.5" />
+                <circle id="ht-dot4" cx="4" cy="4" r="2" />
+                <circle id="ht-dot5" cx="4" cy="4" r="2.5" />
+                <circle id="ht-dot6" cx="4" cy="4" r="3" />
+                <circle id="ht-dot7" cx="4" cy="4" r="3.5" />
+                <circle id="ht-dot8" cx="4" cy="4" r="4" />
+                <filter
+                    id="half-tone"
+                    color-interpolation-filters="sRGB"
+                    primitiveUnits="userSpaceOnUse"
+                >
+                    <feImage width="8" height="8" xlink:href="#ht-dot1" />
+                    <feTile result="dot1-tile" />
+                    <feImage width="8" height="8" xlink:href="#ht-dot2" />
+                    <feTile result="dot2-tile" />
+                    <feImage width="8" height="8" xlink:href="#ht-dot3" />
+                    <feTile result="dot3-tile" />
+                    <feImage width="8" height="8" xlink:href="#ht-dot4" />
+                    <feTile result="dot4-tile" />
+                    <feImage width="8" height="8" xlink:href="#ht-dot5" />
+                    <feTile result="dot5-tile" />
+                    <feImage width="8" height="8" xlink:href="#ht-dot6" />
+                    <feTile result="dot6-tile" />
+                    <feImage width="8" height="8" xlink:href="#ht-dot7" />
+                    <feTile result="dot7-tile" />
+                    <feImage width="8" height="8" xlink:href="#ht-dot8" />
+                    <feTile result="dot8-tile" />
+                    <feColorMatrix
+                        in="SourceGraphic"
+                        type="luminanceToAlpha"
+                        result="lum"
+                    />
+                    <feComponentTransfer in="lum" result="lum-map">
+                        <feFuncA type="table" tableValues="1 0" />
+                    </feComponentTransfer>
+                    <feComponentTransfer in="lum-map" result="thresh1">
+                        <feFuncA
+                            type="discrete"
+                            tableValues="1 0 0 0 0 0 0 0"
+                        />
+                    </feComponentTransfer>
+                    <feComponentTransfer in="lum-map" result="thresh2">
+                        <feFuncA
+                            type="discrete"
+                            tableValues="0 1 0 0 0 0 0 0"
+                        />
+                    </feComponentTransfer>
+                    <feComponentTransfer in="lum-map" result="thresh3">
+                        <feFuncA
+                            type="discrete"
+                            tableValues="0 0 1 0 0 0 0 0"
+                        />
+                    </feComponentTransfer>
+                    <feComponentTransfer in="lum-map" result="thresh4">
+                        <feFuncA
+                            type="discrete"
+                            tableValues="0 0 0 1 0 0 0 0"
+                        />
+                    </feComponentTransfer>
+                    <feComponentTransfer in="lum-map" result="thresh5">
+                        <feFuncA
+                            type="discrete"
+                            tableValues="0 0 0 0 1 0 0 0"
+                        />
+                    </feComponentTransfer>
+                    <feComponentTransfer in="lum-map" result="thresh6">
+                        <feFuncA
+                            type="discrete"
+                            tableValues="0 0 0 0 0 1 0 0"
+                        />
+                    </feComponentTransfer>
+                    <feComponentTransfer in="lum-map" result="thresh7">
+                        <feFuncA
+                            type="discrete"
+                            tableValues="0 0 0 0 0 0 1 0"
+                        />
+                    </feComponentTransfer>
+                    <feComponentTransfer in="lum-map" result="thresh8">
+                        <feFuncA
+                            type="discrete"
+                            tableValues="0 0 0 0 0 0 0 1"
+                        />
+                    </feComponentTransfer>
+                    <feComposite
+                        in="thresh1"
+                        in2="dot1-tile"
+                        operator="in"
+                        result="level1"
+                    />
+                    <feComposite
+                        in="thresh2"
+                        in2="dot2-tile"
+                        operator="in"
+                        result="level2"
+                    />
+                    <feComposite
+                        in="thresh3"
+                        in2="dot3-tile"
+                        operator="in"
+                        result="level3"
+                    />
+                    <feComposite
+                        in="thresh4"
+                        in2="dot4-tile"
+                        operator="in"
+                        result="level4"
+                    />
+                    <feComposite
+                        in="thresh5"
+                        in2="dot5-tile"
+                        operator="in"
+                        result="level5"
+                    />
+                    <feComposite
+                        in="thresh6"
+                        in2="dot6-tile"
+                        operator="in"
+                        result="level6"
+                    />
+                    <feComposite
+                        in="thresh7"
+                        in2="dot7-tile"
+                        operator="in"
+                        result="level7"
+                    />
+                    <feComposite
+                        in="thresh8"
+                        in2="dot8-tile"
+                        operator="in"
+                        result="level8"
+                    />
+                    <feMerge result="merged">
+                        <feMergeNode in="level8" />
+                        <feMergeNode in="level7" />
+                        <feMergeNode in="level6" />
+                        <feMergeNode in="level5" />
+                        <feMergeNode in="level4" />
+                        <feMergeNode in="level3" />
+                        <feMergeNode in="level2" />
+                        <feMergeNode in="level1" />
+                    </feMerge>
+                    <feComposite
+                        in="merged"
+                        in2="SourceGraphic"
+                        operator="in"
+                        result="masked"
+                    />
+                    <feFlood id="flood" flood-color="#166496" result="color" />
+                    <feComposite in="color" in2="masked" operator="in" />
+                </filter>
+            </defs>
+        </svg>
+
+        <svg width="0" height="0" style="position: absolute">
+            <defs id="defs-half-tone-hd">
+                <circle id="hd-dot1" cx="2" cy="2" r="0.25" />
+                <circle id="hd-dot2" cx="2" cy="2" r="0.5" />
+                <circle id="hd-dot3" cx="2" cy="2" r="0.75" />
+                <circle id="hd-dot4" cx="2" cy="2" r="1" />
+                <circle id="hd-dot5" cx="2" cy="2" r="1.25" />
+                <circle id="hd-dot6" cx="2" cy="2" r="1.5" />
+                <circle id="hd-dot7" cx="2" cy="2" r="1.75" />
+                <circle id="hd-dot8" cx="2" cy="2" r="2" />
+                <filter
+                    id="half-tone-hd"
+                    color-interpolation-filters="sRGB"
+                    primitiveUnits="userSpaceOnUse"
+                >
+                    <feImage width="4" height="4" xlink:href="#hd-dot1" />
+                    <feTile result="dot1-tile" />
+                    <feImage width="4" height="4" xlink:href="#hd-dot2" />
+                    <feTile result="dot2-tile" />
+                    <feImage width="4" height="4" xlink:href="#hd-dot3" />
+                    <feTile result="dot3-tile" />
+                    <feImage width="4" height="4" xlink:href="#hd-dot4" />
+                    <feTile result="dot4-tile" />
+                    <feImage width="4" height="4" xlink:href="#hd-dot5" />
+                    <feTile result="dot5-tile" />
+                    <feImage width="4" height="4" xlink:href="#hd-dot6" />
+                    <feTile result="dot6-tile" />
+                    <feImage width="4" height="4" xlink:href="#hd-dot7" />
+                    <feTile result="dot7-tile" />
+                    <feImage width="4" height="4" xlink:href="#hd-dot8" />
+                    <feTile result="dot8-tile" />
+                    <feColorMatrix
+                        in="SourceGraphic"
+                        type="luminanceToAlpha"
+                        result="lum"
+                    />
+                    <feComponentTransfer in="lum" result="lum-map">
+                        <feFuncA type="table" tableValues="1 0" />
+                    </feComponentTransfer>
+                    <feComponentTransfer in="lum-map" result="thresh1">
+                        <feFuncA
+                            type="discrete"
+                            tableValues="1 0 0 0 0 0 0 0"
+                        />
+                    </feComponentTransfer>
+                    <feComponentTransfer in="lum-map" result="thresh2">
+                        <feFuncA
+                            type="discrete"
+                            tableValues="0 1 0 0 0 0 0 0"
+                        />
+                    </feComponentTransfer>
+                    <feComponentTransfer in="lum-map" result="thresh3">
+                        <feFuncA
+                            type="discrete"
+                            tableValues="0 0 1 0 0 0 0 0"
+                        />
+                    </feComponentTransfer>
+                    <feComponentTransfer in="lum-map" result="thresh4">
+                        <feFuncA
+                            type="discrete"
+                            tableValues="0 0 0 1 0 0 0 0"
+                        />
+                    </feComponentTransfer>
+                    <feComponentTransfer in="lum-map" result="thresh5">
+                        <feFuncA
+                            type="discrete"
+                            tableValues="0 0 0 0 1 0 0 0"
+                        />
+                    </feComponentTransfer>
+                    <feComponentTransfer in="lum-map" result="thresh6">
+                        <feFuncA
+                            type="discrete"
+                            tableValues="0 0 0 0 0 1 0 0"
+                        />
+                    </feComponentTransfer>
+                    <feComponentTransfer in="lum-map" result="thresh7">
+                        <feFuncA
+                            type="discrete"
+                            tableValues="0 0 0 0 0 0 1 0"
+                        />
+                    </feComponentTransfer>
+                    <feComponentTransfer in="lum-map" result="thresh8">
+                        <feFuncA
+                            type="discrete"
+                            tableValues="0 0 0 0 0 0 0 1"
+                        />
+                    </feComponentTransfer>
+                    <feComposite
+                        in="thresh1"
+                        in2="dot1-tile"
+                        operator="in"
+                        result="level1"
+                    />
+                    <feComposite
+                        in="thresh2"
+                        in2="dot2-tile"
+                        operator="in"
+                        result="level2"
+                    />
+                    <feComposite
+                        in="thresh3"
+                        in2="dot3-tile"
+                        operator="in"
+                        result="level3"
+                    />
+                    <feComposite
+                        in="thresh4"
+                        in2="dot4-tile"
+                        operator="in"
+                        result="level4"
+                    />
+                    <feComposite
+                        in="thresh5"
+                        in2="dot5-tile"
+                        operator="in"
+                        result="level5"
+                    />
+                    <feComposite
+                        in="thresh6"
+                        in2="dot6-tile"
+                        operator="in"
+                        result="level6"
+                    />
+                    <feComposite
+                        in="thresh7"
+                        in2="dot7-tile"
+                        operator="in"
+                        result="level7"
+                    />
+                    <feComposite
+                        in="thresh8"
+                        in2="dot8-tile"
+                        operator="in"
+                        result="level8"
+                    />
+                    <feMerge result="merged">
+                        <feMergeNode in="level8" />
+                        <feMergeNode in="level7" />
+                        <feMergeNode in="level6" />
+                        <feMergeNode in="level5" />
+                        <feMergeNode in="level4" />
+                        <feMergeNode in="level3" />
+                        <feMergeNode in="level2" />
+                        <feMergeNode in="level1" />
+                    </feMerge>
+                    <feComposite
+                        in="merged"
+                        in2="SourceGraphic"
+                        operator="in"
+                        result="masked"
+                    />
+                    <feFlood
+                        id="floodHd"
+                        flood-color="#166496"
+                        result="color"
+                    />
+                    <feComposite in="color" in2="masked" operator="in" />
+                </filter>
+            </defs>
+        </svg>
+
+        <script>
+            const preview = document.getElementById("preview");
+            const upload = document.getElementById("upload");
+            const color = document.getElementById("color");
+            const filterSelect = document.getElementById("filter-select");
+            const saveBtn = document.getElementById("saveBtn");
+
+            // live preview
+            function applyFilter() {
+                const v = filterSelect.value;
+                preview.style.filter = v ? `url(#${v})` : "none";
+            }
+            applyFilter();
+            filterSelect.addEventListener("change", applyFilter);
+            color.addEventListener("input", () => {
+                const v = color.value;
+                document.getElementById("flood").setAttribute("flood-color", v);
+                document
+                    .getElementById("floodHd")
+                    .setAttribute("flood-color", v);
+            });
+            upload.addEventListener("input", (e) => {
+                const f = e.target.files[0];
+                if (!f) return;
+                preview.src = URL.createObjectURL(f);
+            });
+
+            // --- Save with baked filter (no external refs) ---
+            saveBtn.addEventListener("click", saveFiltered);
+
+            async function saveFiltered() {
+                const mode = filterSelect.value; // "", "half-tone", "half-tone-hd"
+                const tint = color.value;
+
+                const srcImg = await loadImage(preview.src);
+                const w = srcImg.naturalWidth || srcImg.width;
+                const h = srcImg.naturalHeight || srcImg.height;
+
+                // embed image pixels (avoids CORS on svg->canvas)
+                const srcData = await imageToDataURL(srcImg, w, h);
+
+                // Build a self-contained filter using data-URI tiles.
+                const defs = buildSelfContainedDefs(mode, tint);
+
+                const svg = `
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+     width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">
+  <defs>${defs}</defs>
+  <image href="${srcData}" x="0" y="0" width="${w}" height="${h}" ${
+                    mode ? `filter="url(#${mode})"` : ""
+                }/>
+</svg>`.trim();
+
+                const blob = new Blob([svg], {
+                    type: "image/svg+xml;charset=utf-8",
+                });
+                const url = URL.createObjectURL(blob);
+                try {
+                    const raster = await loadImage(url); // safe: no external refs now
+                    const c = document.createElement("canvas");
+                    c.width = w;
+                    c.height = h;
+                    const ctx = c.getContext("2d");
+                    ctx.drawImage(raster, 0, 0, w, h);
+                    const a = document.createElement("a");
+                    a.download = `halftone_${mode || "none"}.png`;
+                    a.href = c.toDataURL("image/png");
+                    a.click();
+                } finally {
+                    URL.revokeObjectURL(url);
+                }
+            }
+
+            function loadImage(src) {
+                return new Promise((res, rej) => {
+                    const im = new Image();
+                    im.crossOrigin = "anonymous";
+                    im.onload = () => res(im);
+                    im.onerror = (e) => rej(e);
+                    im.src = src;
+                });
+            }
+            function imageToDataURL(img, w, h) {
+                const c = document.createElement("canvas");
+                c.width = w;
+                c.height = h;
+                const ctx = c.getContext("2d");
+                ctx.drawImage(img, 0, 0, w, h);
+                return c.toDataURL("image/png");
+            }
+
+            // Build <defs> with feImage tiles as data URIs to avoid fragment refs.
+            function buildSelfContainedDefs(mode, tint) {
+                if (!mode) return "";
+                const isHD = mode === "half-tone-hd";
+                const size = isHD ? 4 : 8;
+                const radii = isHD
+                    ? [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2]
+                    : [0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4];
+
+                const tileDataUri = (r) => {
+                    const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='${size}' height='${size}'>
+      <circle cx='${size / 2}' cy='${size / 2}' r='${r}' fill='black'/>
+    </svg>`;
+                    return "data:image/svg+xml;utf8," + encodeURIComponent(svg);
+                };
+
+                // feImage + feTile for each radius
+                const tileNodes = radii
+                    .map(
+                        (r, i) =>
+                            `<feImage width="${size}" height="${size}" xlink:href="${tileDataUri(
+                                r
+                            )}"/>
+     <feTile result="dot${i + 1}-tile"/>`
+                    )
+                    .join("");
+
+                // thresholds and composites
+                const thresh = (
+                    i
+                ) => `<feComponentTransfer in="lum-map" result="thresh${i + 1}">
+    <feFuncA type="discrete" tableValues="${Array.from({ length: 8 }, (_, k) =>
+        k === i ? 1 : 0
+    ).join(" ")}"/>
+  </feComponentTransfer>`;
+                const comps = radii
+                    .map(
+                        (_, i) =>
+                            `<feComposite in="thresh${i + 1}" in2="dot${
+                                i + 1
+                            }-tile" operator="in" result="level${i + 1}"/>`
+                    )
+                    .join("");
+                const merges = radii
+                    .map((_, i) => `<feMergeNode in="level${8 - i}"/>`)
+                    .join("");
+
+                return `
+  <filter id="${mode}" color-interpolation-filters="sRGB" primitiveUnits="userSpaceOnUse">
+    ${tileNodes}
+    <feColorMatrix in="SourceGraphic" type="luminanceToAlpha" result="lum"/>
+    <feComponentTransfer in="lum" result="lum-map"><feFuncA type="table" tableValues="1 0"/></feComponentTransfer>
+    ${radii.map((_, i) => thresh(i)).join("")}
+    ${comps}
+    <feMerge result="merged">${merges}</feMerge>
+    <feComposite in="merged" in2="SourceGraphic" operator="in" result="masked"/>
+    <feFlood flood-color="${tint}" result="color"/>
+    <feComposite in="color" in2="masked" operator="in"/>
+  </filter>`;
+            }
+        </script>
+    </body>
+</html>

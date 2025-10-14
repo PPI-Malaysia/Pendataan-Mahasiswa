@@ -57,18 +57,6 @@ function openform_m() {
         borderTopRightRadius: 0,
         duration: 1,
     });
-    gsap.to(".logo-container", {
-        left: "60px",
-        transform: "none",
-        width: "3.9rem",
-        duration: 1,
-        ease: "power3.inOut",
-    });
-    gsap.to(".logo-text", {
-        opacity: 0,
-        duration: 1,
-        onComplete: () => gsap.set(".logo-text", { display: "none" }),
-    });
     gsap.to(".switch-section", {
         marginTop: "-2px",
         duration: 1,

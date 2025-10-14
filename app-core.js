@@ -17,25 +17,6 @@
         }
     }
 
-    class VisualEnforcer {
-        constructor({
-            bgImgId = "bg-img",
-            floodId = "floodHd",
-            filterUrl = "url(#half-tone-hd)",
-            floodColor = "#b0003a",
-        } = {}) {
-            this.bg = document.getElementById(bgImgId);
-            this.flood = document.getElementById(floodId);
-            this.filterUrl = filterUrl;
-            this.floodColor = floodColor;
-        }
-        apply() {
-            if (this.bg) this.bg.style.filter = this.filterUrl;
-            if (this.flood)
-                this.flood.setAttribute("flood-color", this.floodColor);
-        }
-    }
-
     class RegionCodesService {
         constructor(url = "regioncode.json") {
             this.url = url;
@@ -298,8 +279,7 @@
                 fallbackItem === undefined ? defaultFallback : fallbackItem;
             this.filterFn = typeof filterFn === "function" ? filterFn : null;
             this.optionPrefix = optionPrefix || "typeahead-option";
-            this.onSelect =
-                typeof onSelect === "function" ? onSelect : null;
+            this.onSelect = typeof onSelect === "function" ? onSelect : null;
             this.onClear = typeof onClear === "function" ? onClear : null;
         }
 

@@ -5,7 +5,6 @@
         return;
     }
     const {
-        VisualEnforcer,
         RegionCodesService,
         UniversitiesService,
         PostcodesService,
@@ -15,7 +14,6 @@
     } = core;
 
     if (
-        !VisualEnforcer ||
         !RegionCodesService ||
         !UniversitiesService ||
         !PostcodesService ||
@@ -29,7 +27,6 @@
 
     class App {
         constructor() {
-            this.visuals = new VisualEnforcer();
             this.i18n = new I18nManager();
             this.regionSvc = new RegionCodesService();
             this.universitySvc = new UniversitiesService();
@@ -51,7 +48,6 @@
         }
 
         async start() {
-            this.visuals.apply();
             await this.setupI18n();
             await this.initPhoneSelectors();
             await this.initPostcodeAutocomplete();

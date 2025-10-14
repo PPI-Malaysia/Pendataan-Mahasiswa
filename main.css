@@ -156,6 +156,14 @@ small::after {
     z-index: 3;
     padding-left: 20px;
 }
+.logo-m-container {
+    position: absolute !important;
+    top: 15px;
+    width: 3.9rem;
+    height: 3.9rem;
+    left: 30px;
+    opacity: 0;
+}
 .switch-section {
     position: absolute;
     top: 30px;
@@ -184,6 +192,12 @@ small::after {
     transform: none !important;
 }
 .logo {
+    position: absolute;
+    width: 3.1rem;
+    left: 0;
+    margin-left: 0.4rem;
+}
+.logo-m {
     position: absolute;
     width: 3.1rem;
     left: 0;
@@ -1158,10 +1172,11 @@ small::after {
         display: none;
     }
     .logo-container {
-        left: 50%;
-        transform: translateX(-50%);
-        margin-left: 0;
-        margin-top: 15px;
+        display: 0;
+        opacity: 0;
+    }
+    .logo-m-container {
+        opacity: 1;
     }
     .p-logo-container {
         left: 30px !important;
