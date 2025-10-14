@@ -32,24 +32,6 @@ small {
     z-index: 4;
 }
 
-span::after,
-h1::after,
-h2::after,
-h3::after,
-h4::after,
-h5::after,
-p::after,
-small::after {
-    content: attr(data-text);
-    position: absolute;
-    inset: 0;
-    background-image: var(--noise);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    pointer-events: none;
-}
-
 .loading-overlay {
     position: absolute;
     width: 100vw;
@@ -835,7 +817,7 @@ small::after {
     height: 240px;
     border-radius: 50%;
     background: #b71c1c;
-    filter: blur(60px);
+    filter: blur(35px);
     opacity: 0.25;
     pointer-events: none;
     transform: translate(30%, -30%);

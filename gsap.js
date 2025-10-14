@@ -27,35 +27,47 @@ const reg5BackBtn = document.getElementById("backtoRegister4");
 const mm = gsap.matchMedia();
 
 function openform() {
-    gsap.to("#main-content", { width: "100%", duration: 1 });
+    gsap.to(".box-content", {
+        opacity: 0,
+        duration: 0.2,
+        onComplete: () => {
+            gsap.set(".box-content", { display: "none" });
+            gsap.set("#main-content", { width: "100%" });
+        },
+    });
     gsap.to("#bg-container", {
         x: "-100%",
         duration: 1,
-        onComplete: () => gsap.set("#bg-container", { display: "none" }),
+        onComplete: () => {
+            gsap.set("#bg-container", { display: "none" });
+        },
     });
     gsap.to(".ambient-red-2", { x: "-100%", duration: 1 });
-    gsap.to(".box-content", {
-        opacity: 0,
-        duration: 1,
-        onComplete: () => gsap.set(".box-content", { display: "none" }),
-    });
 }
 
 function openform_m() {
     gsap.to("#main-content", {
         height: "100%",
-        borderTopLeftRadius: 0,
-        borderTopRightRadius: 0,
         duration: 1,
-        onComplete: () => gsap.set(".bg-container", { display: "none" }),
+        onComplete: () => {
+            gsap.set("#main-content", {
+                borderTopLeftRadius: 0,
+                borderTopRightRadius: 0,
+            });
+            gsap.set(".bg-container", { display: "none" });
+        },
     });
     gsap.to(".app-row", {
         height: "100vh",
         height: "100dvh",
         width: "100vw",
-        borderTopLeftRadius: 0,
-        borderTopRightRadius: 0,
         duration: 1,
+        onComplete: () => {
+            gsap.set(".app-row", {
+                borderTopLeftRadius: 0,
+                borderTopRightRadius: 0,
+            });
+        },
     });
     gsap.to(".switch-section", {
         marginTop: "-2px",
@@ -66,7 +78,7 @@ function openform_m() {
     });
     gsap.to(".box-content", {
         opacity: 0,
-        duration: 1,
+        duration: 0.5,
         onComplete: () => gsap.set(".box-content", { display: "none" }),
     });
 }
@@ -83,14 +95,12 @@ function openform_regist() {
 }
 function regist_next(current, to, progress, currentbarspan, tobarspan) {
     gsap.to(current, {
-        x: "-50%",
         opacity: 0,
         duration: 0.5,
         onComplete: () => {
             gsap.set(current, { display: "none" }),
-                gsap.set(to, { display: "block", x: "50%" }),
+                gsap.set(to, { display: "block" }),
                 gsap.to(to, {
-                    x: "0%",
                     opacity: 1,
                     duration: 0.5,
                 });
@@ -107,14 +117,12 @@ function regist_next(current, to, progress, currentbarspan, tobarspan) {
 }
 function regist_prev(current, to, progress, currentbarspan, tobarspan) {
     gsap.to(current, {
-        x: "50%",
         opacity: 0,
         duration: 0.5,
         onComplete: () => {
             gsap.set(current, { display: "none" }),
-                gsap.set(to, { display: "block", x: "-50%" }),
+                gsap.set(to, { display: "block" }),
                 gsap.to(to, {
-                    x: "0%",
                     opacity: 1,
                     duration: 0.5,
                 });
@@ -131,17 +139,14 @@ function regist_prev(current, to, progress, currentbarspan, tobarspan) {
 }
 function regist_next_m(current, to, progress, currentbarspan, tobarspan) {
     gsap.to(current, {
-        y: "-10%",
         opacity: 0,
         duration: 0.5,
         onComplete: () => {
             gsap.set(current, { display: "none" }),
                 gsap.set(to, {
                     display: "block",
-                    y: "20%",
                 }),
                 gsap.to(to, {
-                    y: "0",
                     opacity: 1,
                     duration: 0.5,
                 });
@@ -158,14 +163,12 @@ function regist_next_m(current, to, progress, currentbarspan, tobarspan) {
 }
 function regist_prev_m(current, to, progress, currentbarspan, tobarspan) {
     gsap.to(current, {
-        y: "20%",
         opacity: 0,
         duration: 0.5,
         onComplete: () => {
             gsap.set(current, { display: "none" }),
-                gsap.set(to, { display: "block", y: "-10%" }),
+                gsap.set(to, { display: "block" }),
                 gsap.to(to, {
-                    y: "0%",
                     opacity: 1,
                     duration: 0.5,
                 });

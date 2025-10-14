@@ -52,7 +52,6 @@
             return this._cache;
         }
     }
-
     class PostcodesService {
         constructor(url = "postcode.json") {
             this.url = url;
@@ -570,7 +569,6 @@
 
     window.AppCore = {
         Motion,
-        VisualEnforcer,
         RegionCodesService,
         UniversitiesService,
         PostcodesService,
