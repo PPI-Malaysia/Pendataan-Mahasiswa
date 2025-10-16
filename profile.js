@@ -4,20 +4,30 @@
     if (!ugt || !token) {
         window.location.href = "index.html";
     }
-    const hideLoadingOverlay = (() => {
-        let done = false;
-        return () => {
-            if (done) return;
-            done = true;
-            const overlay = document.getElementById("loadingOverlay");
-            if (!overlay) return;
 
-            overlay.classList.add("hidden");
-            overlay.addEventListener("transitionend", () => overlay.remove(), {
-                once: true,
-            });
-        };
-    })();
+    const hideLoadingOverlay = () => {
+        const loadingOverlay = document.getElementById("loadingOverlay");
+        const loadingOverlay2 = document.getElementById("loadingOverlay2");
+        const mainContent = document.getElementById("mainContent");
+
+        loadingOverlay.classList.add("hidden");
+        loadingOverlay2.classList.add("hidden");
+
+        setTimeout(() => {
+            if (mainContent) {
+                mainContent.classList.add("visible");
+            }
+        }, 250);
+    };
+    let isLoaded = false;
+    window.addEventListener("load", function () {
+        const checkInterval = setInterval(function () {
+            if (isLoaded) {
+                hideLoadingOverlay();
+                clearInterval(checkInterval);
+            }
+        }, 1000);
+    });
 
     const api = new StudentAPI({ token: token });
     function refreshTranslations() {
@@ -2124,7 +2134,7 @@
 
         renderPPITable("ppi-campus", parseRecordPayload(student.ppi));
         renderTable("ppi-malaysia", parseRecordPayload(student.ppim));
-        hideLoadingOverlay();
+        isLoaded = true;
     }
 
     function persistAuthResult(result = {}) {
