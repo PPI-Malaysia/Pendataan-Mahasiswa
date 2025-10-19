@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="id">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+        />
+        <title>Profile | Pendataan Mahasiswa</title>
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+            crossorigin="anonymous"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.13.1/font/bootstrap-icons.min.css"
+            integrity="sha512-t7Few9xlddEmgd3oKZQahkNI4dS6l80+eGEzFQiqtyVYdvcSG2D3Iub77R20BdotfRPA9caaRkg1tyaJiPmO0g=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        />
+        <link href="main.css?ver=2.0" rel="stylesheet" />
+        <link rel="icon" type="image/x-icon" href="image/favicon.ico" />
+    </head>
+    <body class="profile-body">
+        <img
+            class="loading-overlay"
+            src="https://ppimalaysia.id/images/noheadline-background.png"
+            id="loadingOverlay"
+        />
+        <div class="loading-text" id="loadingOverlay2">
+            <img
+                class="logo-circle"
+                id="logo-circle"
+                src="image/ppim-logo.png"
+            />
+            <div class="loading-message">PPI<br />Malaysia</div>
+        </div>
+        <div class="ambient-red"></div>
+        <div class="ambient-red-2 p-ambient-red-2"></div>
+        <div class="bg-content-filter noise profile-bg-filter"></div>
+        <div class="switch-section p-switch-section z99">
+            <button
+                class="liquid-switch"
+                id="langSwitch"
+                role="switch"
+                aria-checked="false"
+                data-lang="ID"
+            >
+                <span class="seg" data-v="ID">ID</span>
+                <span class="seg" data-v="EN">EN</span>
+                <span class="thumb"></span>
+            </button>
+        </div>
+        <div class="logo-container p-logo-container liquid z99">
+            <img src="image/ppim-logo.png" class="logo" />
+        </div>
+        <div class="app-container br0 h100 w100 test" id="main-content">
+            <div class="app-row h100 br0 d-block d-lg-none">
+                <div class="row app-row h100 br0 p-m-ambient">
+                    <div class="col-6 app-col">
+                        <div class="ambient-red-m"></div>
+                    </div>
+                    <div class="col-6 app-col">
+                        <div class="ambient-red-m-2"></div>
+                    </div>
+                </div>
+            </div>
+            <div
+                class="a-box-large-container p-box-large-container test"
+                id="profile"
+            >
+                <div class="container-content">
+                    <div class="back-btn">
+                        <a
+                            href="index.html"
+                            class="btn liquid-btn liquid-light glass-btn mb-4"
+                        >
+                            <i class="bi bi-arrow-left me-2"></i>
+                            <span data-i18n="back-to-home">Back</span>
+                        </a>
+                    </div>
+                    <h1 data-i18n="about-title">Data Protection & Privacy</h1>
+                    <p class="subtext" data-i18n="about-last-updated">
+                        Last updated: October 19, 2025
+                    </p>
+                    <hr />
+
+                    <h4 data-i18n="about-purpose-title">
+                        1. Purpose of Data Collection
+                    </h4>
+                    <p data-i18n="about-purpose-desc">
+                        This is an official data collection initiative for
+                        Indonesian students in Malaysia, coordinated with the
+                        Indonesian Embassy (KBRI). The data is essential for
+                        administrative support, providing student services, and
+                        for emergency contact purposes.
+                    </p>
+
+                    <h4 data-i18n="about-what-data-title">
+                        2. What Data We Collect
+                    </h4>
+                    <p data-i18n="about-what-data-desc">
+                        We collect the following information to facilitate our
+                        services:
+                    </p>
+                    <ul>
+                        <li data-i18n="about-data-item-1">
+                            <b>Personal Identification:</b> Full Name, Date of
+                            Birth, Passport Number.
+                        </li>
+                        <li data-i18n="about-data-item-2">
+                            <b>Contact Information:</b> Phone Number, Email,
+                            Full Address, and Postcode.
+                        </li>
+                        <li data-i18n="about-data-item-3">
+                            <b>Educational Data:</b> University, Degree
+                            Programme, Education Level, and Expected Graduation
+                            Date.
+                        </li>
+                        <li data-i18n="about-data-item-4">
+                            <b>Organizational History:</b> Records of your
+                            involvement in PPI Campus and PPI Malaysia.
+                        </li>
+                        <li data-i18n="about-data-item-5">
+                            <b>Technical Data:</b> We collect anonymous
+                            technical data, such as screen width and browser
+                            user-agent, to improve our service and ensure
+                            security.
+                        </li>
+                    </ul>
+
+                    <h4 data-i18n="about-how-use-title">
+                        3. How We Use and Share Your Data
+                    </h4>
+                    <p data-i18n="about-how-use-desc">
+                        Your data is used exclusively for official purposes and
+                        is shared only under specific circumstances:
+                    </p>
+                    <ul>
+                        <li data-i18n="about-sharing-item-1">
+                            <b>Primary Use:</b> Data is stored in the main PPI
+                            Malaysia database for administrative and emergency
+                            contact purposes by authorized personnel.
+                        </li>
+                        <li data-i18n="about-sharing-item-2">
+                            <b>Verification:</b> If you submit a record for PPI
+                            Campus or PPI Malaysia, a designated representative
+                            from that organization will be able to view and
+                            verify your membership status. This is explained in
+                            the notes on the registration and profile pages.
+                        </li>
+                        <li data-i18n="about-sharing-item-3">
+                            <b>Third Parties:</b> We do not sell or share your
+                            personal data with unauthorized third parties.
+                            Access is strictly limited to your PPI Campus and
+                            KBRI personnel for official duties.
+                        </li>
+                    </ul>
+
+                    <h4 data-i18n="about-security-title">
+                        4. How We Protect Your Data
+                    </h4>
+                    <p data-i18n="about-security-desc">
+                        We take your data security seriously and implement the
+                        following measures:
+                    </p>
+                    <ul>
+                        <li data-i18n="about-security-item-1">
+                            <b>Secure Transmission:</b> All data is transmitted
+                            over a secure (HTTPS) connection, encrypting it
+                            between your browser and our server.
+                        </li>
+                        <li data-i18n="about-security-item-2">
+                            <b>Authentication:</b> Access to your profile is
+                            protected by a secure, unique token generated upon
+                            login. This token is required to view or edit your
+                            data.
+                        </li>
+                        <li data-i18n="about-security-item-3">
+                            <b>Data Redaction:</b> On your profile page,
+                            sensitive information like your full date of birth
+                            and passport number is partially hidden to protect
+                            your privacy from shoulder-surfing.
+                        </li>
+                        <li data-i18n="about-security-item-4">
+                            <b>Secure Identifiers:</b> We use anonymous,
+                            user-generated tokens (`ugt`) to help manage
+                            sessions securely without exposing personal
+                            information.
+                        </li>
+                    </ul>
+
+                    <h4 data-i18n="about-rights-title">
+                        5. Your Rights and Control
+                    </h4>
+                    <p data-i18n="about-rights-desc">
+                        You have full control over your data:
+                    </p>
+                    <ul>
+                        <li data-i18n="about-rights-item-1">
+                            <b>Update Your Data:</b> You can log in to your
+                            profile at any time to view and update your
+                            personal, contact, and university details.
+                        </li>
+                        <li data-i18n="about-rights-item-2">
+                            <b>Manage Organizational Records:</b> You have the
+                            ability to add, edit, and delete your PPI Campus and
+                            PPI Malaysia history from your profile.
+                        </li>
+                        <li data-i18n="about-rights-item-3">
+                            <b>Data Deletion:</b> To request the complete
+                            deletion of your data from our system, please
+                            contact us at the email address below.
+                        </li>
+                    </ul>
+
+                    <h4 data-i18n="about-contact-title">Contact Us</h4>
+                    <p>
+                        <span data-i18n="about-contact-desc">
+                            If you have any questions about this Data Protection
+                            Policy or your data, please contact us at:
+                        </span>
+                        <a href="mailto:hello@rafidaffa.com"
+                            >hello@rafidaffa.com</a
+                        >.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+            crossorigin="anonymous"
+        ></script>
+        <script>
+            const hideLoadingOverlay = () => {
+                const loadingOverlay =
+                    document.getElementById("loadingOverlay");
+                const loadingOverlay2 =
+                    document.getElementById("loadingOverlay2");
+                const mainContent = document.getElementById("mainContent");
+
+                loadingOverlay.classList.add("hidden");
+                loadingOverlay2.classList.add("hidden");
+
+                setTimeout(() => {
+                    if (mainContent) {
+                        mainContent.classList.add("visible");
+                    }
+                }, 250);
+            };
+
+            window.addEventListener("load", function () {
+                setTimeout(hideLoadingOverlay, 1000);
+            });
+            setTimeout(hideLoadingOverlay, 5000);
+        </script>
+        <script src="app-core.js?ver=2.0"></script>
+        <script src="main.js?ver=2.0"></script>
+        <script src="student.js?ver=2.0"></script>
+    </body>
+</html>

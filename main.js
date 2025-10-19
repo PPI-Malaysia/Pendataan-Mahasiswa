@@ -73,7 +73,22 @@
 
         async setupI18n() {
             await this.i18n.load();
-            this.i18n.apply(this.i18n.lang);
+            // A little adjustment to handle the new structure in i18n.json
+            const applyTranslations = (lang) => {
+                const dict = this.i18n.dicts[lang] || this.i18n.dicts.ID || {};
+                const aboutDict =
+                    this.i18n.dicts["about-page"]?.[lang] ||
+                    this.i18n.dicts["about-page"]?.ID ||
+                    {};
+                const combined = { ...dict, ...aboutDict };
+                document.querySelectorAll("[data-i18n]").forEach((el) => {
+                    const key = el.getAttribute("data-i18n");
+                    const value = combined[key];
+                    if (typeof value === "string") el.innerHTML = value;
+                });
+            };
+            this.i18n.apply = applyTranslations; // Override the original apply
+            this.i18n.apply(this.i18n.lang); // Apply for the first time
             this.i18n.bindSwitch(document.getElementById("langSwitch"));
         }
 

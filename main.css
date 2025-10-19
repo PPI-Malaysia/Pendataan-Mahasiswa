@@ -18,7 +18,12 @@ body {
     overflow: hidden !important;
 }
 .profile-body {
-    overflow-y: scroll;
+    overflow-y: scroll !important;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+.profile-body::-webkit-scrollbar {
+    display: none;
 }
 span,
 h1,
@@ -164,7 +169,7 @@ small {
     bottom: 0;
     z-index: 2;
 }
-.noice {
+.noise {
     background-image: var(--noise);
 }
 .app-container {
@@ -215,6 +220,9 @@ small {
     z-index: 5;
     padding-left: 31px;
 }
+.p-switch-section {
+    position: fixed !important;
+}
 .logo-container {
     display: flex;
     flex-wrap: nowrap;
@@ -256,6 +264,10 @@ small {
 }
 .blur5s160 {
     backdrop-filter: blur(5px) saturate(160%) !important;
+}
+.back-btn {
+    margin-bottom: -10px;
+    z-index: 10;
 }
 /* Liquid */
 .liquid {
@@ -548,6 +560,16 @@ small {
     overflow-y: scroll;
     -ms-overflow-style: none;
     scrollbar-width: none;
+}
+.a-box-large-container {
+    position: absolute;
+    width: 800px;
+    max-width: 100%;
+    height: 100%;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    display: none;
+    opacity: 0;
 }
 .box-large-container::-webkit-scrollbar {
     display: none;
@@ -1223,7 +1245,8 @@ small {
         opacity: 1;
     }
     .p-logo-container {
-        left: 30px !important;
+        display: 1 !important;
+        opacity: 1 !important;
         margin-top: 18px !important;
     }
     .modal {
@@ -1242,6 +1265,14 @@ small {
     }
     .modal.fade.show .modal-content {
         transform: translateY(0) !important; /* animate into view */
+    }
+    .a-box-large-container {
+        overflow-y: scroll;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+    .a-box-large-container::-webkit-scrollbar {
+        display: none;
     }
 }
 .app-row {
