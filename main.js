@@ -859,11 +859,11 @@
                 ? data.passport.trim().toUpperCase()
                 : "";
             data.passport = passport;
-            const passportPattern = /^[A-Z][0-9]{7}$/; // 1 letter + 7 digits (e.g., A1234567)
+            const passportPattern = /^[A-Z]{1,2}[0-9]{7,8}$/; // 1/2 letter + 7-9 digits (e.g., A1234567)
             if (!passportPattern.test(passport)) {
                 if (!silent) {
                     alert(
-                        "Nomor paspor tidak valid. Gunakan format huruf kapital diikuti 7 digit, mis. A1234567."
+                        "Nomor paspor tidak valid. Gunakan format 1-2 huruf kapital diikuti 7-9 digit, mis. A1234567."
                     );
                     const input = document.getElementById("register-passport");
                     if (input) input.value = passport;
