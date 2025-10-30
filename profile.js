@@ -752,7 +752,7 @@
             return false;
         }
 
-        const passportPattern = /^[A-Z]{1,2}[0-9]{7,8}$/;
+        const passportPattern = /^[A-Z]{1,2}[0-9]{6,9}$/;
         if (!passportPattern.test(values.passport || "")) {
             alert(
                 "Invalid Indonesian passport format. Required: 1-2 uppercase letter + 7-9 digits (e.g., A1234567)"

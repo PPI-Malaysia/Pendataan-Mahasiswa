@@ -859,7 +859,7 @@
                 ? data.passport.trim().toUpperCase()
                 : "";
             data.passport = passport;
-            const passportPattern = /^[A-Z]{1,2}[0-9]{7,8}$/; // 1/2 letter + 7-9 digits (e.g., A1234567)
+            const passportPattern = /^[A-Z]{1,2}[0-9]{6,9}$/; // 1/2 letter + 7-9 digits (e.g., A1234567)
             if (!passportPattern.test(passport)) {
                 if (!silent) {
                     alert(
